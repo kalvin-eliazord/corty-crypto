@@ -1,7 +1,10 @@
+"use client";
 import { navbarLinks } from "./configs/navbarLinks";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { Provider } from "react-redux";
+import { store } from "@/store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,18 +23,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ul>
-          {navbarLinks.map((link) => (
-            <li key={link.path}>
-              <Link href={link.path}> {link.name}</Link>
-            </li>
-          ))}
-        </ul>
-        {children}
-      </body>
+      <Provider store={store}>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <ul>
+            {navbarLinks.map((link) => (
+              <li key={link.path}>
+                <Link href={link.path}> {link.name}</Link>
+              </li>
+            ))}
+          </ul>
+          {children}
+        </body>
+      </Provider>
     </html>
   );
 }
