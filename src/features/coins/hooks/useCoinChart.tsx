@@ -3,13 +3,13 @@ import { fetchCoinData } from "../../../shared/services/fetchCoinData";
 import { FetchStatus, MarketCharts } from "../types/coinTypes";
 import getError from "@/shared/utils/getError";
 
-export const useCoinMarket = (coinId: string) => {
+export const useCoinChart = (coinId: string) => {
   const [status, setStatus] = useState<FetchStatus>("pending");
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<MarketCharts>();
 
   useEffect(() => {
-    const getCoinMarket = async () => {
+    const getCoinChart = async () => {
       try {
         const { data } = await fetchCoinData(
           "/coins/" +
@@ -26,7 +26,7 @@ export const useCoinMarket = (coinId: string) => {
       }
     };
 
-    getCoinMarket();
+    getCoinChart();
   }, [coinId]);
 
   return { data, status, error };
