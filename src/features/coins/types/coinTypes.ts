@@ -31,12 +31,18 @@ export type CoinType = {
 };
 
 export type CoinsSliderProps = {
-    coinId: string;
-    setCoinId: (coin: string) => void;
-}
+  coinId: string;
+  setCoinId: (coin: string) => void;
+};
 
 export type MarketCharts = {
-    prices: [number, number][];
-    market_caps: [number, number][];
-    total_volumes: [number, number][];
-  };
+  prices: [number, number][];
+  market_caps: [number, number][];
+  total_volumes: [number, number][];
+};
+
+export type ChartProps = {
+  data: MarketCharts | undefined;
+  status: string;
+  error: string | null;
+};
