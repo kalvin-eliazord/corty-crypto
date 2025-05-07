@@ -30,7 +30,7 @@ export type CoinType = {
   price_change_percentage_7d_in_currency: number;
 };
 
-export type CoinsSlideProps = {
+export type CoinsSliderProps = {
     coinId: string;
     setCoinId: (coin: string) => void;
 }

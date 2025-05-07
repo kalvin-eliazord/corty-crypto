@@ -2,17 +2,13 @@ import { AppDispatch, RootState } from "@/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCoins } from "../coinsSlice";
-import { CoinsSlideProps, CoinType } from "../types/coinTypes";
+import { CoinsSliderProps, CoinType } from "../types/coinTypes";
 
-export const CoinsSlider = ({ coinId, setCoinId }: CoinsSlideProps) => {
+export const CoinsSlider = ({ coinId, setCoinId }: CoinsSliderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { allCoins, status, error } = useSelector(
     (state: RootState) => state.coins
   );
-
-  if(allCoins){
-    console.log("coins: ",allCoins)
-  }
 
   useEffect(() => {
     dispatch(fetchCoins());
@@ -27,16 +23,13 @@ export const CoinsSlider = ({ coinId, setCoinId }: CoinsSlideProps) => {
   }
 
   return (
-    <ul style={{ display: "flex", gap: "20px", border: "1px solid" }}>
-      {allCoins && allCoins.slice(0, 10).map((coin: CoinType) => (
-        <li
-          key={coin.id}
-          style={{ fontWeight: coin.id === coinId ? "bold" : "normal" }}
-          onClick={() => setCoinId(coin.id)}
-        >
-          {coin.name}
-        </li>
-      ))}
+    <ul>
+      {allCoins &&
+        allCoins.slice(0, 10).map((coin: CoinType) => (
+          <li key={coin.id} onClick={() => setCoinId(coin.id)}>
+            {coin.name}
+          </li>
+        ))}
     </ul>
   );
 };

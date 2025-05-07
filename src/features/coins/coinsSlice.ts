@@ -38,7 +38,6 @@ const coinsSlice = createSlice({
       })
       .addCase(fetchCoins.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        console.log(action.payload);
         state.allCoins = action.payload as CoinType[];
       })
       .addCase(fetchCoins.rejected, (state, action) => {
