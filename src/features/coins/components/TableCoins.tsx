@@ -39,13 +39,20 @@ export const TableCoins = () => {
             className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800"
           >
             {i + 1}
-            <Link href={`coin/${coin.id}`}> {coin.name}</Link>
             <Image
               src={coin.image}
               width={40}
               height={40}
               alt="Coin logo"
             ></Image>
+            <Link href={`coin/${coin.id}`}> {coin.name}</Link>
+            {coin.current_price}
+            {coin.price_change_percentage_1h_in_currency}
+            {coin.price_change_percentage_24h_in_currency}
+            {coin.price_change_percentage_7d_in_currency}
+            {coin.market_cap}
+            {coin.circulating_supply}
+            {coin.total_supply}
           </li>
         ))}
       </ul>
