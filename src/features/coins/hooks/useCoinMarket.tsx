@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchCoinData } from "../services/fetchCoinData";
+import { fetchCoinData } from "../../../shared/services/fetchCoinData";
 import { FetchStatus, MarketCharts } from "../types/coinTypes";
 import getError from "@/shared/utils/getError";
 

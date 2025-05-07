@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchCoinData } from "./services/fetchCoinData";
+import { fetchCoinData } from "../../shared/services/fetchCoinData";
 import { CoinsState, CoinType, FetchStatus } from "./types/coinTypes";
 import getError from "@/shared/utils/getError";
 
