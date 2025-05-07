@@ -58,3 +58,5 @@ export type MarketChart = {
   day: string;
   amount: number;
 };
+
+
