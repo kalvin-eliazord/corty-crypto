@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCoins } from "../coinsSlice";
 import { CoinsSliderProps, CoinType } from "../types/coinTypes";
 
-export const CoinsSlider = ({ coinId, setCoinId }: CoinsSliderProps) => {
+export const CoinsSlider = ({ setCoinId }: CoinsSliderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { allCoins, status, error } = useSelector(
     (state: RootState) => state.coins

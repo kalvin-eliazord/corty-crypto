@@ -34,3 +34,9 @@ export type CoinsSliderProps = {
     coinId: string;
     setCoinId: (coin: string) => void;
 }
+
+export type MarketCharts = {
+    prices: [number, number][];
+    market_caps: [number, number][];
+    total_volumes: [number, number][];
+  };
