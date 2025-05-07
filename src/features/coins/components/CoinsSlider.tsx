@@ -1,7 +1,7 @@
 import { AppDispatch, RootState } from "@/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCoins } from "../coinsSlice";
+import { fetchCoinsMarket } from "../coinsSlice";
 import { CoinsSliderProps, CoinType } from "../types/coinTypes";
 
 export const CoinsSlider = ({ coinId, setCoinId }: CoinsSliderProps) => {
@@ -11,7 +11,7 @@ export const CoinsSlider = ({ coinId, setCoinId }: CoinsSliderProps) => {
   );
 
   useEffect(() => {
-    dispatch(fetchCoins());
+    dispatch(fetchCoinsMarket());
   }, [dispatch]);
 
   if (status === "rejected") {

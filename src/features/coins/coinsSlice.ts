@@ -4,11 +4,11 @@ import { fetchCoinData } from "../../shared/services/fetchCoinData";
 import { CoinsState, CoinType, FetchStatus } from "./types/coinTypes";
 import getError from "@/shared/utils/getError";
 
-export const fetchCoins = createAsyncThunk<
+export const fetchCoinsMarket = createAsyncThunk<
   CoinType[],
   void,
   { rejectValue: string }
->("coins/fetchCoins", async (_, { rejectWithValue }) => {
+>("coins/fetchCoinsMarket", async (_, { rejectWithValue }) => {
   try {
     const { data } = await fetchCoinData(
       "/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
@@ -33,14 +33,14 @@ const coinsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCoins.pending, (state) => {
+      .addCase(fetchCoinsMarket.pending, (state) => {
         state.status = "pending";
       })
-      .addCase(fetchCoins.fulfilled, (state, action) => {
+      .addCase(fetchCoinsMarket.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.allCoins = action.payload as CoinType[];
       })
-      .addCase(fetchCoins.rejected, (state, action) => {
+      .addCase(fetchCoinsMarket.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.payload;
       });
