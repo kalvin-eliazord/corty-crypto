@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCoins } from "../coinsSlice";
 import { CoinsSliderProps, CoinType } from "../types/coinTypes";
 
-export const CoinsSlider = ({ setCoinId }: CoinsSliderProps) => {
+export const CoinsSlider = ({ coinId, setCoinId }: CoinsSliderProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { allCoins, status, error } = useSelector(
     (state: RootState) => state.coins
@@ -23,10 +23,18 @@ export const CoinsSlider = ({ setCoinId }: CoinsSliderProps) => {
   }
 
   return (
-    <ul>
+    <ul className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800">
       {allCoins &&
         allCoins.slice(0, 10).map((coin: CoinType) => (
-          <li key={coin.id} onClick={() => setCoinId(coin.id)}>
+          <li
+            key={coin.id}
+            className={
+              coinId === coin.id
+                ? "font-bold hover:cursor-pointer"
+                : "hover:cursor-pointer"
+            }
+            onClick={() => setCoinId(coin.id)}
+          >
             {coin.name}
           </li>
         ))}
