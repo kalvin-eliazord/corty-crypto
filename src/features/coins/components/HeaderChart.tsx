@@ -1,7 +1,8 @@
+import { format } from "date-fns";
 import { HeaderProps } from "../types/coinTypes";
 
 export const HeaderChart: React.FC<HeaderProps> = ({ name, data }) => {
-  const todayDate = new Date().getDate();
+  const todayDate = format(new Date(), "MMMM d, yyyy");
 
   return (
     <div>
