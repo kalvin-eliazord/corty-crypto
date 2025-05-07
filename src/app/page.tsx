@@ -4,6 +4,7 @@ import { CoinsSlider } from "@/features/coins/components/CoinsSlider";
 import { useCoinChart } from "@/features/coins/hooks/useCoinChart";
 import { PriceChart } from "@/features/coins/components/PriceChart";
 import { VolumeChart } from "@/features/coins/components/VolumeChart";
+import { TableCoins } from "@/features/coins/components/TableCoins";
 
 export default function Home() {
   const [coinId, setCoinId] = useState<string>("bitcoin");
@@ -18,6 +19,8 @@ export default function Home() {
           <PriceChart data={data} status={status} error={error}></PriceChart>
           <VolumeChart data={data} status={status} error={error}></VolumeChart>
         </div>
+
+        <TableCoins></TableCoins>
       </main>
     </div>
   );
