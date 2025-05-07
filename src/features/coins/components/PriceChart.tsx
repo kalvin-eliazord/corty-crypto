@@ -1,7 +1,7 @@
 import { Line, XAxis, AreaChart, Area } from "recharts";
 import { ChartProps } from "../types/coinTypes";
 import { HeaderChart } from "./HeaderChart";
-import { formatMarketChart } from "./utils/formatMarketChart";
+import { formatMarketChart } from "../utils/formatMarketChart";
 
 export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
   if (status === "rejected" && error) {
