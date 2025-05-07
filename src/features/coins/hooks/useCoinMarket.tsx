@@ -27,7 +27,7 @@ export const useCoinMarket = (coinId: string) => {
     };
 
     getCoinMarket();
-  }, []);
+  }, [coinId]);
 
   return { data, status, error };
 };
