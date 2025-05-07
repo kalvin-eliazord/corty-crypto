@@ -35,10 +35,12 @@ export type CoinsSliderProps = {
   setCoinId: (coin: string) => void;
 };
 
+export type TimeAndAmount = [number, number];
+
 export type MarketCharts = {
-  prices: [number, number][];
-  market_caps: [number, number][];
-  total_volumes: [number, number][];
+  prices: TimeAndAmount[];
+  market_caps: TimeAndAmount[];
+  total_volumes: TimeAndAmount[];
 };
 
 export type ChartProps = {
@@ -49,5 +51,10 @@ export type ChartProps = {
 
 export type HeaderProps = {
   name: string;
-  data: string;
+  marketChart: MarketChart;
+};
+
+export type MarketChart = {
+  day: string;
+  amount: number;
 };

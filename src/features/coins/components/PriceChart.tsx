@@ -1,7 +1,7 @@
 import { Line, XAxis, AreaChart, Area } from "recharts";
 import { ChartProps } from "../types/coinTypes";
-import { formatDataChart } from "../types/formatDataCharts";
 import { HeaderChart } from "./HeaderChart";
+import { formatMarketChart } from "./utils/formatMarketChart";
 
 export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
   if (status === "rejected" && error) {
@@ -12,11 +12,16 @@ export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
     return <>isLoading</>;
   }
 
-  const prices = data?.prices && formatDataChart(data.prices);
+  const prices = data && formatMarketChart(data.prices);
 
   return (
     <div>
-      <HeaderChart name={"Price"} data={""}></HeaderChart>
+      {prices && (
+        <HeaderChart
+          name={"Price"}
+          marketChart={prices[prices.length - 1]}
+        ></HeaderChart>
+      )}
 
       <AreaChart
         width={790}
@@ -31,22 +36,22 @@ export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
       >
         <Line
           type="monotone"
-          dataKey="mainData"
+          dataKey="amount"
           stroke="green"
           activeDot={{ r: 8 }}
         />
         <defs>
-          <linearGradient id="mainData" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id="amount" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="lightGreen" stopOpacity={0.8} />
             <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
           </linearGradient>
         </defs>
         <Area
           type="monotone"
-          dataKey="mainData"
+          dataKey="amount"
           stroke="#8884d8"
           fillOpacity={1}
-          fill="url(#mainData)"
+          fill="url(#amount)"
         />
         <XAxis dataKey="day" padding={{ left: 20, right: 20 }} />
       </AreaChart>
