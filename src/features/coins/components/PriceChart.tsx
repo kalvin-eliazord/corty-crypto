@@ -1,6 +1,7 @@
 import { Line, XAxis, AreaChart, Area } from "recharts";
 import { ChartProps } from "../types/coinTypes";
 import { formatDataChart } from "../types/formatDataCharts";
+import { HeaderChart } from "./HeaderChart";
 
 export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
   if (status === "rejected" && error) {
@@ -15,6 +16,8 @@ export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
 
   return (
     <div>
+      <HeaderChart name={"Price"} data={""}></HeaderChart>
+
       <AreaChart
         width={790}
         height={420}

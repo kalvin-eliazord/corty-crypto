@@ -46,3 +46,8 @@ export type ChartProps = {
   status: string;
   error: string | null;
 };
+
+export type HeaderProps = {
+  name: string;
+  data: string;
+};

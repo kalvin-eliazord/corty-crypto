@@ -1,6 +1,7 @@
 import { BarChart, Bar, XAxis } from "recharts";
 import { ChartProps } from "../types/coinTypes";
 import { formatDataChart } from "../types/formatDataCharts";
+import { HeaderChart } from "./HeaderChart";
 
 export const VolumeChart: React.FC<ChartProps> = ({ data, status, error }) => {
   if (status === "rejected" && error) {
@@ -16,6 +17,7 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, status, error }) => {
 
   return (
     <div>
+        <HeaderChart name={"Volume 24h"} data={""}  ></HeaderChart>
       <BarChart width={790} height={420} data={total_volumes} barSize={10}>
         <XAxis dataKey="day" padding={{ left: 20, right: 20 }} />
 
