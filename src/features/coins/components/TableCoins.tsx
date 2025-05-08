@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { sortCoins } from "../types/sortCoins";
-import { getAllChunksCoins } from "../utils/getAllChunksCoins";
 import { CoinType, FetchStatus } from "../types/coinTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useState } from "react";
+import { useChunks } from "../hooks/useChunk";
+import { useSortedCoins } from "../hooks/useSortedCoins";
 
 export const tableHeaders = [
   "#",
@@ -29,13 +29,11 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
   status,
   error,
 }) => {
-  const [displayedCoins, setDisplayedCoins] = useState<CoinType[]>([]);
-
   const [sortType, setSortType] = useState<string>("default");
   const [reverse, setReverse] = useState<boolean>(false);
-  const [partIndex, setPartIndex] = useState<number>(0);
-  const allChunksCoins = useMemo(() => getAllChunksCoins(allCoins), [allCoins]);
-  const maxChunk = allChunksCoins.length;
+
+  const { displayedCoins, hasMore, loadNextChunk } = useChunks(allCoins, 10);
+  const sortedCoins = useSortedCoins(displayedCoins, sortType, reverse);
 
   const handleSort = (newSortType: string) => {
     if (newSortType === sortType) {
@@ -45,20 +43,6 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
       setReverse(false);
     }
   };
-
-  const loadMoreCoins = () => {
-    setPartIndex((prev) => (prev < maxChunk ? prev + 1 : prev));
-  };
-
-  const sortedCoins = useMemo(() => {
-    return sortCoins(displayedCoins, sortType, reverse);
-  }, [displayedCoins, sortType, reverse]);
-
-  useEffect(() => {
-    if (allChunksCoins[partIndex]) {
-      setDisplayedCoins((prev) => [...prev, ...allChunksCoins[partIndex]]);
-    }
-  }, [partIndex, allCoins, allChunksCoins]);
 
   if (status === "rejected" && error) {
     return <>Error : {error}</>;
@@ -85,8 +69,8 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
 
         <InfiniteScroll
           dataLength={sortedCoins.length}
-          next={loadMoreCoins}
-          hasMore={partIndex < maxChunk}
+          next={loadNextChunk}
+          hasMore={hasMore}
           loader={<h4>Loading...</h4>}
         >
           {sortedCoins.map((coin, i) => (
@@ -95,12 +79,7 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
               className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800"
             >
               {i + 1}
-              <Image
-                src={coin.image}
-                width={40}
-                height={40}
-                alt="Coin logo"
-              ></Image>
+              <Image src={coin.image} width={40} height={40} alt="Coin logo" />
               <Link href={`coin/${coin.id}`}> {coin.name}</Link>
               {coin.current_price}
               {coin.price_change_percentage_1h_in_currency}
