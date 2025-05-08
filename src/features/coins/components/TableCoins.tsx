@@ -1,20 +1,24 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { fetchCoinsMarket } from "../coinsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store";
-import { tableHeaders } from "../types/tableCoins";
+import { useEffect, useMemo, useState } from "react";
+import { TableCoinsProps, tableHeaders } from "../types/tableCoins";
 import { sortCoins } from "../types/sortCoins";
+import { getAllChunksCoins } from "../utils/getAllChunksCoins";
+import { CoinType } from "../types/coinTypes";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-export const TableCoins = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { allCoins, status, error } = useSelector(
-    (state: RootState) => state.coins
-  );
+export const TableCoins: React.FC<TableCoinsProps> = ({
+  allCoins,
+  status,
+  error,
+}) => {
+  const [displayedCoins, setDisplayedCoins] = useState<CoinType[]>([]);
 
   const [sortType, setSortType] = useState<string>("default");
   const [reverse, setReverse] = useState<boolean>(false);
+  const [partIndex, setPartIndex] = useState<number>(0);
+  const allChunksCoins = useMemo(() => getAllChunksCoins(allCoins), [allCoins]);
+  const maxChunk = allChunksCoins.length;
 
   const handleSort = (newSortType: string) => {
     if (newSortType === sortType) {
@@ -25,11 +29,19 @@ export const TableCoins = () => {
     }
   };
 
-  const sortedCoins = sortCoins(allCoins, sortType, reverse);
+  const loadMoreCoins = () => {
+    setPartIndex((prev) => (prev < maxChunk ? prev + 1 : prev));
+  };
+
+  const sortedCoins = useMemo(() => {
+    return sortCoins(displayedCoins, sortType, reverse);
+  }, [displayedCoins, sortType, reverse]);
 
   useEffect(() => {
-    dispatch(fetchCoinsMarket());
-  }, [dispatch]);
+    if (allChunksCoins[partIndex]) {
+      setDisplayedCoins((prev) => [...prev, ...allChunksCoins[partIndex]]);
+    }
+  }, [partIndex, allCoins, allChunksCoins]);
 
   if (status === "rejected" && error) {
     return <>Error : {error}</>;
@@ -54,28 +66,35 @@ export const TableCoins = () => {
           ))}
         </div>
 
-        {sortedCoins.map((coin, i) => (
-          <li
-            key={coin.id}
-            className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800"
-          >
-            {i + 1}
-            <Image
-              src={coin.image}
-              width={40}
-              height={40}
-              alt="Coin logo"
-            ></Image>
-            <Link href={`coin/${coin.id}`}> {coin.name}</Link>
-            {coin.current_price}
-            {coin.price_change_percentage_1h_in_currency}
-            {coin.price_change_percentage_24h_in_currency}
-            {coin.price_change_percentage_7d_in_currency}
-            {coin.market_cap}
-            {coin.circulating_supply}
-            {coin.total_supply}
-          </li>
-        ))}
+        <InfiniteScroll
+          dataLength={sortedCoins.length}
+          next={loadMoreCoins}
+          hasMore={partIndex < maxChunk}
+          loader={<h4>Loading...</h4>}
+        >
+          {sortedCoins.map((coin, i) => (
+            <li
+              key={coin.id}
+              className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800"
+            >
+              {i + 1}
+              <Image
+                src={coin.image}
+                width={40}
+                height={40}
+                alt="Coin logo"
+              ></Image>
+              <Link href={`coin/${coin.id}`}> {coin.name}</Link>
+              {coin.current_price}
+              {coin.price_change_percentage_1h_in_currency}
+              {coin.price_change_percentage_24h_in_currency}
+              {coin.price_change_percentage_7d_in_currency}
+              {coin.market_cap}
+              {coin.circulating_supply}
+              {coin.total_supply}
+            </li>
+          ))}
+        </InfiniteScroll>
       </ul>
     </div>
   );
