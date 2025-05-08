@@ -1,11 +1,28 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { TableCoinsProps, tableHeaders } from "../types/tableCoins";
 import { sortCoins } from "../types/sortCoins";
 import { getAllChunksCoins } from "../utils/getAllChunksCoins";
-import { CoinType } from "../types/coinTypes";
+import { CoinType, FetchStatus } from "../types/coinTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
+
+export const tableHeaders = [
+  "#",
+  "Name",
+  "Price",
+  "1h",
+  "24h",
+  "7d",
+  "24h Vol / Market Cap",
+  "Circulating / Total Sup",
+  "Last 7d",
+];
+
+export type TableCoinsProps = {
+  allCoins: CoinType[];
+  status: FetchStatus;
+  error: string | null | undefined;
+};
 
 export const TableCoins: React.FC<TableCoinsProps> = ({
   allCoins,
