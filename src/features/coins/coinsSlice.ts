@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchCoinData } from "../../shared/services/fetchCoinData";
-import { CoinsState, CoinType, FetchStatus } from "./types/coinTypes";
+import { AllCoinsProps, CoinType, FetchStatus } from "./types/coinTypes";
 import getError from "@/shared/utils/getError";
 
 export const fetchCoinsMarket = createAsyncThunk<
@@ -21,7 +21,7 @@ export const fetchCoinsMarket = createAsyncThunk<
   }
 });
 
-const initialState: CoinsState = {
+const initialState: AllCoinsProps = {
   allCoins: [],
   status: "pending" as FetchStatus,
   error: null,

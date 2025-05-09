@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CoinType, FetchStatus } from "../types/coinTypes";
+import { AllCoinsProps } from "../types/coinTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState } from "react";
 import { useChunks } from "../hooks/useChunk";
@@ -18,13 +18,7 @@ export const tableHeaders = [
   "Last 7d",
 ];
 
-export type TableCoinsProps = {
-  allCoins: CoinType[];
-  status: FetchStatus;
-  error: string | null | undefined;
-};
-
-export const TableCoins: React.FC<TableCoinsProps> = ({
+export const TableCoins: React.FC<AllCoinsProps> = ({
   allCoins,
   status,
   error,

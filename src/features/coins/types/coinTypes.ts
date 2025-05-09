@@ -1,6 +1,6 @@
 export type FetchStatus = "pending" | "fulfilled" | "rejected";
 
-export type CoinsState = {
+export type AllCoinsProps = {
   allCoins: CoinType[];
   status: FetchStatus;
   error: string | undefined | null;
@@ -30,12 +30,9 @@ export type CoinType = {
   price_change_percentage_7d_in_currency: number;
 };
 
-export type CoinsSliderProps = {
+export type CoinsSliderProps = AllCoinsProps & {
   coinId: string;
   setCoinId(coinId: string): void;
-  allCoins: CoinType[];
-  status: FetchStatus;
-  error: string | null | undefined;
 };
 
 export type TimeAndAmount = [number, number];
