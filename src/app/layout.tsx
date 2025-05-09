@@ -5,6 +5,7 @@ import "./globals.css";
 import Link from "next/link";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import { SearchCoins } from "@/features/coins/components/SearchCoins";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
                 <Link href={link.path}> {link.name}</Link>
               </li>
             ))}
+            <SearchCoins />
           </ul>
           {children}
         </body>
