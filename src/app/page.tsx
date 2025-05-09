@@ -1,23 +1,40 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CoinsSlider } from "@/features/coins/components/CoinsSlider";
-import { useCoinMarket } from "@/features/coins/hooks/useCoinMarket";
-import { PriceChart } from "@/features/coins/components/PriceChart";
-import { VolumeChart } from "@/features/coins/components/VolumeChart";
+import { TableCoins } from "@/features/coins/components/TableCoins";
+import { AppDispatch, RootState } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCoinsMarket } from "@/features/coins/coinsSlice";
+import { Charts } from "@/features/coins/components/Charts";
 
 export default function Home() {
   const [coinId, setCoinId] = useState<string>("bitcoin");
-  const { data, status, error } = useCoinMarket(coinId);
+  const dispatch = useDispatch<AppDispatch>();
+  const { allCoins, status, error } = useSelector(
+    (state: RootState) => state.coins
+  );
+
+  useEffect(() => {
+    dispatch(fetchCoinsMarket());
+  }, [dispatch]);
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <CoinsSlider setCoinId={setCoinId} coinId={coinId} />
+        <CoinsSlider
+          allCoins={allCoins}
+          status={status}
+          error={error}
+          setCoinId={setCoinId}
+          coinId={coinId}
+        />
 
-        <div className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800">
-          <PriceChart data={data} status={status} error={error}></PriceChart>
-          <VolumeChart data={data} status={status} error={error}></VolumeChart>
-        </div>
+        <Charts coinId={coinId}></Charts>
+        <TableCoins
+          allCoins={allCoins}
+          status={status}
+          error={error}
+        ></TableCoins>
       </main>
     </div>
   );

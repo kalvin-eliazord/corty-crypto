@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { MarketChart, TimeAndAmount } from "../../types/coinTypes";
+import { MarketChart, TimeAndAmount } from "../types/coinTypes";
 
 export const formatMarketChart = (
   allTimeAndAmounts: TimeAndAmount[]

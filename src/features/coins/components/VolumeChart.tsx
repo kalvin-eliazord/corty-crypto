@@ -1,7 +1,7 @@
 import { BarChart, Bar, XAxis } from "recharts";
 import { ChartProps } from "../types/coinTypes";
 import { HeaderChart } from "./HeaderChart";
-import { formatMarketChart } from "./utils/formatMarketChart";
+import { formatMarketChart } from "../utils/formatMarketChart";
 
 export const VolumeChart: React.FC<ChartProps> = ({ data, status, error }) => {
   if (status === "rejected" && error) {
