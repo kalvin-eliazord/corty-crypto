@@ -1,19 +1,13 @@
-import { AppDispatch, RootState } from "@/store";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCoinsMarket } from "../coinsSlice";
+
 import { CoinsSliderProps, CoinType } from "../types/coinTypes";
 
-export const CoinsSlider = ({ coinId, setCoinId }: CoinsSliderProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { allCoins, status, error } = useSelector(
-    (state: RootState) => state.coins
-  );
-
-  useEffect(() => {
-    dispatch(fetchCoinsMarket());
-  }, [dispatch]);
-
+export const CoinsSlider: React.FC<CoinsSliderProps> = ({
+  allCoins,
+  status,
+  error,
+  coinId,
+  setCoinId,
+}: CoinsSliderProps) => {
   if (status === "rejected") {
     return <>hasError : {error}</>;
   }

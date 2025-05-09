@@ -32,7 +32,10 @@ export type CoinType = {
 
 export type CoinsSliderProps = {
   coinId: string;
-  setCoinId: (coin: string) => void;
+  setCoinId(coinId: string): void;
+  allCoins: CoinType[];
+  status: FetchStatus;
+  error: string | null | undefined;
 };
 
 export type TimeAndAmount = [number, number];
@@ -46,7 +49,7 @@ export type MarketCharts = {
 export type ChartProps = {
   data: MarketCharts | undefined;
   status: string;
-  error: string | null;
+  error: string | null | undefined;
 };
 
 export type HeaderProps = {
@@ -58,5 +61,3 @@ export type MarketChart = {
   day: string;
   amount: number;
 };
-
-
