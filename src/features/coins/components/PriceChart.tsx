@@ -3,7 +3,7 @@ import { ChartProps } from "../types/coinTypes";
 import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 
-export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
+export const PriceChart: React.FC<ChartProps> = ({ data, status, error, currency }) => {
   if (status === "rejected" && error) {
     return <>Error : {error}</>;
   }
@@ -20,6 +20,7 @@ export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
         <HeaderChart
           name={"Price"}
           marketChart={prices[prices.length - 1]}
+          currency={currency}
         ></HeaderChart>
       )}
 

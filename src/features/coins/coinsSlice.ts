@@ -25,6 +25,7 @@ const initialState: AllCoinsProps = {
   allCoins: [],
   status: "pending" as FetchStatus,
   error: null,
+  currency: null,
 };
 
 const coinsSlice = createSlice({
