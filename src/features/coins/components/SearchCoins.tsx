@@ -43,7 +43,7 @@ export const SearchCoins = () => {
       <ul>
         {coinSearched && filteredCoins.length > 0
           ? filteredCoins.map((coin: CoinType) => (
-              <Link key={coin.id} href={`coin/${coin.id}`}>
+              <Link key={coin.id} href={`/coin/${coin.id}`}>
                 {coin.name}
               </Link>
             ))
