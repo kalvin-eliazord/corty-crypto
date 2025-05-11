@@ -2,22 +2,17 @@ import { FetchStatus } from "@/features/coins/types/coinTypes";
 import { fetchCoinData } from "@/shared/services/fetchCoinData";
 import getError from "@/shared/utils/getError";
 import { useState, useEffect } from "react";
-import { CurrencyInfo } from "../types/currency";
 
-type Rates = {
-  [key: string]: CurrencyInfo;
-};
-
-export const useExchangeRates = () => {
+export const useFetchCoinData = <T>(url: string) => {
   const [status, setStatus] = useState<FetchStatus>("pending");
   const [error, setError] = useState<string | null>(null);
-  const [exchangeRates, setExchangeRates] = useState<Rates>({});
+  const [data, setData] = useState<T | null>(null);
 
   useEffect(() => {
-    const fetchExchangeRates = async () => {
+    const getCoinData = async () => {
       try {
-        const { data } = await fetchCoinData("/exchange_rates");
-        setExchangeRates(data.rates);
+        const { data } = await fetchCoinData(url);
+        setData(data);
         setStatus("fulfilled");
       } catch (error) {
         const message = getError(error);
@@ -27,8 +22,8 @@ export const useExchangeRates = () => {
       }
     };
 
-    fetchExchangeRates();
-  }, []);
+    getCoinData();
+  }, [url]);
 
-  return { exchangeRates, status, error };
+  return { data, status, error };
 };
