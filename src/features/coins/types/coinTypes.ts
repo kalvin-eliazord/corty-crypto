@@ -1,4 +1,4 @@
-import { CurrencyInfo } from "@/features/convertor/types/exchangeRate";
+import { CurrencyInfo } from "@/features/convertor/types/currency";
 
 export type FetchStatus = "pending" | "fulfilled" | "rejected";
 

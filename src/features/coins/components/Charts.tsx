@@ -1,7 +1,7 @@
 import { useCoinChart } from "../hooks/useCoinChart";
 import { PriceChart } from "@/features/coins/components/PriceChart";
 import { VolumeChart } from "@/features/coins/components/VolumeChart";
-import { CurrencyInfo } from "@/features/convertor/types/exchangeRate";
+import { CurrencyInfo } from "@/features/convertor/types/currency";
 
 type ChartsProps = {
   coinId: string;

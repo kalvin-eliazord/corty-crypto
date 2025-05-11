@@ -2,11 +2,11 @@ import { FetchStatus } from "@/features/coins/types/coinTypes";
 import { fetchCoinData } from "@/shared/services/fetchCoinData";
 import getError from "@/shared/utils/getError";
 import { useState, useEffect } from "react";
-import { CurrencyInfo } from "../types/exchangeRate";
+import { CurrencyInfo } from "../types/currency";
 
 type Rates = {
-    [key: string]: CurrencyInfo;
-  };
+  [key: string]: CurrencyInfo;
+};
 
 export const useExchangeRates = () => {
   const [status, setStatus] = useState<FetchStatus>("pending");
@@ -17,7 +17,6 @@ export const useExchangeRates = () => {
     const fetchExchangeRates = async () => {
       try {
         const { data } = await fetchCoinData("/exchange_rates");
-        console.log("data:",data)
         setExchangeRates(data.rates);
         setStatus("fulfilled");
       } catch (error) {

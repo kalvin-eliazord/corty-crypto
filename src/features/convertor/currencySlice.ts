@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CurrencyInfo } from "./types/exchangeRate";
+import { CurrencyInfo } from "./types/currency";
 
 type CurrencyProps = {
   currency: CurrencyInfo;
