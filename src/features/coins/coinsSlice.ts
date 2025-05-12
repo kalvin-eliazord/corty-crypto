@@ -11,7 +11,7 @@ export const fetchCoinsMarket = createAsyncThunk<
 >("coins/fetchCoinsMarket", async (_, { rejectWithValue }) => {
   try {
     const { data } = await fetchCoinData(
-      "/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
+      "/coins/markets?vs_currency=btc&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
     );
     return data;
   } catch (err) {
@@ -25,7 +25,7 @@ const initialState: AllCoinsProps = {
   allCoins: [],
   status: "pending" as FetchStatus,
   error: null,
-  currency: null,
+  currencyInfo: null,
 };
 
 const coinsSlice = createSlice({

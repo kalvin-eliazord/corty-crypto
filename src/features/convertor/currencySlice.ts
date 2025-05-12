@@ -2,22 +2,27 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CurrencyInfo } from "./types/currency";
 
 type CurrencyProps = {
-  currency: CurrencyInfo;
+  currencyInfo: CurrencyInfo;
+  currencyCode: string;
 };
 
 const initialState: CurrencyProps = {
-  currency: {} as CurrencyInfo,
+  currencyInfo: {} as CurrencyInfo,
+  currencyCode: "usd",
 };
 
 const currencySlice = createSlice({
   name: "currency",
   initialState,
   reducers: {
-    setCurrency(state, action: PayloadAction<CurrencyInfo>) {
-      state.currency = action.payload;
+    setCurrencyInfo(state, action: PayloadAction<CurrencyInfo>) {
+      state.currencyInfo = action.payload;
+    },
+    setCurrencyCode(state, action: PayloadAction<string>) {
+      state.currencyCode = action.payload;
     },
   },
 });
 
-export const { setCurrency } = currencySlice.actions;
+export const { setCurrencyInfo, setCurrencyCode } = currencySlice.actions;
 export default currencySlice.reducer;

@@ -6,7 +6,8 @@ export type AllCoinsProps = {
   allCoins: CoinType[];
   status: FetchStatus;
   error: string | undefined | null;
-  currency: CurrencyInfo | null;
+  currencyInfo: CurrencyInfo | null;
+  coin?: CoinType;
 };
 
 export type CoinType = {
@@ -36,7 +37,7 @@ export type CoinType = {
 export type CoinsSliderProps = AllCoinsProps & {
   coinId: string;
   setCoinId(coinId: string): void;
-  currency: CurrencyInfo;
+  currencyInfo: CurrencyInfo;
 };
 
 export type TimeAndAmount = [number, number];
@@ -45,20 +46,22 @@ export type MarketCharts = {
   prices: TimeAndAmount[];
   market_caps: TimeAndAmount[];
   total_volumes: TimeAndAmount[];
-  currency: CurrencyInfo;
+  currencyInfo: CurrencyInfo;
 };
 
 export type ChartProps = {
   data: MarketCharts | undefined;
   status: string;
   error: string | null | undefined;
-  currency: CurrencyInfo;
+  currencyInfo: CurrencyInfo;
+  coin?: CoinType;
 };
 
 export type HeaderProps = {
-  name: string;
+  name: string | undefined;
   marketChart: MarketChart;
-  currency: CurrencyInfo;
+  currencyInfo: CurrencyInfo;
+  coin?: CoinType;
 };
 
 export type MarketChart = {
