@@ -8,9 +8,7 @@ import { Search } from "lucide-react";
 
 export const SearchCoins = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { allCoins, status, error } = useSelector(
-    (state: RootState) => state.coins
-  );
+  const { allCoins, status } = useSelector((state: RootState) => state.coins);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -29,47 +27,47 @@ export const SearchCoins = () => {
     coin.name.toLowerCase().startsWith(coinSearched.toLowerCase())
   );
 
-  if (status === "rejected" && error) {
-    return <>Error: {error}</>;
-  }
-
   if (status === "pending") {
-    return <>isLoading</>;
+    return <div className="text-center text-gray-400">Loading...</div>;
   }
 
   return (
-    <div className="relative w-full max-w-md">
-      <div className="flex items-center gap-2 bg-gray-900/60 rounded-lg px-3 py-2">
-        <Search className="text-gray-400" />
+    <div className="relative w-full max-w-xs mx-auto">
+      <div className="flex items-center gap-1.5 bg-gray-900/60 rounded-lg px-2 py-1.5 w-full">
+        <Search className="text-gray-400 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
         <input
           ref={inputRef}
-          className="bg-transparent flex-1 outline-none text-white placeholder-gray-400"
+          className="w-full bg-transparent outline-none text-white placeholder-gray-400 text-sm sm:text-base focus:ring-1 focus:ring-blue-500 rounded flex-grow min-w-0"
           value={coinSearched}
           onChange={handleInputChange}
-          placeholder="Search for a coin..."
+          placeholder="Search coins..."
+          aria-label="Search coins"
         />
       </div>
 
       {coinSearched.length > 0 && (
-        <div className="absolute top-full left-0 w-full max-w-md bg-gray-800 p-2 rounded-lg shadow-lg mt-2 z-10">
+        <div className="absolute top-full left-0 w-full bg-gray-800 p-1.5 sm:p-2 rounded-lg shadow-lg mt-1 z-10 max-h-64 overflow-y-auto">
           <ul>
             {filteredCoins.length > 0 ? (
               filteredCoins.map((coin: CoinType) => (
                 <li
                   key={coin.id}
-                  className="cursor-pointer hover:bg-gray-700 px-2 py-1 rounded-md"
+                  className="cursor-pointer hover:bg-gray-700 px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-md text-sm sm:text-base"
                 >
                   <Link
                     href={`/coin/${coin.id}`}
-                    className="block w-full"
+                    className="block w-full text-white truncate"
                     onClick={() => setCoinSearched("")}
+                    title={coin.name}
                   >
                     {coin.name}
                   </Link>
                 </li>
               ))
             ) : (
-              <li className="px-2 py-1 text-gray-400">No coins found</li>
+              <li className="px-1.5 py-1 text-gray-400 text-sm sm:text-base">
+                No coins found
+              </li>
             )}
           </ul>
         </div>
