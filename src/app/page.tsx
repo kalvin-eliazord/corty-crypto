@@ -13,6 +13,7 @@ export default function Home() {
   const { allCoins, status, error } = useSelector(
     (state: RootState) => state.coins
   );
+  const { currency } = useSelector((state: RootState) => state.currency);
 
   useEffect(() => {
     dispatch(fetchCoinsMarket());
@@ -27,13 +28,15 @@ export default function Home() {
           error={error}
           setCoinId={setCoinId}
           coinId={coinId}
+          currency={currency}
         />
 
-        <Charts coinId={coinId}></Charts>
+        <Charts coinId={coinId} currency={currency}></Charts>
         <TableCoins
           allCoins={allCoins}
           status={status}
           error={error}
+          currency={currency}
         ></TableCoins>
       </main>
     </div>

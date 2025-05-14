@@ -3,7 +3,12 @@ import { ChartProps } from "../types/coinTypes";
 import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 
-export const VolumeChart: React.FC<ChartProps> = ({ data, status, error }) => {
+export const VolumeChart: React.FC<ChartProps> = ({
+  data,
+  status,
+  error,
+  currency,
+}) => {
   if (status === "rejected" && error) {
     return <>Error : {error}</>;
   }
@@ -20,6 +25,7 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, status, error }) => {
         <HeaderChart
           name={"Volume 24h"}
           marketChart={total_volumes[total_volumes.length - 1]}
+          currency={currency}
         ></HeaderChart>
       )}
       <BarChart width={790} height={420} data={total_volumes} barSize={10}>

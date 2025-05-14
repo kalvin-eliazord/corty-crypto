@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CoinType, FetchStatus } from "../types/coinTypes";
+import { AllCoinsProps } from "../types/coinTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState } from "react";
 import { useChunks } from "../hooks/useChunk";
 import { useSortedCoins } from "../hooks/useSortedCoins";
+import { convertAmount } from "@/features/convertor/utils/convertAmount";
+import { formatAmount } from "@/features/convertor/utils/formatAmount";
 
 export const tableHeaders = [
   "#",
@@ -18,22 +20,17 @@ export const tableHeaders = [
   "Last 7d",
 ];
 
-export type TableCoinsProps = {
-  allCoins: CoinType[];
-  status: FetchStatus;
-  error: string | null | undefined;
-};
-
-export const TableCoins: React.FC<TableCoinsProps> = ({
+export const TableCoins: React.FC<AllCoinsProps> = ({
   allCoins,
   status,
   error,
+  currency,
 }) => {
   const [sortType, setSortType] = useState<string>("default");
   const [reverse, setReverse] = useState<boolean>(false);
 
-  const { displayedCoins, hasMore, loadNextChunk } = useChunks(allCoins, 10);
-  const sortedCoins = useSortedCoins(displayedCoins, sortType, reverse);
+  const sortedCoins = useSortedCoins(allCoins, sortType, reverse);
+  const { displayedCoins, hasMore, loadNextChunk } = useChunks(sortedCoins, 10);
 
   const handleSort = (newSortType: string) => {
     if (newSortType === sortType) {
@@ -68,23 +65,27 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
         </div>
 
         <InfiniteScroll
-          dataLength={sortedCoins.length}
+          dataLength={displayedCoins.length}
           next={loadNextChunk}
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
         >
-          {sortedCoins.map((coin, i) => (
+          {displayedCoins.map((coin, i) => (
             <li
               key={coin.id}
               className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800"
             >
               {i + 1}
               <Image src={coin.image} width={40} height={40} alt="Coin logo" />
-              <Link href={`coin/${coin.id}`}> {coin.name}</Link>
-              {coin.current_price}
-              {coin.price_change_percentage_1h_in_currency}
-              {coin.price_change_percentage_24h_in_currency}
-              {coin.price_change_percentage_7d_in_currency}
+              <Link href={`/coin/${coin.id}`}>
+                {coin.name} ({coin.symbol.toUpperCase()})
+              </Link>
+              {currency?.unit}
+              {formatAmount(convertAmount(coin.current_price, currency?.value))}
+              {coin.price_change_percentage_1h_in_currency.toFixed(2)}%
+              {coin.price_change_percentage_24h_in_currency.toFixed(2)}%
+              {coin.price_change_percentage_7d_in_currency.toFixed(2)}%
+              {coin.market_cap_change_24h}
               {coin.market_cap}
               {coin.circulating_supply}
               {coin.total_supply}

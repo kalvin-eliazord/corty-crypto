@@ -1,9 +1,13 @@
+import { CurrencyInfo } from "@/features/convertor/types/currency";
+
 export type FetchStatus = "pending" | "fulfilled" | "rejected";
 
-export type CoinsState = {
+export type AllCoinsProps = {
   allCoins: CoinType[];
   status: FetchStatus;
   error: string | undefined | null;
+  currencyInfo: CurrencyInfo | null;
+  coin?: CoinType;
 };
 
 export type CoinType = {
@@ -30,12 +34,10 @@ export type CoinType = {
   price_change_percentage_7d_in_currency: number;
 };
 
-export type CoinsSliderProps = {
+export type CoinsSliderProps = AllCoinsProps & {
   coinId: string;
   setCoinId(coinId: string): void;
-  allCoins: CoinType[];
-  status: FetchStatus;
-  error: string | null | undefined;
+  currencyInfo: CurrencyInfo;
 };
 
 export type TimeAndAmount = [number, number];
@@ -44,17 +46,22 @@ export type MarketCharts = {
   prices: TimeAndAmount[];
   market_caps: TimeAndAmount[];
   total_volumes: TimeAndAmount[];
+  currencyInfo: CurrencyInfo;
 };
 
 export type ChartProps = {
   data: MarketCharts | undefined;
   status: string;
   error: string | null | undefined;
+  currencyInfo: CurrencyInfo;
+  coin?: CoinType;
 };
 
 export type HeaderProps = {
-  name: string;
+  name: string | undefined;
   marketChart: MarketChart;
+  currencyInfo: CurrencyInfo;
+  coin?: CoinType;
 };
 
 export type MarketChart = {
