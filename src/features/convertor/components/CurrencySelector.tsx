@@ -22,8 +22,6 @@ import {
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
 
-const currencies = ["usd", "gbp", "eur", "btc", "eth"];
-
 type Rates = {
   rates: {
     [key: string]: CurrencyInfo;
@@ -32,7 +30,7 @@ type Rates = {
 
 export const CurrencySelector = () => {
   const dispatch = useDispatch();
-  const { data, status, error } = useFetchCoinData<Rates>("/exchange_rates");
+  const { data, status } = useFetchCoinData<Rates>("/exchange_rates");
   const { currencyCode } = useSelector((state: RootState) => state.currency);
 
   useEffect(() => {
@@ -43,10 +41,6 @@ export const CurrencySelector = () => {
       console.warn(`Currency ${currencyCode} not found in exchange rates.`);
     }
   }, [currencyCode, dispatch, data]);
-
-  if (status === "rejected" && error) {
-    return <div>Error: {error}</div>;
-  }
 
   if (status === "pending") {
     return <div>CurrencySelector loading...</div>;
@@ -59,7 +53,7 @@ export const CurrencySelector = () => {
           variant="outline"
           role="combobox"
           aria-expanded="false"
-          className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 w-[200px] justify-between"
+          className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 w-[35%] justify-between"
         >
           <div className="flex-1">{currencyCode.toUpperCase()}</div>
           <ChevronsUpDown className="opacity-50" />
@@ -71,23 +65,24 @@ export const CurrencySelector = () => {
           <CommandList>
             <CommandEmpty>No currency found.</CommandEmpty>
             <CommandGroup>
-              {currencies.map((currency) => (
-                <CommandItem
-                  key={currency}
-                  value={currency}
-                  onSelect={(selectedValue) => {
-                    dispatch(setCurrencyCode(selectedValue.toLowerCase()));
-                  }}
-                >
-                  {currency.toUpperCase()}
-                  <Check
-                    className={cn(
-                      "ml-auto",
-                      currencyCode === currency ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
+              {data &&
+                Object.keys(data.rates).map((currency) => (
+                  <CommandItem
+                    key={currency}
+                    value={currency}
+                    onSelect={(selectedValue) => {
+                      dispatch(setCurrencyCode(selectedValue.toLowerCase()));
+                    }}
+                  >
+                    {currency.toUpperCase()}
+                    <Check
+                      className={cn(
+                        "ml-auto",
+                        currencyCode === currency ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
             </CommandGroup>
           </CommandList>
         </Command>
