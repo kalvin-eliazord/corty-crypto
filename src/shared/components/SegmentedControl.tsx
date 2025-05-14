@@ -11,14 +11,14 @@ export const SegmentedControl = () => {
   const [activeOption, setActiveOption] = useState(pages[0].name);
 
   return (
-    <div className={cn("relative flex rounded-full p-1 bg-black/80 text-white")}>
+    <div className={cn("relative flex rounded-full p-1 bg-[#2F1E2B] text-white mr-6")}>
       <div
         className={cn(
-          "absolute top-1 bottom-1 rounded-full bg-white/10 transition-all duration-300 ease-in-out",
+          "absolute top-2 bottom-2 rounded-full bg-black transition-all duration-300 ease-in-out",
           activeOption === pages[0].name
-            ? "left-1"
+            ? "left-2.5"
             : "left-[calc(50%-0.125rem)]",
-          "w-[calc(50%-0.125rem)]"
+          "w-[calc(45%-0.125rem)]"
         )}
       />
 
@@ -28,7 +28,7 @@ export const SegmentedControl = () => {
           onClick={() => setActiveOption(page.name)}
           href={page.path}
           className={cn(
-            "relative z-10 px-6 py-1.5 rounded-full text-sm font-medium transition-colors",
+            "relative z-10 px-6 py-3 rounded-full text-sm font-medium transition-colors",
             activeOption === page.name
               ? ""
               : "hover:text-white/80"
