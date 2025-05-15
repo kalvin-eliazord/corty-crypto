@@ -13,10 +13,13 @@ export default function Home() {
   const { allCoins, status, error } = useSelector(
     (state: RootState) => state.coins
   );
+  const { currencyInfo } = useSelector((state: RootState) => state.currency);
 
   useEffect(() => {
     dispatch(fetchCoinsMarket());
   }, [dispatch]);
+
+  const coin = allCoins.find(coin => coin.id === coinId);
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -27,13 +30,15 @@ export default function Home() {
           error={error}
           setCoinId={setCoinId}
           coinId={coinId}
+          currencyInfo={currencyInfo}
         />
 
-        <Charts coinId={coinId}></Charts>
+        <Charts coinId={coinId} currencyInfo={currencyInfo} coin={coin}></Charts>
         <TableCoins
           allCoins={allCoins}
           status={status}
           error={error}
+          currencyInfo={currencyInfo}
         ></TableCoins>
       </main>
     </div>
