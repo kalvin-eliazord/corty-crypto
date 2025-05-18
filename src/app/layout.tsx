@@ -1,19 +1,15 @@
 "use client";
-import { navbarLinks } from "./configs/navbarLinks";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Navbar } from "@/features/navbar/components/Navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
 });
 
 export default function RootLayout({
@@ -22,19 +18,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <Provider store={store}>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${spaceGrotesk.className} antialiased min-h-screen bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 `}
         >
-          <ul>
-            {navbarLinks.map((link) => (
-              <li key={link.path}>
-                <Link href={link.path}> {link.name}</Link>
-              </li>
-            ))}
-          </ul>
-          {children}
+          <div className="h-full bg-[linear-gradient(to_bottom,transparent_0%,rgba(0,0,0,0.5)_7%,black_100%)]">
+            <ThemeProvider>
+              <Navbar />
+              <div className="items-center sm:p-12">{children}</div>
+            </ThemeProvider>
+          </div>
         </body>
       </Provider>
     </html>
