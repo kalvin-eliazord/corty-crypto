@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CoinsSlider } from "@/features/coins/components/CoinsSlider";
-import { TableCoins } from "@/features/coins/components/TableCoins";
+import { CoinsSlider } from "@/features/slider-coins/components/CoinsSlider";
+import { TableCoins } from "@/features/table-coins/components/TableCoins";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCoinsMarket } from "@/features/coins/coinsSlice";
-import { Charts } from "@/features/coins/components/Charts";
+import { Charts } from "@/features/charts/components/Charts";
+import { fetchCoinsMarket } from "@/shared/coinsSlice";
 
 export default function Home() {
   const [coinId, setCoinId] = useState<string>("bitcoin");
@@ -13,32 +13,32 @@ export default function Home() {
   const { allCoins, status, error } = useSelector(
     (state: RootState) => state.coins
   );
-  const { currency } = useSelector((state: RootState) => state.currency);
+  const { currencyInfo } = useSelector((state: RootState) => state.currency);
 
   useEffect(() => {
     dispatch(fetchCoinsMarket());
   }, [dispatch]);
 
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <CoinsSlider
-          allCoins={allCoins}
-          status={status}
-          error={error}
-          setCoinId={setCoinId}
-          coinId={coinId}
-          currency={currency}
-        />
+  const coin = allCoins.find((coin) => coin.id === coinId);
 
-        <Charts coinId={coinId} currency={currency}></Charts>
-        <TableCoins
-          allCoins={allCoins}
-          status={status}
-          error={error}
-          currency={currency}
-        ></TableCoins>
-      </main>
-    </div>
+  return (
+    <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+      <CoinsSlider
+        allCoins={allCoins}
+        status={status}
+        error={error}
+        setCoinId={setCoinId}
+        coinId={coinId}
+        currencyInfo={currencyInfo}
+      />
+
+      <Charts coinId={coinId} currencyInfo={currencyInfo} coin={coin}></Charts>
+      <TableCoins
+        allCoins={allCoins}
+        status={status}
+        error={error}
+        currencyInfo={currencyInfo}
+      ></TableCoins>
+    </main>
   );
 }

@@ -4,7 +4,7 @@ import "./globals.css";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { Navbar } from "@/shared/components/Navbar";
+import { Navbar } from "@/features/navbar/components/Navbar";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -26,7 +26,7 @@ export default function RootLayout({
           <div className="h-full bg-[linear-gradient(to_bottom,transparent_0%,rgba(0,0,0,0.5)_7%,black_100%)]">
             <ThemeProvider>
               <Navbar />
-              {children}
+              <div className="items-center sm:p-12">{children}</div>
             </ThemeProvider>
           </div>
         </body>
