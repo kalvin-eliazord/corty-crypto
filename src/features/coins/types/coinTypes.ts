@@ -37,27 +37,3 @@ export type CoinsSliderProps = {
   status: FetchStatus;
   error: string | null | undefined;
 };
-
-export type TimeAndAmount = [number, number];
-
-export type MarketCharts = {
-  prices: TimeAndAmount[];
-  market_caps: TimeAndAmount[];
-  total_volumes: TimeAndAmount[];
-};
-
-export type ChartProps = {
-  data: MarketCharts | undefined;
-  status: string;
-  error: string | null | undefined;
-};
-
-export type HeaderProps = {
-  name: string;
-  marketChart: MarketChart;
-};
-
-export type MarketChart = {
-  day: string;
-  amount: number;
-};
