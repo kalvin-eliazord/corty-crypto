@@ -1,9 +1,15 @@
 import { Line, XAxis, AreaChart, Area } from "recharts";
-import { ChartProps } from "../types/coinTypes";
 import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
+import { ChartProps } from "../types/charts";
 
-export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
+export const PriceChart: React.FC<ChartProps> = ({
+  data,
+  status,
+  error,
+  currencyInfo,
+  coin,
+}) => {
   if (status === "rejected" && error) {
     return <>Error : {error}</>;
   }
@@ -18,8 +24,10 @@ export const PriceChart: React.FC<ChartProps> = ({ data, status, error }) => {
     <div>
       {prices && (
         <HeaderChart
-          name={"Price"}
+          name={coin?.symbol.toUpperCase()}
           marketChart={prices[prices.length - 1]}
+          currencyInfo={currencyInfo}
+          coin={coin}
         ></HeaderChart>
       )}
 
