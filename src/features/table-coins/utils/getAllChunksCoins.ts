@@ -1,4 +1,4 @@
-import { CoinType } from "../types/coinTypes";
+import { CoinType } from "../../coins/types/coinTypes";
 
 export const getAllChunksCoins = (allCoins: CoinType[]): CoinType[][] => {
   if (!allCoins || allCoins.length < 1) return [];
