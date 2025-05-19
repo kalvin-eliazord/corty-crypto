@@ -10,7 +10,7 @@ export const MarketItem = ({
   isVerticalHeaderLine,
 }: MarketItemProps) => {
   return (
-    <li className="flex items-center gap-2">
+    <div className="flex items-center gap-2">
       {Icon && <Icon className="icon" />}
       {name && <span className="label text-gray-200">{name}</span>}
 
@@ -30,6 +30,6 @@ export const MarketItem = ({
         </div>
       )}
       {isVerticalHeaderLine && <VerticalHeaderLine />}
-    </li>
+    </div>
   );
 };
