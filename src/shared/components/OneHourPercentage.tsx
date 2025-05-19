@@ -19,7 +19,7 @@ export const OneHourPercentage: React.FC<OneHourPercentageProps> = ({
   return (
     <div className="flex items-center gap-2">
       {percentage > 0 ? <GreenTriangle /> : <RedTriangle />}
-      <span className={percentage > 0 ? "text-green-500" : "text-red-500"}>
+      <span className={percentage > 0 ? "text-[#00F5E4]" : "text-[#FF0061]"}>
         {Math.abs(percentage).toFixed(2)}%
       </span>
     </div>
