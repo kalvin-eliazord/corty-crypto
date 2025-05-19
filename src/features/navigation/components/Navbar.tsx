@@ -1,5 +1,5 @@
 import { SearchCoins } from "@/shared/components/SearchCoins";
-import { CurrencySelector } from "@/features/convertor/components/CurrencySelector";
+import { CurrencySelector } from "@/features/currency-selector/components/CurrencySelector";
 import { MarketCoins } from "@/features/coins/components/MarketCoins";
 import { SegmentedControl } from "@/shared/components/SegmentedControl";
 import Logo from "@/assets/logo.svg";
