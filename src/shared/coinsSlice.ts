@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchCoinData } from "../../shared/services/fetchCoinData";
-import { CoinsState, CoinType, FetchStatus } from "./types/coinTypes";
+import { fetchCoinData } from "./services/fetchCoinData";
+import { AllCoinsProps, CoinType, FetchStatus } from "./types/coinTypes";
 import getError from "@/shared/utils/getError";
 
 export const fetchCoinsMarket = createAsyncThunk<
@@ -11,7 +11,7 @@ export const fetchCoinsMarket = createAsyncThunk<
 >("coins/fetchCoinsMarket", async (_, { rejectWithValue }) => {
   try {
     const { data } = await fetchCoinData(
-      "/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
+      "/coins/markets?vs_currency=btc&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d"
     );
     return data;
   } catch (err) {
@@ -21,10 +21,11 @@ export const fetchCoinsMarket = createAsyncThunk<
   }
 });
 
-const initialState: CoinsState = {
+const initialState: AllCoinsProps = {
   allCoins: [],
   status: "pending" as FetchStatus,
   error: null,
+  currencyInfo: null,
 };
 
 const coinsSlice = createSlice({

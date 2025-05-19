@@ -1,11 +1,11 @@
-import coinsSlice from "@/features/coins/coinsSlice";
 import currencySlice from "@/features/currency-selector/currencySlice";
+import coinsSlice from "@/shared/coinsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
   reducer: {
     coins: coinsSlice,
-    currency: currencySlice ,
+    currency: currencySlice,
   },
 });
 
