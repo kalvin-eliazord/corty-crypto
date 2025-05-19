@@ -46,8 +46,8 @@ export const CoinsSlider: React.FC<CoinsSliderProps> = ({
                 <div
                   className={
                     coinId === coin.id
-                      ? "flex items-center gap-3 px-4 py-2 bg-gray-900 rounded-lg hover:cursor-pointer"
-                      : "flex items-center gap-3 px-4 py-2 bg-gray-800 rounded-lg hover:cursor-pointer"
+                      ? "flex items-center gap-3 px-4 py-2 bg-[#1F1D22] rounded-lg hover:cursor-pointer"
+                      : "flex items-center gap-3 px-4 py-2 bg-[#1F1D2280] rounded-lg hover:cursor-pointer"
                   }
                   onClick={() => setCoinId(coin.id)}
                 >
@@ -63,7 +63,7 @@ export const CoinsSlider: React.FC<CoinsSliderProps> = ({
                       <span className="text-gray-200 font-medium">
                         {coin.name} ({coin.symbol.toUpperCase()})
                       </span>
-                      <div className="flex  gap-2 text-gray-400">
+                      <div className="flex gap-2 text-gray-400">
                         {formatAmount(
                           convertAmount(coin.current_price, currencyInfo?.value)
                         )}{" "}
