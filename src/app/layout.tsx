@@ -3,8 +3,8 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Provider } from "react-redux";
 import { store } from "@/store";
-import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Navbar } from "@/features/navbar/components/Navbar";
+import { ThemeProvider } from "next-themes";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
