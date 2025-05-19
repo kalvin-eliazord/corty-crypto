@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { fetchCoinData } from "../../../shared/services/fetchCoinData";
-import { FetchStatus, MarketCharts } from "../types/coinTypes";
 import getError from "@/shared/utils/getError";
+import { MarketCharts } from "../types/charts";
+import { FetchStatus } from "@/features/coins/types/coinTypes";
 
-export const useCoinChart = (coinId: string) => {
+export const useCoinCharts = (coinId: string) => {
   const [status, setStatus] = useState<FetchStatus>("pending");
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<MarketCharts>();
@@ -14,7 +15,7 @@ export const useCoinChart = (coinId: string) => {
         const { data } = await fetchCoinData(
           "/coins/" +
             coinId +
-            "/market_chart?vs_currency=usd&days=180&interval=daily"
+            "/market_chart?vs_currency=btc&days=180&interval=daily"
         );
         setData(data);
         setStatus("fulfilled");
