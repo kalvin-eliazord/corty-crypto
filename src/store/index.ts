@@ -1,4 +1,4 @@
-import coinsSlice from "@/features/coins/coinsSlice";
+import coinsSlice from "@/shared/coinsSlice";
 import currencySlice from "@/features/convertor/currencySlice";
 import { configureStore } from "@reduxjs/toolkit";
 
