@@ -27,14 +27,16 @@ export const HeaderChart: React.FC<HeaderProps> = ({
       {coin ? (
         <div className="flex gap-4">
           <Image src={coin.image} width={32} height={32} alt={"coin logo"} />
-          <span className="text-gray-300">{name}</span>
+          <span className="text-[#B9B8BB] text-lg">{name}</span>
         </div>
       ) : (
-        <div> {name} </div>
+        <h1 className="text-[#B9B8BB] text-lg"> {name} </h1>
       )}
 
-      <div>{`${currencyInfo.unit} ${formatAmountUnit(convertedAmount)} `}</div>
-      <div>{todayDate}</div>
+      <h2 className="font-medium text-2xl">{`${
+        currencyInfo.unit
+      } ${formatAmountUnit(convertedAmount)} `}</h2>
+      <p className="text-[#B9B8BB]">{todayDate}</p>
     </div>
   );
 };
