@@ -18,7 +18,7 @@ export const Charts: React.FC<ChartsProps> = ({
   const { data, status, error } = useCoinCharts(coinId);
   return (
     <div className="flex flex-col flex-1 md:flex-row gap-8  w-full">
-      <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border border-[#584C55] ">
+      <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r border-[#584C55] ">
         <PriceChart
           data={data}
           status={status}
@@ -28,7 +28,7 @@ export const Charts: React.FC<ChartsProps> = ({
         />
       </div>
 
-      <div className="flex-1 dark:bg-[#1F1D2280] rounded-xl p-5 border border-[#584C55] ">
+      <div className="flex-1 dark:bg-[#1F1D2280] rounded-xl p-5 border-t border-l border-r border-[#584C55] ">
         <VolumeChart
           data={data}
           status={status}

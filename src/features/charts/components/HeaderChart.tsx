@@ -25,12 +25,12 @@ export const HeaderChart: React.FC<HeaderProps> = ({
   return (
     <div>
       {coin ? (
-        <div className="flex gap-4">
+        <div className="flex gap-4 mb-6">
           <Image src={coin.image} width={32} height={32} alt={"coin logo"} />
-          <span className="text-[#B9B8BB] text-lg">{name}</span>
+          <h1 className="text-[#B9B8BB] text-xl ">{name}</h1>
         </div>
       ) : (
-        <h1 className="text-[#B9B8BB] text-lg"> {name} </h1>
+        <h1 className="text-[#B9B8BB] text-xl mb-7.5"> {name} </h1>
       )}
 
       <h2 className="font-medium text-2xl">{`${
