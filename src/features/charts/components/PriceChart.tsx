@@ -20,7 +20,7 @@ export const PriceChart: React.FC<ChartProps> = ({
   }
 
   const prices = data && formatMarketChart(data.prices);
-  
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       {prices && (
@@ -45,7 +45,9 @@ export const PriceChart: React.FC<ChartProps> = ({
           </defs>
           <XAxis
             dataKey="day"
-            stroke="#8884d8"
+            stroke="#D0D0D1"
+            axisLine={false}
+            tickLine={false}
           />
           <Tooltip
             cursor={{ fill: "transparent" }}
@@ -61,7 +63,7 @@ export const PriceChart: React.FC<ChartProps> = ({
             stroke="#FF6B6B"
             fillOpacity={1}
             fill="url(#amountGradient)"
-            strokeWidth={3}
+            strokeWidth={7}
           />
         </AreaChart>
       </ResponsiveContainer>
