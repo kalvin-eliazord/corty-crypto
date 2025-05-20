@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <Provider store={store}>
         <body
-          className={`${spaceGrotesk.className} antialiased min-h-screen bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 `}
+          className={`${spaceGrotesk.className} antialiased min-h-screen bg-gradient-to-r from-orange-800 via-purple-900 via-blue-900 to-indigo-900 `}
         >
           <div className="h-full bg-[linear-gradient(to_bottom,transparent_0%,rgba(0,0,0,0.5)_7%,black_100%)]">
             <ThemeProvider>

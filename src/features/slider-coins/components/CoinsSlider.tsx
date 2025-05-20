@@ -46,7 +46,7 @@ export const CoinsSlider: React.FC<CoinsSliderProps> = ({
                 <div
                   className={
                     coinId === coin.id
-                      ? "flex items-center gap-3 px-4 py-2 bg-[#1F1D22] rounded-lg hover:cursor-pointer"
+                      ? "flex items-center gap-3 px-4 py-2 bg-[#1E1D23] rounded-lg hover:cursor-pointer"
                       : "flex items-center gap-3 px-4 py-2 bg-[#1F1D2280] rounded-lg hover:cursor-pointer"
                   }
                   onClick={() => setCoinId(coin.id)}
