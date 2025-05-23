@@ -2,9 +2,21 @@ import Link from "next/link";
 import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState } from "react";
-import { convertAmount } from "@/shared/utils/convertAmount";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Area, AreaChart, ResponsiveContainer } from "recharts";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { getSparklineStrokeColor } from "../utils/getSparklineStrokeColor";
+import { Progress } from "@/components/ui/progress";
 import { formatAmount } from "@/shared/utils/formatAmount";
-import { AllCoinsProps } from "@/shared/types/coinTypes";
+import { AllCoinsProps } from "@/shared/types/coins";
 import { useSortedCoins } from "../hooks/useSortedCoins";
 import { useChunks } from "../hooks/useChunk";
 import { OneHourPercentage } from "@/shared/components/OneHourPercentage";
@@ -25,7 +37,7 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
   allCoins,
   status,
   error,
-  currencyInfo,
+  currency,
 }) => {
   const [sortType, setSortType] = useState<string>("default");
   const [reverse, setReverse] = useState<boolean>(false);
@@ -42,73 +54,179 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
     }
   };
 
-  if (status === "rejected" && error) {
-    return <>Error : {error}</>;
+  if (status === "rejected") {
+    return (
+      <div className="dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r w-full text-center">
+        {" "}
+        Table Coins fetching rejected : {error}
+      </div>
+    );
   }
 
   if (status === "pending") {
-    return <>isLoading</>;
+    return (
+      <div className="dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r w-full">
+        <Skeleton className="h-full w-full rounded" />
+      </div>
+    );
   }
 
+  console.log(
+    "allcoinPrice: ",
+    displayedCoins[0]?.sparkline_in_7d.price.slice(-7)
+  );
   return (
-    <ul className=" w-full">
-      <div className="flex gap-x-4 p-3 text-gray-300">
-        {tableHeaders.map((header, i) => (
-          <li
-            key={header}
-            className={i > 0 && i < 6 ? "font-bold hover:cursor-pointer" : ""}
-            onClick={() => handleSort(header)}
-          >
-            {header}
-          </li>
-        ))}
-      </div>
-
+    <div className="w-full rounded-xl overflow-hidden ">
       <InfiniteScroll
         dataLength={displayedCoins.length}
         next={loadNextChunk}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        loader={
+          <Skeleton className="h-full w-full rounded text-center">
+            {" "}
+            Loading..{" "}
+          </Skeleton>
+        }
+        scrollableTarget="scrollable-table"
       >
-        {displayedCoins.map((coin, i) => (
-          <li
-            key={coin.id}
-            className={
-              i === 0
-                ? "flex gap-4 rounded-t-xl border-t p-4 dark:bg-[#1E1E26] mb-[2px]"
-                : "flex gap-4 rounded p-4 dark:bg-[#1E1E26] mb-[2px] "
-            }
-          >
-            <p className="text-gray-500 font-medium pr-2">{i + 1}</p>
-            <Image
-              src={coin.image}
-              width={32}
-              height={32}
-              alt={`${coin.id} logo`}
-            />
-            <Link href={`/coin/${coin.id}`}>
-              {coin.name} ({coin.symbol.toUpperCase()})
-            </Link>
-            {currencyInfo?.unit}
-            {formatAmount(
-              convertAmount(coin.current_price, currencyInfo?.value)
-            )}
-            <OneHourPercentage
-              percentage={coin.price_change_percentage_1h_in_currency}
-            />
-            <OneHourPercentage
-              percentage={coin.price_change_percentage_24h_in_currency}
-            />
-            <OneHourPercentage
-              percentage={coin.price_change_percentage_7d_in_currency}
-            />
-            {coin.market_cap_change_24h}
-            {coin.market_cap}
-            {coin.circulating_supply}
-            {coin.total_supply}
-          </li>
-        ))}
+        <Table className=" overflow-hidden ">
+          <TableHeader>
+            <TableRow>
+              {tableHeaders.map((header) => (
+                <TableHead
+                  key={header}
+                  className="text-[#B9B8BB]"
+                  onClick={() => handleSort(header)}
+                >
+                  <span className="hover:cursor-pointer"> {header}</span>
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody className="dark:bg-[#1F1D2280]">
+            {displayedCoins.map((coin, i) => (
+              <TableRow key={coin.id}>
+                <TableCell className="text-[#B9B8BB]">{i + 1}</TableCell>
+                <TableCell className="flex items-center gap-2">
+                  <Link
+                    href={`/coin/${coin.id}`}
+                    className="flex gap-2 font-medium  items-center"
+                  >
+                    <Image
+                      src={coin.image}
+                      width={20}
+                      height={20}
+                      alt={`${coin.id} logo`}
+                    />
+                    {coin.name} ({coin.symbol.toUpperCase()})
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  {currency?.symbol} {formatAmount(coin.current_price)}
+                </TableCell>
+                <TableCell>
+                  <OneHourPercentage
+                    percentage={coin.price_change_percentage_1h_in_currency}
+                    color={
+                      coin.price_change_percentage_1h_in_currency > 0
+                        ? "#43FFC7"
+                        : "#FF5252"
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <OneHourPercentage
+                    percentage={coin.price_change_percentage_24h_in_currency}
+                    color={
+                      coin.price_change_percentage_24h_in_currency > 0
+                        ? "#43FFC7"
+                        : "#FF5252"
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <OneHourPercentage
+                    percentage={coin.price_change_percentage_7d_in_currency}
+                    color={
+                      coin.price_change_percentage_7d_in_currency > 0
+                        ? "#43FFC7"
+                        : "#FF5252"
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <Progress
+                    indicatorColor={
+                      coin.market_cap_change_24h > 0 ? "#1CB385" : "#FF5252"
+                    }
+                    value={(coin.total_volume / coin.market_cap) * 100}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Progress
+                    indicatorColor={
+                      coin.market_cap_change_24h > 0 ? "#1CB385" : "#FF5252"
+                    }
+                    value={(coin.total_volume / coin.market_cap) * 100}
+                  />
+                </TableCell>
+
+                <TableCell>
+                  <AspectRatio ratio={6 / 1}>
+                    <ResponsiveContainer
+                      width="100%"
+                      height={30}
+                      className="items-center"
+                    >
+                      <AreaChart
+                        data={coin.sparkline_in_7d.price.map((price) => ({
+                          price,
+                        }))}
+                      >
+                        <defs>
+                          <linearGradient
+                            id={`pricesGradient${coin.id}`}
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor={getSparklineStrokeColor(
+                                coin.sparkline_in_7d.price
+                              )}
+                              stopOpacity={0.1}
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor={getSparklineStrokeColor(
+                                coin.sparkline_in_7d.price
+                              )}
+                              stopOpacity={0.05}
+                            />
+                          </linearGradient>
+                        </defs>
+
+                        <Area
+                          type="monotone"
+                          dataKey="price"
+                          stroke={getSparklineStrokeColor(
+                            coin.sparkline_in_7d.price
+                          )}
+                          fillOpacity={1}
+                          fill={`url(#pricesGradient${coin.id})`}
+                          strokeWidth={3}
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </AspectRatio>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </InfiniteScroll>
-    </ul>
+    </div>
   );
 };
