@@ -1,13 +1,16 @@
-import { CurrencyInfo } from "@/features/currency-selector/types/currencyInfo";
-
-export type FetchStatus = "pending" | "fulfilled" | "rejected";
-
 export type AllCoinsProps = {
   allCoins: CoinType[];
   status: FetchStatus;
   error: string | undefined | null;
-  currencyInfo: CurrencyInfo | null;
   coin?: CoinType;
+  currency: Currency | null;
+};
+
+export type FetchStatus = "pending" | "fulfilled" | "rejected";
+
+export type Currency = {
+  symbol: string;
+  code: string;
 };
 
 export type CoinType = {

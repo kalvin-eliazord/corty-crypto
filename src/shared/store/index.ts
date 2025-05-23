@@ -1,5 +1,5 @@
-import currencySlice from "@/features/currency-selector/currencySlice";
-import coinsSlice from "@/shared/coinsSlice";
+import currencySlice from "@/shared/store/currencySlice";
+import coinsSlice from "@/shared/store/coinsSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({

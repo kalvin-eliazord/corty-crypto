@@ -1,7 +1,7 @@
 import { fetchCoinData } from "@/shared/services/fetchCoinData";
 import getError from "@/shared/utils/getError";
 import { useState, useEffect } from "react";
-import { FetchStatus } from "../types/coinTypes";
+import { FetchStatus } from "../types/coins";
 
 export const useFetchCoinData = <T>(url: string) => {
   const [status, setStatus] = useState<FetchStatus>("pending");

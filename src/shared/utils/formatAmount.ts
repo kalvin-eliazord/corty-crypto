@@ -6,15 +6,26 @@ export const formatAmountUnit = (amount: number | null): string => {
 
   const absAmount = Math.abs(amount);
 
+  let unit = "";
+  let scaledAmount = 0;
+
   if (absAmount >= 1_000_000_000) {
-    return `${(amount / 1_000_000_000).toFixed(3)} bln`;
+    scaledAmount = amount / 1_000_000_000;
+    unit = "bln";
+  } else if (absAmount >= 1_000_000) {
+    scaledAmount = amount / 1_000_000;
+    unit = "mln";
+  } else if (absAmount >= 1_000) {
+    scaledAmount = amount / 1_000;
+    unit = "k";
+  } else {
+    scaledAmount = amount;
+    unit = "";
   }
 
-  if (absAmount >= 1_000_000) {
-    return `${(amount / 1_000_000).toFixed(3)} mln`;
-  }
-
-  return amount.toFixed(3);
+  return (
+    new Intl.NumberFormat(navigator.language).format(scaledAmount) + " " + unit
+  );
 };
 
 export const formatAmount = (amount: number | null): string => {
@@ -23,15 +34,5 @@ export const formatAmount = (amount: number | null): string => {
     return "0.00";
   }
 
-  const absAmount = Math.abs(amount);
-
-  if (absAmount >= 1_000_000_000) {
-    return `${(amount / 1_000_000_000).toFixed(3)} `;
-  }
-
-  if (absAmount >= 1_000_000) {
-    return `${(amount / 1_000_000).toFixed(3)} `;
-  }
-
-  return amount.toFixed(3);
+  return new Intl.NumberFormat(navigator.language).format(amount);
 };
