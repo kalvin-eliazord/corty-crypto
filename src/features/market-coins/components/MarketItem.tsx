@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { ProgressBar } from "@/shared/components/ProgressBar";
 import { MarketItemProps } from "../types/marketInfo";
 import VerticalHeaderLine from "@/assets/vertical-header-line.svg";
 
@@ -14,19 +14,12 @@ export const MarketItem = ({
       {Icon && <Icon className="icon" />}
       {name && <span className="label text-gray-200">{name}</span>}
 
-      <span className={progressBarColor ? "value" : "mr-6 value"}>{data} </span>
+      <span className={progressBarColor ? "value" : "mr-6 value text-nowrap"}>
+        {data}
+      </span>
       {progressBarColor && (
-        <div className="relative flex items-center gap-1">
           <div className="mr-5 h-2 w-24 bg-gray-600 rounded-full overflow-hidden">
-            <div
-              className={clsx("h-full", {
-                "bg-blue-400": progressBarColor === "blue",
-                "bg-orange-400": progressBarColor === "orange",
-                "bg-white": progressBarColor === "white",
-              })}
-              style={{ width: data }}
-            />
-          </div>
+          {progressBarColor && <ProgressBar progressBarColor={progressBarColor} data={data} />}
         </div>
       )}
       {isVerticalHeaderLine && <VerticalHeaderLine />}

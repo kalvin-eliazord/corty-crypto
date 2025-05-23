@@ -1,6 +1,6 @@
 import { useFetchCoinData } from "@/shared/hooks/useFetchCoinData";
 import { formatTrillionAmount } from "../utils/formatTrillionAmount";
-import { RootState } from "@/store";
+import { RootState } from "@/shared/store";
 import { useSelector } from "react-redux";
 import { MarketInfo } from "../types/marketInfo";
 import { selectMarketData } from "../utils/selectMarketData";
@@ -17,9 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const MarketCoins = () => {
   const { data, status } = useFetchCoinData<MarketInfo>("/global");
-  const { currencyCode, currencyInfo } = useSelector(
-    (state: RootState) => state.currency
-  );
+  const { code, symbol } = useSelector((state: RootState) => state.currency);
 
   const marketheaders = useMemo(() => {
     const {
@@ -29,7 +27,7 @@ export const MarketCoins = () => {
       totalVolume,
       btcMarketCapPercentage,
       ethMarketCapPercentage,
-    } = selectMarketData(data, currencyCode);
+    } = selectMarketData(data, code);
 
     return [
       { Icon: FlashCircle, data: activeCryptos.toString(), name: "Coins" },
@@ -39,7 +37,7 @@ export const MarketCoins = () => {
         data: formatTrillionAmount(totalMarketCap),
       },
       {
-        data: `${currencyInfo.unit}${formatNumberWithUnits(totalVolume)}`,
+        data: `${symbol} ${formatNumberWithUnits(totalVolume)}`,
       },
       {
         Icon: Btc,
@@ -52,14 +50,24 @@ export const MarketCoins = () => {
         progressBarColor: "blue",
       },
     ];
-  }, [data, currencyCode, currencyInfo]);
+  }, [data, code, symbol]);
 
   if (status === "pending") {
-    return <Skeleton className="h-12 w-full rounded-full" />;
+    return (
+      <div className="w-full  ">
+        <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 p-4 border-t border-b border-black-600">
+          {Array.from({ length: 6 }, (_, i) => (
+            <li className={i === 0 ? "ml-10" : ""} key={i}>
+              <Skeleton className="h-7 w-20 rounded" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="w-full  ">
       <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 p-4 border-t border-b border-black-600">
         {marketheaders.map((marketHeader, i) => (
           <li key={marketHeader.data} className={i === 0 ? "ml-10" : ""}>
