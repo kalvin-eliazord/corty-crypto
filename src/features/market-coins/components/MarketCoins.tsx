@@ -57,7 +57,7 @@ export const MarketCoins = () => {
       <div className="w-full  ">
         <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 p-4 border-t border-b border-black-600">
           {Array.from({ length: 6 }, (_, i) => (
-            <li className={i === 0 ? "ml-10" : ""} key={i}>
+            <li className="first:ml-10" key={i}>
               <Skeleton className="h-7 w-20 rounded" />
             </li>
           ))}
@@ -70,7 +70,7 @@ export const MarketCoins = () => {
     <div className="w-full  ">
       <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 p-4 border-t border-b border-black-600">
         {marketheaders.map((marketHeader, i) => (
-          <li key={marketHeader.data} className={i === 0 ? "ml-10" : ""}>
+          <li key={marketHeader.data} className="first:ml-10">
             <MarketItem
               Icon={marketHeader.Icon}
               data={marketHeader.data}
