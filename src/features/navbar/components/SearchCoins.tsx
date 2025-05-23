@@ -1,22 +1,16 @@
-import { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store";
+import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/shared/store";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { fetchCoinsMarket } from "../../../shared/coinsSlice";
-import { CoinType } from "../../../shared/types/coinTypes";
+import { CoinType } from "../../../shared/types/coins";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
 
 export const SearchCoins = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const { allCoins, status } = useSelector((state: RootState) => state.coins);
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    dispatch(fetchCoinsMarket());
-  }, [dispatch]);
-
   const [coinSearched, setCoinSearched] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -27,36 +21,40 @@ export const SearchCoins = () => {
     coin.name.toLowerCase().startsWith(coinSearched.toLowerCase())
   );
 
+  const handleOnBlurInput = () => {
+    setTimeout(() => setCoinSearched(""), 100);
+  };
+
   if (status === "pending") {
-    return <div className="text-center text-gray-400">Loading...</div>;
+    return <Skeleton className="h-10 w-full rounded" />;
   }
 
   return (
     <div className="relative w-full max-w-xs mx-auto">
-      <div className="flex items-center gap-1.5 bg-gray-900/60 rounded-lg px-2 py-1.5 w-full">
-        <Search className="text-gray-400 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-        <input
+      <div className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 w-full">
+        <Search className="text-white h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+        <Input
           ref={inputRef}
-          className="w-full bg-transparent outline-none text-white placeholder-gray-400 text-sm sm:text-base focus:ring-1 focus:ring-blue-500 rounded flex-grow min-w-0"
+          onBlur={handleOnBlurInput}
+          type="text"
+          placeholder="Search coins"
           value={coinSearched}
           onChange={handleInputChange}
-          placeholder="Search coins..."
-          aria-label="Search coins"
         />
       </div>
 
       {coinSearched.length > 0 && (
-        <div className="absolute top-full left-0 w-full bg-gray-800 p-1.5 sm:p-2 rounded-lg shadow-lg mt-1 z-10 max-h-64 overflow-y-auto">
+        <div className="absolute top-full left-0 w-full bg-[#1E1E26] p-1.5 sm:p-2 rounded-lg shadow-lg mt-1 z-10 max-h-64 overflow-y-auto">
           <ul>
             {filteredCoins.length > 0 ? (
               filteredCoins.map((coin: CoinType) => (
                 <li
                   key={coin.id}
-                  className="cursor-pointer hover:bg-gray-700 px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-md text-sm sm:text-base"
+                  className="cursor-pointer hover:bg-[#262626] px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-md text-sm sm:text-base"
                 >
                   <Link
                     href={`/coin/${coin.id}`}
-                    className="block w-full text-white truncate"
+                    className="block w-full text-white truncate text-sm"
                     onClick={() => setCoinSearched("")}
                     title={coin.name}
                   >

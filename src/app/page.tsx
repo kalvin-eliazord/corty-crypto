@@ -2,10 +2,18 @@
 import { useEffect, useState } from "react";
 import { CoinsSlider } from "@/features/slider-coins/components/CoinsSlider";
 import { TableCoins } from "@/features/table-coins/components/TableCoins";
-import { AppDispatch, RootState } from "@/store";
+import { AppDispatch, RootState } from "@/shared/store";
 import { useDispatch, useSelector } from "react-redux";
 import { Charts } from "@/features/charts/components/Charts";
-import { fetchCoinsMarket } from "@/shared/coinsSlice";
+import { fetchCoinsMarket } from "@/shared/store/coinsSlice";
+
+export const useFetchCoinsMarket = (currencyCode: string) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchCoinsMarket(currencyCode));
+  }, [dispatch, currencyCode]);
+};
 
 export default function Home() {
   const [coinId, setCoinId] = useState<string>("bitcoin");
@@ -13,11 +21,11 @@ export default function Home() {
   const { allCoins, status, error } = useSelector(
     (state: RootState) => state.coins
   );
-  const { currencyInfo } = useSelector((state: RootState) => state.currency);
+  const currency = useSelector((state: RootState) => state.currency);
 
   useEffect(() => {
-    dispatch(fetchCoinsMarket());
-  }, [dispatch]);
+    dispatch(fetchCoinsMarket(currency.code));
+  }, [dispatch, currency.code]);
 
   const coin = allCoins.find((coin) => coin.id === coinId);
 
@@ -29,16 +37,16 @@ export default function Home() {
         error={error}
         setCoinId={setCoinId}
         coinId={coinId}
-        currencyInfo={currencyInfo}
+        currency={currency}
       />
 
-      <Charts coinId={coinId} currencyInfo={currencyInfo} coin={coin}></Charts>
+      <Charts coinId={coinId} currency={currency} coin={coin} />
       <TableCoins
         allCoins={allCoins}
         status={status}
         error={error}
-        currencyInfo={currencyInfo}
-      ></TableCoins>
+        currency={currency}
+      />
     </main>
   );
 }

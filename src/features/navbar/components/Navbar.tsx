@@ -9,7 +9,8 @@ export const Navbar = () => {
   return (
     <>
       <div className="bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 p-4 ">
-        <div className="mx-auto flex items-center justify-between md:px-10 ">
+        <div className="mx-auto flex justify-between md:px-10 ">
+          
           <div className="flex items-center gap-6">
             <Logo width={48} height={48} className="object-contain" />
             <span className="block">
