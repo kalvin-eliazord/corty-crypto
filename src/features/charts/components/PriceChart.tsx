@@ -6,18 +6,9 @@ import { ChartProps } from "../types/charts";
 
 export const PriceChart: React.FC<ChartProps> = ({
   data,
-  status,
-  error,
-  currencyInfo,
+  currency,
   coin,
 }) => {
-  if (status === "rejected" && error) {
-    return <>Error : {error}</>;
-  }
-
-  if (status === "pending") {
-    return <>isLoading</>;
-  }
 
   const prices = data && formatMarketChart(data.prices);
 
@@ -27,7 +18,7 @@ export const PriceChart: React.FC<ChartProps> = ({
         <HeaderChart
           name={coin?.symbol.toUpperCase()}
           marketChart={prices[prices.length - 1]}
-          currencyInfo={currencyInfo}
+          currency={currency}
           coin={coin}
         />
       )}

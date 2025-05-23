@@ -1,4 +1,4 @@
-import { CoinType, CurrencyInfo } from "@/shared/types/coinTypes";
+import { CoinType, Currency } from "@/shared/types/coins";
 
 export type TimeAndAmount = [number, number];
 
@@ -6,14 +6,12 @@ export type MarketCharts = {
   prices: TimeAndAmount[];
   market_caps: TimeAndAmount[];
   total_volumes: TimeAndAmount[];
-  currencyInfo: CurrencyInfo;
+  currency: Currency;
 };
 
 export type ChartProps = {
   data: MarketCharts | undefined;
-  status: string;
-  error: string | null | undefined;
-  currencyInfo: CurrencyInfo;
+  currency: Currency;
   coin?: CoinType;
 };
 

@@ -1,26 +1,23 @@
 import { format } from "date-fns";
-import { convertAmount } from "@/shared/utils/convertAmount";
 import { formatAmountUnit } from "@/shared/utils/formatAmount";
 import Image from "next/image";
-import { CoinType } from "@/shared/types/coinTypes";
+import { CoinType, Currency } from "@/shared/types/coins";
 import { MarketChart } from "../types/charts";
-import { CurrencyInfo } from "@/features/currency-selector/types/currencyInfo";
 
 type HeaderProps = {
   name: string | undefined;
   marketChart: MarketChart;
-  currencyInfo: CurrencyInfo;
+  currency: Currency;
   coin?: CoinType;
 };
 
 export const HeaderChart: React.FC<HeaderProps> = ({
   name,
   marketChart,
-  currencyInfo,
+  currency,
   coin,
 }) => {
   const todayDate = format(new Date(), "MMMM d, yyyy");
-  const convertedAmount = convertAmount(marketChart.amount, currencyInfo.value);
 
   return (
     <div>
@@ -34,8 +31,9 @@ export const HeaderChart: React.FC<HeaderProps> = ({
       )}
 
       <h2 className="font-medium text-2xl">{`${
-        currencyInfo.unit
-      } ${formatAmountUnit(convertedAmount)} `}</h2>
+        currency.symbol
+      } 
+      ${formatAmountUnit(marketChart.amount)} `}</h2>
       <p className="text-[#B9B8BB]">{todayDate}</p>
     </div>
   );
