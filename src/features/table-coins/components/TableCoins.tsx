@@ -15,11 +15,12 @@ import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { getSparklineStrokeColor } from "../utils/getSparklineStrokeColor";
 import { Progress } from "@/components/ui/progress";
-import { formatAmount } from "@/shared/utils/formatAmount";
+import { formatAmount, formatAmountUnit } from "@/shared/utils/formatAmount";
 import { AllCoinsProps } from "@/shared/types/coins";
 import { useSortedCoins } from "../hooks/useSortedCoins";
 import { useChunks } from "../hooks/useChunk";
 import { OneHourPercentage } from "@/shared/components/OneHourPercentage";
+import { ValuesWithEllipses } from "@/shared/components/ValuesWithEllipses";
 
 export const tableHeaders = [
   "#",
@@ -103,7 +104,7 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody className="dark:bg-[#1F1D2280]">
+          <TableBody className="dark:bg-[#1F1D2280] border-l border-r">
             {displayedCoins.map((coin, i) => (
               <TableRow key={coin.id}>
                 <TableCell className="text-[#B9B8BB]">{i + 1}</TableCell>
@@ -155,6 +156,15 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
                   />
                 </TableCell>
                 <TableCell>
+                  <ValuesWithEllipses
+                    current={
+                      currency?.symbol + formatAmountUnit(coin.total_volume)
+                    }
+                    total={currency?.symbol + formatAmountUnit(coin.market_cap)}
+                    color={
+                      coin.market_cap_change_24h > 0 ? "#1CB385" : "#FF5252"
+                    }
+                  />
                   <Progress
                     indicatorColor={
                       coin.market_cap_change_24h > 0 ? "#1CB385" : "#FF5252"
@@ -162,12 +172,21 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
                     value={(coin.total_volume / coin.market_cap) * 100}
                   />
                 </TableCell>
+
                 <TableCell>
-                  <Progress
-                    indicatorColor={
-                      coin.market_cap_change_24h > 0 ? "#1CB385" : "#FF5252"
+                  <ValuesWithEllipses
+                    current={
+                      currency?.symbol +
+                      formatAmountUnit(coin.circulating_supply)
                     }
-                    value={(coin.total_volume / coin.market_cap) * 100}
+                    total={
+                      currency?.symbol + formatAmountUnit(coin.total_supply)
+                    }
+                    color="#43FFC7"
+                  />
+                  <Progress
+                    indicatorColor="#43FFC7"
+                    value={(coin.circulating_supply / coin.total_supply) * 100}
                   />
                 </TableCell>
 
