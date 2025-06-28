@@ -1,36 +1,61 @@
-import { CurrencyInfo } from "@/features/convertor/types/currency";
-import { useCoinCharts } from "../hooks/useCoinChart";
-import { CoinType } from "@/features/coins/types/coinTypes";
-import { PriceChart } from "./PriceChart";
-import { VolumeChart } from "./VolumeChart";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PriceChart } from "@/features/charts/components/PriceChart";
+import { VolumeChart } from "@/features/charts/components/VolumeChart";
+import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
+import { fetchApiClient } from "@/shared/utils/fetchApiClient";
+import { MarketCharts } from "../types/charts";
+import { AlertError } from "@/shared/components/AlertError";
+import { CoinType, Currency } from "@/shared/types/coinTypes";
 
 type ChartsProps = {
   coinId: string;
-  currencyInfo: CurrencyInfo;
+  currency: Currency;
   coin: CoinType | undefined;
 };
 
-export const Charts: React.FC<ChartsProps> = ({
-  coinId,
-  currencyInfo,
-  coin,
-}) => {
-  const { data, status, error } = useCoinCharts(coinId);
+export const Charts: React.FC<ChartsProps> = ({ coinId, currency, coin }) => {
+  const url =
+    currency.code && coinId
+      ? `coins/${coinId}/market_chart?vs_currency=${currency.code}&days=180&interval=daily`
+      : "";
+
+  const { data, isError, isLoading, error, refetch } = useSmartQuery({
+    queryKey: ["homeCoinChart", url],
+    queryFn: () => fetchApiClient<MarketCharts>(url),
+    enabled: !!url,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col flex-1 md:flex-row gap-8  w-full">
+        <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r  ">
+          <Skeleton className="h-50 w-full rounded" />
+        </div>
+
+        <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r  ">
+          <Skeleton className="h-50 w-full rounded" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex gap-x-4 rounded-xl p-6 shadow-lg dark:bg-slate-800">
-      <PriceChart
-        data={data}
-        status={status}
-        error={error}
-        coin={coin}
-        currencyInfo={currencyInfo}
-      />
-      <VolumeChart
-        data={data}
-        status={status}
-        error={error}
-        currencyInfo={currencyInfo}
-      />
+    <div className="flex flex-col flex-1 md:flex-row gap-8  w-full">
+      <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r border-[#1F1D2280] dark:border-white/10  ">
+        {data && <PriceChart data={data} coin={coin} currency={currency} />}
+      </div>
+
+      <div className="flex-1 dark:bg-[#1F1D2280] rounded-xl p-5 border-t border-l border-r border-[#1F1D2280] dark:border-white/10 ">
+        {data && <VolumeChart data={data} currency={currency} />}
+      </div>
+
+      {isError && (
+        <AlertError
+          errorName={"Charts"}
+          networkError={error}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };
