@@ -1,11 +1,6 @@
-import { useFetchCoinData } from "../../../shared/hooks/useFetchCoinData";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CurrencyInfo } from "../types/currency";
-import { RootState } from "@/store";
-import { setCurrencyCode, setCurrencyInfo } from "../currencySlice";
+import { RootState } from "@/shared/store";
 import { cn } from "@/lib/utils";
-
 import { Check, ChevronsUpDown } from "lucide-react";
 import {
   Popover,
@@ -21,30 +16,45 @@ import {
   CommandEmpty,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
+import Coin from "@/assets/coin.svg";
+import { setCurrency } from "../../../shared/store/currencySlice";
+import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
+import { fetchApiClient } from "@/shared/utils/fetchApiClient";
 
 type Rates = {
   rates: {
-    [key: string]: CurrencyInfo;
+    [key: string]: {
+      unit: string;
+    };
   };
 };
 
 export const CurrencySelector = () => {
   const dispatch = useDispatch();
-  const { data, status } = useFetchCoinData<Rates>("/exchange_rates");
-  const { currencyCode } = useSelector((state: RootState) => state.currency);
 
-  useEffect(() => {
-    const selectedRate = data?.rates[currencyCode];
-    if (selectedRate) {
-      dispatch(setCurrencyInfo(selectedRate));
-    } else {
-      console.warn(`Currency ${currencyCode} not found in exchange rates.`);
+  const { data, isError, isLoading } = useSmartQuery({
+    queryKey: ["exchangeRates"],
+    queryFn: () => fetchApiClient<Rates>("exchange_rates"),
+  });
+
+  const { code } = useSelector((state: RootState) => state.currency);
+
+  const handleSelectCurrency = (selectedCurrencyCode: string) => {
+    const selectedRate = data?.rates[selectedCurrencyCode];
+    if (!selectedRate) {
+      console.warn(
+        `Currency ${selectedCurrencyCode} not found in exchange rates.`
+      );
+      return;
     }
-  }, [currencyCode, dispatch, data]);
 
-  if (status === "pending") {
-    return <div>CurrencySelector loading...</div>;
-  }
+    const newCurrency = {
+      code: selectedCurrencyCode,
+      symbol: selectedRate.unit,
+    };
+
+    dispatch(setCurrency(newCurrency));
+  };
 
   return (
     <Popover>
@@ -53,32 +63,41 @@ export const CurrencySelector = () => {
           variant="outline"
           role="combobox"
           aria-expanded="false"
-          className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 w-[35%] justify-between"
+          className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 justify-between"
         >
-          <div className="flex-1">{currencyCode.toUpperCase()}</div>
-          <ChevronsUpDown className="opacity-50" />
+          <div className="coin-mobile-hide">
+            <Coin />
+          </div>
+          <span>{code.toUpperCase()}</span>
+          <ChevronsUpDown className="opacity-50 size-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search currency..." />
+          <CommandInput placeholder="Search .." />
           <CommandList>
-            <CommandEmpty>No currency found.</CommandEmpty>
+            <CommandEmpty>
+              {isLoading
+                ? "Fetching currencies..."
+                : isError
+                ? "Fetching error."
+                : "No currency found."}
+            </CommandEmpty>
             <CommandGroup>
               {data &&
-                Object.keys(data.rates).map((currency) => (
+                Object.keys(data.rates).map((currencyCode) => (
                   <CommandItem
-                    key={currency}
-                    value={currency}
-                    onSelect={(selectedValue) => {
-                      dispatch(setCurrencyCode(selectedValue.toLowerCase()));
-                    }}
+                    key={currencyCode}
+                    value={currencyCode}
+                    onSelect={(selectedValue) =>
+                      handleSelectCurrency(selectedValue.toLowerCase())
+                    }
                   >
-                    {currency.toUpperCase()}
+                    {currencyCode.toUpperCase()}
                     <Check
                       className={cn(
                         "ml-auto",
-                        currencyCode === currency ? "opacity-100" : "opacity-0"
+                        currencyCode === code ? "opacity-100" : "opacity-0"
                       )}
                     />
                   </CommandItem>
