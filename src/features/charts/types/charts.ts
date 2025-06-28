@@ -1,5 +1,4 @@
-import { CoinType } from "@/features/coins/types/coinTypes";
-import { CurrencyInfo } from "@/features/convertor/types/currency";
+import { CoinType, Currency } from "@/shared/types/coins";
 
 export type TimeAndAmount = [number, number];
 
@@ -7,18 +6,21 @@ export type MarketCharts = {
   prices: TimeAndAmount[];
   market_caps: TimeAndAmount[];
   total_volumes: TimeAndAmount[];
-  currencyInfo: CurrencyInfo;
 };
 
 export type ChartProps = {
-  data: MarketCharts | undefined;
-  status: string;
-  error: string | null | undefined;
-  currencyInfo: CurrencyInfo;
+  data: MarketCharts | null;
+  currency: Currency;
   coin?: CoinType;
 };
 
-export type MarketChart = {
+export type PricesChart = {
   day: string;
   amount: number;
+};
+
+export type PricesCharts = {
+  day: string;
+  coinAmount: number;
+  currencyAmount: number;
 };
