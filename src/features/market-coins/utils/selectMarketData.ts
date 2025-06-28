@@ -1,7 +1,7 @@
 import { MarketInfo } from "../types/marketInfo";
 
 export const selectMarketData = (
-  data: MarketInfo | null,
+  data: MarketInfo | null | undefined,
   currencyCode: string
 ) => {
   if (!data || !data.data) {
