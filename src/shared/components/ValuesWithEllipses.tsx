@@ -7,14 +7,14 @@ type ValuesWithEllipsesProps = {
   color: string;
 };
 
-export const ValuesWithEllipses: React.FC<ValuesWithEllipsesProps> = ({
+export const  ValuesWithEllipses: React.FC<ValuesWithEllipsesProps> = ({
   current,
   total,
   color,
 }) => {
   return (
-    <div className="flex w-full justify-between ">
-      <div className="flex gap-1 items-center">
+    <div className="flex w-full justify-between text-xs max-w-[200px] mb-1 text-white">
+      <div className="flex gap-1 items-center min-w-0 ">
         <Ellipse
           className={clsx({
             "fill-[#1CB385]": color === "#1CB385",
@@ -22,12 +22,12 @@ export const ValuesWithEllipses: React.FC<ValuesWithEllipsesProps> = ({
             "fill-[#43FFC7]": color === "#43FFC7",
           })}
         />
-        <span className="text-sm leading-none">{current}</span>
+        <span className=" leading-none truncate max-w-[100px] ">{current}</span>
       </div>
 
-      <div className="flex gap-1 items-center">
+      <div className="flex gap-1 items-center min-w-0 ">
         <Ellipse className="fill-gray-500" />
-        <span>{total}</span>
+        <span className="truncate max-w-[100px]">{total}</span>
       </div>
     </div>
   );

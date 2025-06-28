@@ -7,7 +7,7 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
   const total_volumes = data && formatMarketChart(data.total_volumes);
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <>
       {total_volumes && (
         <HeaderChart
           name={"Volume 24h"}
@@ -51,6 +51,6 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
           <Bar dataKey="amount" fill="url(#amountVolumeGradient)" radius={3} />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </>
   );
 };

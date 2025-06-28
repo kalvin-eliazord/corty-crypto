@@ -1,52 +1,64 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { CoinsSlider } from "@/features/slider-coins/components/CoinsSlider";
 import { TableCoins } from "@/features/table-coins/components/TableCoins";
-import { AppDispatch, RootState } from "@/shared/store";
-import { useDispatch, useSelector } from "react-redux";
 import { Charts } from "@/features/charts/components/Charts";
-import { fetchCoinsMarket } from "@/shared/store/coinsSlice";
-
-export const useFetchCoinsMarket = (currencyCode: string) => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(fetchCoinsMarket(currencyCode));
-  }, [dispatch, currencyCode]);
-};
+import { RootState } from "@/shared/store";
+import { useSelector } from "react-redux";
+import { CoinType } from "@/shared/types/coins";
+import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
+import { AlertError } from "@/shared/components/AlertError";
+import { fetchApiClient } from "@/shared/utils/fetchApiClient";
 
 export default function Home() {
   const [coinId, setCoinId] = useState<string>("bitcoin");
-  const dispatch = useDispatch<AppDispatch>();
-  const { allCoins, status, error } = useSelector(
-    (state: RootState) => state.coins
-  );
   const currency = useSelector((state: RootState) => state.currency);
 
-  useEffect(() => {
-    dispatch(fetchCoinsMarket(currency.code));
-  }, [dispatch, currency.code]);
+  const url = currency.code
+    ? `coins/markets?vs_currency=${currency.code}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+    : "";
 
-  const coin = allCoins.find((coin) => coin.id === coinId);
+  const {
+    data: allCoins,
+    isError,
+    isLoading,
+    error,
+    refetch
+  } = useSmartQuery({
+    queryKey: ["allCoinsMarket", url],
+    queryFn: () => fetchApiClient<CoinType[]>(url),
+    enabled: !!url,
+  });
+
+  const selectedCoin =
+    allCoins && allCoins.find((c: CoinType) => c.id === coinId);
 
   return (
-    <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-      <CoinsSlider
-        allCoins={allCoins}
-        status={status}
-        error={error}
-        setCoinId={setCoinId}
-        coinId={coinId}
-        currency={currency}
-      />
+    <div className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+      {allCoins && (
+        <CoinsSlider
+          allCoins={allCoins}
+          isLoading={isLoading}
+          setCoinId={setCoinId}
+          coinId={coinId}
+          currency={currency}
+        />
+      )}
 
-      <Charts coinId={coinId} currency={currency} coin={coin} />
-      <TableCoins
-        allCoins={allCoins}
-        status={status}
-        error={error}
-        currency={currency}
-      />
-    </main>
+      <Charts coinId={coinId} currency={currency} coin={selectedCoin} />
+
+      {allCoins && (
+        <TableCoins
+          allCoins={allCoins}
+          isLoading={isLoading}
+          currency={currency}
+        />
+      )}
+
+      {isError && (
+        <AlertError errorName={"All coins market"} networkError={error} refetch={refetch} />
+      )}
+    </div>
   );
 }

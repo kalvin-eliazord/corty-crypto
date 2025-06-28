@@ -6,16 +6,21 @@ export type MarketCharts = {
   prices: TimeAndAmount[];
   market_caps: TimeAndAmount[];
   total_volumes: TimeAndAmount[];
-  currency: Currency;
 };
 
 export type ChartProps = {
-  data: MarketCharts | undefined;
+  data: MarketCharts | null;
   currency: Currency;
   coin?: CoinType;
 };
 
-export type MarketChart = {
+export type PricesChart = {
   day: string;
   amount: number;
+};
+
+export type PricesCharts = {
+  day: string;
+  coinAmount: number;
+  currencyAmount: number;
 };

@@ -1,0 +1,32 @@
+import { CoinType } from "@/shared/types/coins";
+
+export type Asset = {
+  id: string;
+  amount: number;
+  date: string;
+  totalCost?: number;
+};
+
+export type PortfolioType = Asset[];
+
+export type FinalizedAsset = {
+  [key: string]: {
+    amount: number;
+    date: string;
+    totalCost: number;
+  };
+};
+
+export type UniqueAsset = {
+  [key: string]: {
+    amount: number;
+    date: string;
+    totalCost?: number;
+  };
+};
+
+export type AllCoinsFinalized = CoinType & {
+  amount: number;
+  date: string;
+  totalCost: number;
+};

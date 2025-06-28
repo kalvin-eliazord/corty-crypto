@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState } from "react";
 import {
@@ -12,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { getSparklineStrokeColor } from "../utils/getSparklineStrokeColor";
 import { Progress } from "@/components/ui/progress";
 import { formatAmount, formatAmountUnit } from "@/shared/utils/formatAmount";
@@ -21,6 +19,7 @@ import { useSortedCoins } from "../hooks/useSortedCoins";
 import { useChunks } from "../hooks/useChunk";
 import { OneHourPercentage } from "@/shared/components/OneHourPercentage";
 import { ValuesWithEllipses } from "@/shared/components/ValuesWithEllipses";
+import { CoinIcon } from "@/shared/components/CoinIcon";
 
 export const tableHeaders = [
   "#",
@@ -34,11 +33,22 @@ export const tableHeaders = [
   "Last 7d",
 ];
 
+const responsiveTableStyles = [
+  "",
+  "",
+  "",
+  "hidden md:table-cell",
+  "hidden md:table-cell",
+  "hidden lg:table-cell",
+  "hidden lg:table-cell",
+  "hidden xl:table-cell",
+  "hidden 2xl:table-cell",
+];
+
 export const TableCoins: React.FC<AllCoinsProps> = ({
   allCoins,
-  status,
-  error,
   currency,
+  isLoading,
 }) => {
   const [sortType, setSortType] = useState<string>("default");
   const [reverse, setReverse] = useState<boolean>(false);
@@ -55,27 +65,14 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
     }
   };
 
-  if (status === "rejected") {
+  if (isLoading) {
     return (
-      <div className="dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r w-full text-center">
-        {" "}
-        Table Coins fetching rejected : {error}
-      </div>
-    );
-  }
-
-  if (status === "pending") {
-    return (
-      <div className="dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r w-full">
+      <div className="h-full dark:bg-[#1F1D2280]  p-5 rounded-xl border-t border-l border-r w-full">
         <Skeleton className="h-full w-full rounded" />
       </div>
     );
   }
 
-  console.log(
-    "allcoinPrice: ",
-    displayedCoins[0]?.sparkline_in_7d.price.slice(-7)
-  );
   return (
     <div className="w-full rounded-xl overflow-hidden ">
       <InfiniteScroll
@@ -84,8 +81,7 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
         hasMore={hasMore}
         loader={
           <Skeleton className="h-full w-full rounded text-center">
-            {" "}
-            Loading..{" "}
+            Loading..
           </Skeleton>
         }
         scrollableTarget="scrollable-table"
@@ -93,10 +89,10 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
         <Table className=" overflow-hidden ">
           <TableHeader>
             <TableRow>
-              {tableHeaders.map((header) => (
+              {tableHeaders.map((header, i) => (
                 <TableHead
                   key={header}
-                  className="text-[#B9B8BB]"
+                  className={`border-b dark:border-white/10 border-[#1F1D2280] text-gray-300 dark:text-[#B9B8BB] ${responsiveTableStyles[i]} p-5`}
                   onClick={() => handleSort(header)}
                 >
                   <span className="hover:cursor-pointer"> {header}</span>
@@ -104,28 +100,37 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody className="dark:bg-[#1F1D2280] border-l border-r">
+          <TableBody className="dark:bg-[#1F1D2280] dark:border-white/10 border-[#1F1D2280] border-l border-r">
             {displayedCoins.map((coin, i) => (
-              <TableRow key={coin.id}>
-                <TableCell className="text-[#B9B8BB]">{i + 1}</TableCell>
-                <TableCell className="flex items-center gap-2">
+              <TableRow
+                key={coin.id}
+                className="dark:border-white/10 border-[#1F1D2280]"
+              >
+                <TableCell className="text-gray-300 dark:text-[#B9B8BB] p-5">
+                  {i + 1}
+                </TableCell>
+                <TableCell>
                   <Link
                     href={`/coin/${coin.id}`}
                     className="flex gap-2 font-medium  items-center"
                   >
-                    <Image
-                      src={coin.image}
-                      width={20}
-                      height={20}
-                      alt={`${coin.id} logo`}
+                    <CoinIcon
+                      id={coin.id}
+                      image={coin.image}
+                      tailwindSize={"w-8 h-8"}
                     />
-                    {coin.name} ({coin.symbol.toUpperCase()})
+                    <span className="text-xs text-wrap sm:text-nowrap sm:text-base text-white">
+                      {coin.name}
+                    </span>
+                    <span className="hidden 2xl:block text-white">
+                      ({coin.symbol.toUpperCase()})
+                    </span>
                   </Link>
                 </TableCell>
-                <TableCell>
+                <TableCell className="text-white">
                   {currency?.symbol} {formatAmount(coin.current_price)}
                 </TableCell>
-                <TableCell>
+                <TableCell className={responsiveTableStyles[3]}>
                   <OneHourPercentage
                     percentage={coin.price_change_percentage_1h_in_currency}
                     color={
@@ -135,7 +140,7 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
                     }
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell className={responsiveTableStyles[4]}>
                   <OneHourPercentage
                     percentage={coin.price_change_percentage_24h_in_currency}
                     color={
@@ -145,7 +150,7 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
                     }
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell className={responsiveTableStyles[5]}>
                   <OneHourPercentage
                     percentage={coin.price_change_percentage_7d_in_currency}
                     color={
@@ -155,7 +160,7 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
                     }
                   />
                 </TableCell>
-                <TableCell>
+                <TableCell className={responsiveTableStyles[6]}>
                   <ValuesWithEllipses
                     current={
                       currency?.symbol + formatAmountUnit(coin.total_volume)
@@ -167,13 +172,14 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
                   />
                   <Progress
                     indicatorColor={
-                      coin.market_cap_change_24h > 0 ? "#1CB385" : "#FF5252"
+                      coin.market_cap_change_24h > 0 ? "green" : "red"
                     }
                     value={(coin.total_volume / coin.market_cap) * 100}
+                    className="sm:max-w-[200px]"
                   />
                 </TableCell>
 
-                <TableCell>
+                <TableCell className={responsiveTableStyles[7]}>
                   <ValuesWithEllipses
                     current={
                       currency?.symbol +
@@ -182,64 +188,65 @@ export const TableCoins: React.FC<AllCoinsProps> = ({
                     total={
                       currency?.symbol + formatAmountUnit(coin.total_supply)
                     }
-                    color="#43FFC7"
+                    color={"#43FFC7"}
                   />
                   <Progress
-                    indicatorColor="#43FFC7"
+                    indicatorColor="green2"
                     value={(coin.circulating_supply / coin.total_supply) * 100}
+                    className="sm:max-w-[200px]"
                   />
                 </TableCell>
 
-                <TableCell>
-                  <AspectRatio ratio={6 / 1}>
-                    <ResponsiveContainer
-                      width="100%"
-                      height={30}
-                      className="items-center"
+                <TableCell
+                  className={responsiveTableStyles[8] + " w-40  max-h-[25px]"}
+                >
+                  <ResponsiveContainer
+                    width="100%"
+                    height={50}
+                    className=" max-h-[70px]"
+                  >
+                    <AreaChart
+                      data={coin.sparkline_in_7d.price.map((price) => ({
+                        price,
+                      }))}
                     >
-                      <AreaChart
-                        data={coin.sparkline_in_7d.price.map((price) => ({
-                          price,
-                        }))}
-                      >
-                        <defs>
-                          <linearGradient
-                            id={`pricesGradient${coin.id}`}
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                          >
-                            <stop
-                              offset="0%"
-                              stopColor={getSparklineStrokeColor(
-                                coin.sparkline_in_7d.price
-                              )}
-                              stopOpacity={0.1}
-                            />
-                            <stop
-                              offset="100%"
-                              stopColor={getSparklineStrokeColor(
-                                coin.sparkline_in_7d.price
-                              )}
-                              stopOpacity={0.05}
-                            />
-                          </linearGradient>
-                        </defs>
+                      <defs>
+                        <linearGradient
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                          id={`pricesGradient${coin.id}`}
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor={getSparklineStrokeColor(
+                              coin.sparkline_in_7d.price
+                            )}
+                            stopOpacity={0.5}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor={getSparklineStrokeColor(
+                              coin.sparkline_in_7d.price
+                            )}
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
 
-                        <Area
-                          type="monotone"
-                          dataKey="price"
-                          stroke={getSparklineStrokeColor(
-                            coin.sparkline_in_7d.price
-                          )}
-                          fillOpacity={1}
-                          fill={`url(#pricesGradient${coin.id})`}
-                          strokeWidth={3}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </AspectRatio>
+                      <Area
+                        type="monotone"
+                        dataKey="price"
+                        stroke={getSparklineStrokeColor(
+                          coin.sparkline_in_7d.price
+                        )}
+                        fillOpacity={1}
+                        fill={`url(#pricesGradient${coin.id})`}
+                        strokeWidth={3}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </TableCell>
               </TableRow>
             ))}

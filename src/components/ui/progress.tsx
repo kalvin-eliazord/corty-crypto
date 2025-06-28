@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
-
+import clsx from "clsx";
 import { cn } from "@/lib/utils";
 
 function Progress({
@@ -22,7 +22,11 @@ function Progress({
     >
       <ProgressPrimitive.Indicator
         data-slot="progress-indicator"
-        className={`bg-[${indicatorColor}] h-full w-full flex-1 transition-all`}
+        className={clsx(" h-full w-full flex-1 transition-all`", {
+                    "bg-[#1CB385]": indicatorColor === "green",
+                    "bg-[#FF5252]": indicatorColor === "red",
+                    "bg-[#43FFC7]": indicatorColor === "green2",
+                  })}
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       />
     </ProgressPrimitive.Root>

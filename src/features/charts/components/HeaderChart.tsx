@@ -1,12 +1,12 @@
 import { format } from "date-fns";
 import { formatAmountUnit } from "@/shared/utils/formatAmount";
-import Image from "next/image";
 import { CoinType, Currency } from "@/shared/types/coins";
-import { MarketChart } from "../types/charts";
+import { PricesChart } from "../types/charts";
+import { CoinIcon } from "@/shared/components/CoinIcon";
 
 type HeaderProps = {
   name: string | undefined;
-  marketChart: MarketChart;
+  marketChart: PricesChart;
   currency: Currency;
   coin?: CoinType;
 };
@@ -18,23 +18,24 @@ export const HeaderChart: React.FC<HeaderProps> = ({
   coin,
 }) => {
   const todayDate = format(new Date(), "MMMM d, yyyy");
+  const formattedMarketChart = formatAmountUnit(marketChart.amount);
 
   return (
     <div>
       {coin ? (
         <div className="flex gap-4 mb-6">
-          <Image src={coin.image} width={32} height={32} alt={"coin logo"} />
-          <h1 className="text-[#B9B8BB] text-xl ">{name}</h1>
+          <CoinIcon id={coin.id} image={coin.image} tailwindSize={"w-8 h-8"} />
+          <h1 className="text-gray-800 dark:text-[#B9B8BB] text-xl ">{name}</h1>
         </div>
       ) : (
-        <h1 className="text-[#B9B8BB] text-xl mb-7.5"> {name} </h1>
+        <h1 className="text-gray-800 dark:text-[#B9B8BB] text-xl mb-7.5">
+          {name}
+        </h1>
       )}
 
-      <h2 className="font-medium text-2xl">{`${
-        currency.symbol
-      } 
-      ${formatAmountUnit(marketChart.amount)} `}</h2>
-      <p className="text-[#B9B8BB]">{todayDate}</p>
+      <h2 className="text-white font-medium text-2xl">{`${currency.symbol} 
+      ${formattedMarketChart} `}</h2>
+      <p className="text-gray-700 dark:text-[#B9B8BB]">{todayDate}</p>
     </div>
   );
 };

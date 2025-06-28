@@ -1,7 +1,7 @@
-export const formatAmountUnit = (amount: number | null): string => {
+export const formatAmountUnit = (amount: number | null | undefined): string  => {
   if (!amount || isNaN(amount)) {
     console.warn("Invalid input: amount must be a valid number.");
-    return "0.00";
+    return "";
   }
 
   const absAmount = Math.abs(amount);
@@ -28,10 +28,12 @@ export const formatAmountUnit = (amount: number | null): string => {
   );
 };
 
-export const formatAmount = (amount: number | null): string => {
+export const formatAmount = (
+  amount: number | null | undefined
+): string => {
   if (!amount || isNaN(amount)) {
     console.warn("Invalid input: amount must be a valid number.");
-    return "0.00";
+    return "";
   }
 
   return new Intl.NumberFormat(navigator.language).format(amount);

@@ -1,8 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCoinCharts } from "../hooks/useCoinCharts";
 import { PriceChart } from "@/features/charts/components/PriceChart";
 import { VolumeChart } from "@/features/charts/components/VolumeChart";
 import { CoinType, Currency } from "@/shared/types/coins";
+import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
+import { fetchApiClient } from "@/shared/utils/fetchApiClient";
+import { MarketCharts } from "../types/charts";
+import { AlertError } from "@/shared/components/AlertError";
 
 type ChartsProps = {
   coinId: string;
@@ -11,27 +14,26 @@ type ChartsProps = {
 };
 
 export const Charts: React.FC<ChartsProps> = ({ coinId, currency, coin }) => {
-  const { data, status, error } = useCoinCharts(coinId, currency.code);
+  const url =
+    currency.code && coinId
+      ? `coins/${coinId}/market_chart?vs_currency=${currency.code}&days=180&interval=daily`
+      : "";
 
-  if (status === "rejected") {
-    return (
-      <div className=" w-full text-center rounded-xl border-t border-l border-r">
-        <div className="flex-1 dark:bg-[#1F1D2280] p-5   ">
-          Charts fetching rejected : {error}. Click to retry.
-        </div>
-      </div>
-    );
-  }
+  const { data, isError, isLoading, error, refetch } = useSmartQuery({
+    queryKey: ["homeCoinChart", url],
+    queryFn: () => fetchApiClient<MarketCharts>(url),
+    enabled: !!url,
+  });
 
-  if (status === "pending") {
+  if (isLoading) {
     return (
       <div className="flex flex-col flex-1 md:flex-row gap-8  w-full">
         <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r  ">
-          <Skeleton className="h-16 w-full rounded" />
+          <Skeleton className="h-50 w-full rounded" />
         </div>
 
         <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r  ">
-          <Skeleton className="h-16 w-full rounded" />
+          <Skeleton className="h-50 w-full rounded" />
         </div>
       </div>
     );
@@ -39,13 +41,21 @@ export const Charts: React.FC<ChartsProps> = ({ coinId, currency, coin }) => {
 
   return (
     <div className="flex flex-col flex-1 md:flex-row gap-8  w-full">
-      <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r  ">
-        <PriceChart data={data} coin={coin} currency={currency} />
+      <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r border-[#1F1D2280] dark:border-white/10  ">
+        {data && <PriceChart data={data} coin={coin} currency={currency} />}
       </div>
 
-      <div className="flex-1 dark:bg-[#1F1D2280] rounded-xl p-5 border-t border-l border-r ">
-        <VolumeChart data={data} currency={currency} />
+      <div className="flex-1 dark:bg-[#1F1D2280] rounded-xl p-5 border-t border-l border-r border-[#1F1D2280] dark:border-white/10 ">
+        {data && <VolumeChart data={data} currency={currency} />}
       </div>
+
+      {isError && (
+        <AlertError
+          errorName={"Charts"}
+          networkError={error}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 };

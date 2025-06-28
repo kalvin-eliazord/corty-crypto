@@ -1,12 +1,9 @@
 export type AllCoinsProps = {
   allCoins: CoinType[];
-  status: FetchStatus;
-  error: string | undefined | null;
   coin?: CoinType;
   currency: Currency | null;
+  isLoading: boolean;
 };
-
-export type FetchStatus = "pending" | "fulfilled" | "rejected";
 
 export type Currency = {
   symbol: string;
@@ -36,3 +33,23 @@ export type CoinType = {
   price_change_percentage_24h_in_currency: number;
   price_change_percentage_7d_in_currency: number;
 };
+
+export type SearchResults = {
+  coins: CoinResult[];
+};
+
+export type CoinResult = {
+  id: string;
+  api_symbol: string;
+  name: string;
+  symbol: string;
+  market_cap_rank: number;
+  thumb: string;
+  large: string;
+};
+
+declare global {
+  interface Window {
+    __REACT_QUERY_STATE__?: unknown;
+  }
+}

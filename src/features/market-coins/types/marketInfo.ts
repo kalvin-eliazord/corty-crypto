@@ -14,10 +14,3 @@ export type MarketInfo = {
   };
 };
 
-export type MarketItemProps = {
-  data: string | number;
-  name?: string | null;
-  Icon?: React.ElementType;
-  progressBarColor?: string;
-  isVerticalHeaderLine: boolean;
-};

@@ -16,10 +16,10 @@ import {
   CommandEmpty,
 } from "@/components/ui/command";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import Coin from "@/assets/coin.svg";
 import { setCurrency } from "../../../shared/store/currencySlice";
-import { useFetchCoinData } from "../../../shared/hooks/useFetchCoinData";
+import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
+import { fetchApiClient } from "@/shared/utils/fetchApiClient";
 
 type Rates = {
   rates: {
@@ -31,7 +31,12 @@ type Rates = {
 
 export const CurrencySelector = () => {
   const dispatch = useDispatch();
-  const { data, status } = useFetchCoinData<Rates>("/exchange_rates");
+
+  const { data, isError, isLoading } = useSmartQuery({
+    queryKey: ["exchangeRates"],
+    queryFn: () => fetchApiClient<Rates>("exchange_rates"),
+  });
+
   const { code } = useSelector((state: RootState) => state.currency);
 
   const handleSelectCurrency = (selectedCurrencyCode: string) => {
@@ -47,13 +52,9 @@ export const CurrencySelector = () => {
       code: selectedCurrencyCode,
       symbol: selectedRate.unit,
     };
-    
+
     dispatch(setCurrency(newCurrency));
   };
-
-  if (status === "pending") {
-    return <Skeleton className="h-10 w-[6%] rounded" />;
-  }
 
   return (
     <Popover>
@@ -64,16 +65,24 @@ export const CurrencySelector = () => {
           aria-expanded="false"
           className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 justify-between"
         >
-          <Coin />
+          <div className="coin-mobile-hide">
+            <Coin />
+          </div>
           <span>{code.toUpperCase()}</span>
           <ChevronsUpDown className="opacity-50 size-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search  .." />
+          <CommandInput placeholder="Search .." />
           <CommandList>
-            <CommandEmpty>No currency found.</CommandEmpty>
+            <CommandEmpty>
+              {isLoading
+                ? "Fetching currencies..."
+                : isError
+                ? "Fetching error."
+                : "No currency found."}
+            </CommandEmpty>
             <CommandGroup>
               {data &&
                 Object.keys(data.rates).map((currencyCode) => (

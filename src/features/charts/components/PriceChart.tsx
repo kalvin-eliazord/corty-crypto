@@ -4,16 +4,11 @@ import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 import { ChartProps } from "../types/charts";
 
-export const PriceChart: React.FC<ChartProps> = ({
-  data,
-  currency,
-  coin,
-}) => {
-
+export const PriceChart: React.FC<ChartProps> = ({ data, currency, coin }) => {
   const prices = data && formatMarketChart(data.prices);
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <>
       {prices && (
         <HeaderChart
           name={coin?.symbol.toUpperCase()}
@@ -58,6 +53,6 @@ export const PriceChart: React.FC<ChartProps> = ({
           />
         </AreaChart>
       </ResponsiveContainer>
-    </div>
+    </>
   );
 };
