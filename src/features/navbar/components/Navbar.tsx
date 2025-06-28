@@ -1,9 +1,9 @@
+import { SearchCoins } from "@/features/search-coins/components/SearchCoins";
 import { CurrencySelector } from "@/features/currency-selector/components/CurrencySelector";
 import Logo from "@/assets/logo.svg";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { MarketCoins } from "@/features/market-coins/components/MarketCoins";
 import { SegmentedControl } from "./SegmentendControl";
-import { SearchCoins } from "@/features/search-coins/components/SearchCoin";
 
 const pages = [
   { name: "Home", path: "/" },
