@@ -1,4 +1,5 @@
-import { useFetchCoinData } from "@/shared/hooks/useFetchCoinData";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { formatTrillionAmount } from "../utils/formatTrillionAmount";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
@@ -75,3 +76,7 @@ export const MarketCoins = () => {
     </div>
   );
 };
+
+function useFetchCoinData<T>(arg0: string): { data: any; status: any; } {
+  throw new Error("Function not implemented.");
+}
