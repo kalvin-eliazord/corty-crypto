@@ -1,7 +1,7 @@
 "use client";
 
 import { CoinType, Currency } from "@/shared/types/coins";
-import { Area, AreaChart, XAxis, ResponsiveContainer } from "recharts";
+import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
-import { RadioDurations } from "@/features/currency-convertor/components/RadioDurations";
+import { RadioDurations } from "@/features/convertor-coins/components/RadioDurations";
 import { useMemo, useState } from "react";
 import { computePerfSpreadChart } from "@/features/charts/utils/computePerfSpreadChart";
 import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
@@ -72,8 +72,6 @@ export const ConvertorChart: React.FC<ConvertorChartProps> = ({
     queryFn: () => fetchApiClient<MarketCharts>(urlSelectedCoin),
     enabled: !!urlSelectedCoin,
   });
-  console.log("randomCoinChart: ", randomCoinChart);
-  console.log("selectedCoinChart: ", selectedCoinChart);
 
   const randomCoin = useMemo(() => {
     return allCoins.find((c) => c.id === randomCoinId);
@@ -156,19 +154,6 @@ export const ConvertorChart: React.FC<ConvertorChartProps> = ({
                       </linearGradient>
                     </defs>
 
-                    {days === "7" ||
-                      days === "1" ||
-                      (days === "30" && (
-                        <XAxis
-                          dataKey="date"
-                          stroke="#D0D0D1"
-                          tickLine={false}
-                          axisLine={false}
-                          interval={0}
-                          padding={{ left: 15, right: 15 }}
-                          tickMargin={8}
-                        />
-                      ))}
                     <ChartTooltip
                       cursor={false}
                       content={<ChartTooltipContent indicator="dot" />}

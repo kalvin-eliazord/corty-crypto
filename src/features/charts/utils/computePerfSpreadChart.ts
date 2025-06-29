@@ -1,7 +1,7 @@
 import { TimeAndAmount } from "@/features/charts/types/charts";
 import { format } from "date-fns";
 
-type perfSpreadChart = {
+type PerfSpreadChart = {
   date: string;
   spread: number;
 };
@@ -9,8 +9,10 @@ type perfSpreadChart = {
 export const computePerfSpreadChart = (
   coinA: TimeAndAmount[],
   coinB: TimeAndAmount[]
-): perfSpreadChart[] | null => {
-  if (!coinA || !coinB || coinA.length === 0 || coinB.length === 0) return null;
+): PerfSpreadChart[] | null => {
+  if (!coinA || !coinB || coinA.length === 0 || coinB.length === 0 || coinA.length !== coinB.length) {
+    return null;
+  }
 
   const baseA = coinA[0][1];
   const baseB = coinB[0][1];
