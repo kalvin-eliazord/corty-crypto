@@ -1,5 +1,5 @@
-import { ProgressBar } from "@/shared/components/ProgressBar";
 import VerticalHeaderLine from "@/assets/vertical-header-line.svg";
+import { Progress } from "@/components/ui/progress";
 
 type MarketItemProps = {
   data: number | string;
@@ -16,9 +16,13 @@ export const MarketItem = ({
   progressBarColor,
   isVerticalHeaderLine,
 }: MarketItemProps) => {
+  const valueCasted = typeof data === "string" ? parseFloat(data) : data;
+
   return (
     <div className="flex items-center gap-2">
-      {Icon && <Icon className="icon transition-transform duration-300 hover:-rotate-36" />}
+      {Icon && (
+        <Icon className="icon transition-transform duration-300 hover:-rotate-36" />
+      )}
       {name && (
         <span className="label dark:text-gray-200 text-white">{name}</span>
       )}
@@ -33,7 +37,7 @@ export const MarketItem = ({
       {progressBarColor && (
         <div className="mr-5 h-2 w-24 bg-gray-600 rounded-full overflow-hidden">
           {progressBarColor && (
-            <ProgressBar progressBarColor={progressBarColor} data={data} />
+            <Progress indicatorColor={progressBarColor} value={valueCasted} />
           )}
         </div>
       )}
