@@ -1,4 +1,4 @@
-import { CoinType } from "../../coins/types/coinTypes";
+import { CoinType } from "../../../shared/types/coins";
 
 export const sortCoins = (
   coins: CoinType[],

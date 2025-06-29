@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { CoinType } from "../../coins/types/coinTypes";
+import { CoinType } from "../../../shared/types/coins";
 import { sortCoins } from "../utils/sortCoins";
 
 export const useSortedCoins = (

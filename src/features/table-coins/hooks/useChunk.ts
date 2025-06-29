@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CoinType } from "../../coins/types/coinTypes";
+import { CoinType } from "../../../shared/types/coins";
 
 export const useChunks = (allCoins: CoinType[], chunkSize: number) => {
   const [chunks, setChunks] = useState<CoinType[][]>([]);
