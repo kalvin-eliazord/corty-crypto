@@ -7,7 +7,6 @@ const durations = {
   "30d": "30",
   "90d": "90",
   "1y": "365",
-  Max: "Max",
 };
 
 type RadioDurationsProps = {

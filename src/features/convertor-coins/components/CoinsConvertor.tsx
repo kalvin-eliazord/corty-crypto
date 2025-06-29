@@ -3,9 +3,9 @@ import { CoinType, Currency } from "@/shared/types/coins";
 import { ArrowLeftRight } from "lucide-react";
 import { CoinConvertorPart } from "./CoinConvertorPart";
 import { isDotAtTheEnd } from "@/shared/utils/isDotAtTheEnd";
-import { getExchangeRate } from "../utils.ts/getExchangeRate";
+import { getExchangeRate } from "../utils/getExchangeRate";
 
-type CurrencyCoinProps = {
+type CoinsConvertorProps = {
   selectedCoinId: string;
   setSelectedCoinId: (selectedCoinId: string) => void;
   randomCoinId: string;
@@ -16,7 +16,7 @@ type CurrencyCoinProps = {
   isLoading: boolean;
 };
 
-export const CurrencyConvertor: React.FC<CurrencyCoinProps> = ({
+export const CoinsConvertor: React.FC<CoinsConvertorProps> = ({
   selectedCoinId,
   currency,
   allCoins,
@@ -31,23 +31,26 @@ export const CurrencyConvertor: React.FC<CurrencyCoinProps> = ({
   const [rightCoinInput, setRightCoinInput] = useState<string>("1");
 
   useEffect(() => {
-    setRightCoinInput(getExchangeRate(selectedCoinId, randomCoinId, allCoins));
-  }, [selectedCoinId, randomCoinId, allCoins]);
+    if (!leftCoinInput || !leftCoinInput.trim() || !parseFloat(leftCoinInput)) {
+      return;
+    }
+
+    const exchangeRate = getExchangeRate(
+      leftCoinInput,
+      selectedCoinId,
+      randomCoinId,
+      allCoins
+    );
+
+    setRightCoinInput(exchangeRate);
+  }, [selectedCoinId, randomCoinId, allCoins, leftCoinInput]);
 
   const handleLeftChangeCoinsAmount = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (isDotAtTheEnd(leftCoinInput, e)) return;
 
-    const exchangeRate = getExchangeRate(
-      selectedCoinId,
-      randomCoinId,
-      allCoins
-    );
-    if (!exchangeRate) return;
-
     setLeftCoinInput(e.target.value.trim());
-    setRightCoinInput(exchangeRate);
   };
 
   const handleRightChangeCoinsAmount = (
@@ -55,14 +58,16 @@ export const CurrencyConvertor: React.FC<CurrencyCoinProps> = ({
   ) => {
     if (isDotAtTheEnd(rightCoinInput, e)) return;
 
+    const valueInput = e.target.value.trim();
+
     const exchangeRate = getExchangeRate(
+      valueInput,
       randomCoinId,
       selectedCoinId,
       allCoins
     );
-    if (!exchangeRate) return;
 
-    setRightCoinInput(e.target.value.trim());
+    setRightCoinInput(valueInput);
     setLeftCoinInput(exchangeRate);
   };
 
@@ -81,7 +86,11 @@ export const CurrencyConvertor: React.FC<CurrencyCoinProps> = ({
           isLoading={isLoading}
         />
 
-        <ArrowLeftRight width={60} height="auto" className="self-center mt-3" />
+        <ArrowLeftRight
+          width={60}
+          height={60}
+          className="self-center mt-3 transition-transform duration-300 hover:-rotate-36 z-20"
+        />
 
         <CoinConvertorPart
           label={"You buy"}
