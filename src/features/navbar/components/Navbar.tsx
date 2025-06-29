@@ -1,26 +1,31 @@
+import { SearchCoins } from "@/features/search-coins/components/SearchCoins";
 import { CurrencySelector } from "@/features/currency-selector/components/CurrencySelector";
 import Logo from "@/assets/logo.svg";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { SegmentedControl } from "./SegmentendControl";
-import { SearchCoins } from "./SearchCoins";
 import { MarketCoins } from "@/features/market-coins/components/MarketCoins";
+import { SegmentedControl } from "./SegmentendControl";
+
+const pages = [
+  { name: "Home", path: "/" },
+  { name: "Portfolio", path: "/portfolio" },
+];
 
 export const Navbar = () => {
   return (
     <>
-      <div className="bg-gradient-to-r from-orange-900 via-purple-900 via-blue-900 to-indigo-900 p-4">
-        <div className="mx-auto flex items-center justify-between md:px-10">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-4">
-              <Logo width={48} height={48} className="object-contain" />
-              <span className="block">
-                <SegmentedControl />
-              </span>
+      <div className="bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 ">
+        <div className="mx-auto flex justify-between md:px-10 ">
+          <div className="flex items-center gap-3 sm:gap-6 ">
+            <div className="hidden sm:block sm:w-13 sm:h-13">
+              <Logo className="w-full h-full" />
             </div>
+            <span className="block">
+              <SegmentedControl pages={pages} />
+            </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <SearchCoins />
+          <div className="flex items-center gap-3 sm:gap-6 ">
+            <SearchCoins isSearchIcon asLink />
             <CurrencySelector />
             <ThemeToggle />
           </div>
