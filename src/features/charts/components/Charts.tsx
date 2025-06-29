@@ -39,6 +39,12 @@ export const Charts: React.FC<ChartsProps> = ({ coinId, currency, coin }) => {
     );
   }
 
+  if (isError) {
+    return (
+      <AlertError errorName={"Charts"} networkError={error} refetch={refetch} />
+    );
+  }
+
   return (
     <div className="flex flex-col flex-1 md:flex-row gap-8  w-full">
       <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r border-[#1F1D2280] dark:border-white/10  ">
@@ -48,14 +54,6 @@ export const Charts: React.FC<ChartsProps> = ({ coinId, currency, coin }) => {
       <div className="flex-1 dark:bg-[#1F1D2280] rounded-xl p-5 border-t border-l border-r border-[#1F1D2280] dark:border-white/10 ">
         {data && <VolumeChart data={data} currency={currency} />}
       </div>
-
-      {isError && (
-        <AlertError
-          errorName={"Charts"}
-          networkError={error}
-          refetch={refetch}
-        />
-      )}
     </div>
   );
 };
