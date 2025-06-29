@@ -16,7 +16,7 @@ export const formatHeadersData = (
       ["Volume / Market"]: null,
       ["Total Volume"]: null,
       ["Circulating Supply"]: null,
-      ["Max Supply"]: null,
+      ["Total Supply"]: null,
     };
   }
 
@@ -44,8 +44,8 @@ export const formatHeadersData = (
     ["Circulating Supply"]: data.market_data.circulating_supply
       ? `${data.market_data.circulating_supply}`
       : null,
-    ["Max Supply"]: data.market_data.max_supply
-      ? `${data.market_data.max_supply}`
+    ["Total Supply"]: data.market_data.total_supply
+      ? `${data.market_data.total_supply}`
       : null,
   };
 };

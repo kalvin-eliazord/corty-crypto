@@ -188,8 +188,8 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
                     {headersData && (
                       <AssetProgress
                         dividend={Number(headersData["Circulating Supply"])}
-                        divisor={Number(headersData["Max Supply"])}
-                        label={"Circ Supply vs Max Supply"}
+                        divisor={Number(headersData["Total Supply"])}
+                        label={"Circulating vs Total supply"}
                       />
                     )}
                   </li>
