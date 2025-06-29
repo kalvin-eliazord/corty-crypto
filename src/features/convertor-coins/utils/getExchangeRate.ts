@@ -1,6 +1,7 @@
 import { CoinType } from "@/shared/types/coins";
 
 export const getExchangeRate = (
+  valueInput: string = "1",
   coin_a_id: string,
   coin_b_id: string,
   allCoins: CoinType[]
@@ -10,5 +11,9 @@ export const getExchangeRate = (
 
   if (!coin_a_price || !coin_b_price) return "";
 
-  return ((coin_a_price / coin_b_price) * 1).toFixed(2).toString();
+  const exchangeRate = (coin_a_price / coin_b_price) * parseFloat(valueInput);
+
+  return exchangeRate !== Math.floor(exchangeRate)
+    ? exchangeRate.toFixed(2).toString()
+    : exchangeRate.toString();
 };
