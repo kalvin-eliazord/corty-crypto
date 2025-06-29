@@ -93,6 +93,16 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
   const color =
     priceChangePercentage && priceChangePercentage > 0 ? "#43FFC7" : "#FF5252";
 
+  if (isError) {
+    return (
+      <AlertError
+        errorName={"Coin details"}
+        networkError={error}
+        refetch={refetch}
+      />
+    );
+  }
+
   return (
     <div className=" w-full h-full flex sm:flex-col">
       <div className="flex flex-col sm:flex-row w-full ">
@@ -133,7 +143,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
                 <BackgroundGradient className=" rounded-3xl dark:bg-zinc-900 w-full sm:h-60 p-5 flex flex-col justify-between text-white">
                   <div className="border hover:border-gray-700 dark:hover:border-gray-500 rounded-3xl p-5">
                     <span className="dark:text-gray-400  text-gray-200">
-                      Current Price
+                      {data && "Current Price"}
                     </span>
                     <div className="flex gap-4">
                       <span className="text-xl font-medium">
@@ -305,13 +315,6 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
         </div>
       </div>
       <Toaster theme="system" />
-      {isError && (
-        <AlertError
-          errorName={"Coin details"}
-          networkError={error}
-          refetch={refetch}
-        />
-      )}
     </div>
   );
 };
