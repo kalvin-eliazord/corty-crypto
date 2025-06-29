@@ -93,7 +93,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
   const color =
     priceChangePercentage && priceChangePercentage > 0 ? "#43FFC7" : "#FF5252";
 
-  if (isError) {
+  if (isError || !data) {
     return (
       <AlertError
         errorName={"Coin details"}
@@ -111,18 +111,14 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
             <div className="sm:flex-row gap-4 flex flex-col justify-between">
               <div className="flex flex-col gap-y-4 min-w-64 lg:mb-8">
                 <BackgroundGradient className="flex flex-col gap-3 justify-center items-center dark:bg-[#1F1D2280] rounded-3xl text-center sm:h-48 p-5 sm:p-0">
-                  {data && (
-                    <>
-                      <CoinIcon
-                        id={data.id}
-                        image={data.image.large}
-                        tailwindSize={"w-10 h-10 sm:w-20 sm:h-20"}
-                      />
-                      <span className="font-medium text-white">
-                        {data.name} ({data.symbol.toUpperCase()})
-                      </span>
-                    </>
-                  )}
+                  <CoinIcon
+                    id={data.id}
+                    image={data.image.large}
+                    tailwindSize={"w-10 h-10 sm:w-20 sm:h-20"}
+                  />
+                  <span className="font-medium text-white">
+                    {data.name} ({data.symbol.toUpperCase()})
+                  </span>
                 </BackgroundGradient>
 
                 <BackgroundGradient className="flex flex-col gap-3 justify-center items-center dark:bg-[#1F1D2280] rounded-3xl text-center sm:h-7 text-white hover:text-white/60">
