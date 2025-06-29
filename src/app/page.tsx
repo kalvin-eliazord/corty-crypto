@@ -1,41 +1,64 @@
 "use client";
-import { useEffect, useState } from "react";
-import { CoinsSlider } from "@/features/coins/components/CoinsSlider";
-import { TableCoins } from "@/features/coins/components/TableCoins";
-import { AppDispatch, RootState } from "@/store";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchCoinsMarket } from "@/features/coins/coinsSlice";
-import { Charts } from "@/features/coins/components/Charts";
+
+import { useState } from "react";
+import { CoinsSlider } from "@/features/slider-coins/components/CoinsSlider";
+import { TableCoins } from "@/features/table-coins/components/TableCoins";
+import { Charts } from "@/features/charts/components/Charts";
+import { RootState } from "@/shared/store";
+import { useSelector } from "react-redux";
+import { CoinType } from "@/shared/types/coins";
+import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
+import { AlertError } from "@/shared/components/AlertError";
+import { fetchApiClient } from "@/shared/utils/fetchApiClient";
 
 export default function Home() {
   const [coinId, setCoinId] = useState<string>("bitcoin");
-  const dispatch = useDispatch<AppDispatch>();
-  const { allCoins, status, error } = useSelector(
-    (state: RootState) => state.coins
-  );
+  const currency = useSelector((state: RootState) => state.currency);
 
-  useEffect(() => {
-    dispatch(fetchCoinsMarket());
-  }, [dispatch]);
+  const url = currency.code
+    ? `coins/markets?vs_currency=${currency.code}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+    : "";
+
+  const {
+    data: allCoins,
+    isError,
+    isLoading,
+    error,
+    refetch
+  } = useSmartQuery({
+    queryKey: ["allCoinsMarket", url],
+    queryFn: () => fetchApiClient<CoinType[]>(url),
+    enabled: !!url,
+  });
+
+  const selectedCoin =
+    allCoins && allCoins.find((c: CoinType) => c.id === coinId);
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+      {allCoins && (
         <CoinsSlider
           allCoins={allCoins}
-          status={status}
-          error={error}
+          isLoading={isLoading}
           setCoinId={setCoinId}
           coinId={coinId}
+          currency={currency}
         />
+      )}
 
-        <Charts coinId={coinId}></Charts>
+      <Charts coinId={coinId} currency={currency} coin={selectedCoin} />
+
+      {allCoins && (
         <TableCoins
           allCoins={allCoins}
-          status={status}
-          error={error}
-        ></TableCoins>
-      </main>
+          isLoading={isLoading}
+          currency={currency}
+        />
+      )}
+
+      {isError && (
+        <AlertError errorName={"All coins market"} networkError={error} refetch={refetch} />
+      )}
     </div>
   );
 }
