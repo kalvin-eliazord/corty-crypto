@@ -1,7 +1,6 @@
 import apiClient from "@/shared/utils/apiClient";
 import { Asset, PortfolioType } from "../types/portfolio";
 import { CoinType } from "@/shared/types/coins";
-import axios from "axios";
 
 export const fetchPricePerDate = async (
   portfolio: PortfolioType,
@@ -42,14 +41,7 @@ export const fetchPricePerDate = async (
         };
       } catch (error) {
         console.warn(`Failed to fetch history for ${asset.id}`, error);
-        if (axios.isAxiosError(error)) {
-          if (error.response?.status === 429) {
-            const retryAfter = error.response.headers["retry-after"];
-            throw { isRateLimit: true, retryAfter };
-          } else if (error.response?.status === 404) {
-            throw { isNotFound: true, message: "Resource not found" };
-          }
-        }
+
         throw error;
       }
     })
