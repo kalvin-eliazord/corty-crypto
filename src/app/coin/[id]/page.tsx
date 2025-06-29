@@ -5,7 +5,7 @@ import { RootState } from "@/shared/store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { ConvertorChart } from "@/features/charts/components/ConvertorChart";
-import { CurrencyConvertor } from "@/features/currency-convertor/components/CurrencyConvertor";
+import { CoinsConvertor } from "@/features/convertor-coins/components/CoinsConvertor";
 import { SegmentedControl } from "@/features/details-coin/components/SegmentedControl";
 import { CoinDetails } from "@/features/details-coin/components/CoinDetails";
 import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
@@ -57,7 +57,7 @@ export default function Coin() {
 
       {selectedAction === "Convertor" && allCoins && (
         <>
-          <CurrencyConvertor
+          <CoinsConvertor
             selectedCoinId={selectedCoinId}
             setSelectedCoinId={setSelectedCoinId}
             currency={currency}
