@@ -4,8 +4,12 @@ import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 import { ChartProps } from "../types/charts";
 
-export const PriceChart: React.FC<ChartProps> = ({ data, currency, selectedCoin }) => {
-  const prices = data && formatMarketChart(data.prices);
+export const PriceChart: React.FC<ChartProps> = ({
+  data,
+  currency,
+  selectedCoin,
+}) => {
+  const prices = formatMarketChart(data?.prices);
 
   return (
     <>
