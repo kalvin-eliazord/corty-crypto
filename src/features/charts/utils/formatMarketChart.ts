@@ -3,8 +3,8 @@ import { PricesChart, PricesCharts, TimeAndAmount } from "../types/charts";
 
 export const formatMarketChart = (
   allTimeAndAmounts: TimeAndAmount[] = []
-): PricesChart[] | null => {
-  if (allTimeAndAmounts.length === 0) return null;
+): PricesChart[] => {
+  if (allTimeAndAmounts.length === 0) return [];
 
   return allTimeAndAmounts.slice(-30).map(([timestamp, amount]) => ({
     day: format(new Date(timestamp), "dd"),
@@ -13,11 +13,16 @@ export const formatMarketChart = (
 };
 
 export const formatMarketCharts = (
-  coinTimeAmounts: TimeAndAmount[] | undefined ,
+  coinTimeAmounts: TimeAndAmount[] | undefined,
   currencyTimeAmounts: TimeAndAmount[] | undefined
-): PricesCharts[] | null => {
-  if (!coinTimeAmounts || coinTimeAmounts.length === 0 || !currencyTimeAmounts || currencyTimeAmounts.length === 0)
-    return null;
+): PricesCharts[] => {
+  if (
+    !coinTimeAmounts ||
+    coinTimeAmounts.length === 0 ||
+    !currencyTimeAmounts ||
+    currencyTimeAmounts.length === 0
+  )
+    return [];
 
   return coinTimeAmounts.map(([timestamp, coinAmount], i) => ({
     day: format(new Date(timestamp), "dd"),
@@ -25,4 +30,3 @@ export const formatMarketCharts = (
     currencyAmount: currencyTimeAmounts[i][1],
   }));
 };
-
