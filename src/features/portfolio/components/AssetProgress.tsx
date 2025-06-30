@@ -17,10 +17,10 @@ export const AssetProgress = ({
   const percentageColor = percentage > 0 ? "bg-[#43FFC7]" : "bg-[#FF5252]";
 
   return (
-    <div className="w-full flex flex-col border rounded-xl p-2.5 hover:border-gray-700 dark:hover:border-gray-500">
+    <div className="w-full flex flex-col border border-white/50 rounded-xl p-2.5 hover:border-gray-700 dark:hover:border-gray-500">
       <div className="flex gap-4 items-center w-full">
         <span
-          className="text-lg font-medium"
+          className="text-lg font-medium text-white"
           style={{ color: percentageColor }}
         >
           {percentageFormatted}%

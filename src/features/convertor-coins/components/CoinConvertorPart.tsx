@@ -54,7 +54,7 @@ export const CoinConvertorPart: React.FC<CoinConvertorPartProps> = ({
         >
           {label}
         </Label>
-        <div className="flex flex-col sm:flex-row border border-gray-300 dark:border-white/20 rounded-xl mb-3 overflow-hidden">
+        <div className="flex flex-col sm:flex-row border-white/40 border border-gray-300 dark:border-white/20 rounded-xl mb-3 overflow-hidden">
           <Popover>
             <PopoverTrigger asChild>
               <Button

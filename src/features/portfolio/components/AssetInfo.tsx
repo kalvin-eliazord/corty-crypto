@@ -12,7 +12,7 @@ export const AssetInfo: React.FC<AssetInfoProps> = ({
   subtitle,
 }) => {
   return (
-    <div className="w-full border hover:border-gray-500 rounded-xl p-2 text-wrap">
+    <div className="w-full border border-white/50 hover:border-gray-500 rounded-xl p-2 text-wrap">
       <h2 className="text-lg font-medium text-white">
         {currencySymbol}
         {formatAmountUnit(currentPrice)}

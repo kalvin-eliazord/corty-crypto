@@ -137,7 +137,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
 
               <div className="sm:w-64 ">
                 <BackgroundGradient className=" rounded-3xl dark:bg-zinc-900 w-full sm:h-60 p-5 flex flex-col justify-between text-white">
-                  <div className="border hover:border-gray-700 dark:hover:border-gray-500 rounded-3xl p-5">
+                  <div className="border border-white/50 hover:border-gray-700 dark:hover:border-gray-500 rounded-3xl p-5">
                     <span className="dark:text-gray-400  text-gray-200">
                       {data && "Current Price"}
                     </span>
@@ -270,7 +270,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
                   .map((blockchainSite: string) => (
                     <div
                       key={blockchainSite}
-                      className="dark:bg-[#1F1D2280] flex items-center justify-between gap-2 p-2.5 rounded-3xl border-t border-l border-r w-full text-nowrap overflow-hidden"
+                      className="dark:bg-[#1F1D2280] flex items-center justify-between gap-2 p-2.5 rounded-3xl border-white/20 border-t border-l border-r w-full text-nowrap overflow-hidden"
                     >
                       <LinkIcon
                         className="hover:cursor-pointer transition-transform duration-300 hover:-rotate-36"
@@ -301,7 +301,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
               {isClamped && (
                 <button
                   onClick={toggleReadMore}
-                  className=" text-left text-blue-500 hover:underline focus:outline-none hover:cursor-pointer"
+                  className=" text-left dark:text-blue-500 text-black/80 hover:underline focus:outline-none hover:cursor-pointer"
                 >
                   {isReadMore ? "Read less" : "Read more"}
                 </button>
