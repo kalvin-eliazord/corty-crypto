@@ -9,9 +9,15 @@ type PerfSpreadChart = {
 export const computePerfSpreadChart = (
   coinA: TimeAndAmount[],
   coinB: TimeAndAmount[]
-): PerfSpreadChart[] | null => {
-  if (!coinA || !coinB || coinA.length === 0 || coinB.length === 0 || coinA.length !== coinB.length) {
-    return null;
+): PerfSpreadChart[] => {
+  if (
+    !coinA ||
+    !coinB ||
+    coinA.length === 0 ||
+    coinB.length === 0 ||
+    coinA.length !== coinB.length
+  ) {
+    return [];
   }
 
   const baseA = coinA[0][1];
