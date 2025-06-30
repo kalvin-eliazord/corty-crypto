@@ -4,7 +4,7 @@ import { formatMarketChart } from "../utils/formatMarketChart";
 import { ChartProps } from "../types/charts";
 
 export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
-  const total_volumes = data && formatMarketChart(data.total_volumes);
+  const total_volumes = formatMarketChart(data?.total_volumes);
 
   return (
     <>
