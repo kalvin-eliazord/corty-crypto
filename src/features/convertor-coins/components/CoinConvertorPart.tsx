@@ -46,7 +46,7 @@ export const CoinConvertorPart: React.FC<CoinConvertorPartProps> = ({
 }) => {
   const selectedCoin = allCoins.find((c) => c.id === selectedCryptoId);
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <BackgroundGradient className=" rounded-3xl dark:bg-zinc-900 gap-6 p-5 ">
         <Label
           className="text-white dark:text-gray-400 text-sm mb-5"
@@ -61,7 +61,7 @@ export const CoinConvertorPart: React.FC<CoinConvertorPartProps> = ({
                 variant="outline"
                 role="combobox"
                 aria-expanded="false"
-                className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 justify-between rounded-xl"
+                className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 justify-between rounded-xl "
               >
                 {selectedCoin && (
                   <CoinIcon

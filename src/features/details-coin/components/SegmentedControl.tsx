@@ -12,7 +12,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({
   selectedAction,
 }) => {
   return (
-    <div className="relative flex border rounded-lg text-white mr-6 w-45 p-5 mb-8">
+    <div className="relative flex border rounded-lg text-white mr-6 w-45 p-5 mb-8 sm:mt-0 mt-5">
       <div
         className={`absolute top-2 bottom-2 
                rounded-lg bg-[#1E1D23] border-t border-l border-r

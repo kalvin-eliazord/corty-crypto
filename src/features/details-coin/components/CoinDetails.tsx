@@ -106,7 +106,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
   return (
     <div className=" w-full h-full flex sm:flex-col">
       <div className="flex flex-col sm:flex-row w-full ">
-        <div className="flex-col flex  md:gap-y-20 lg:gap-y-40 gap-y-30 ">
+        <div className="flex-col flex md:gap-y-20 lg:gap-y-40 gap-y-20 ">
           <div className=" lg:flex-row gap-4 flex flex-col lg:mb-20 xl:mb-0  ">
             <div className="sm:flex-row gap-4 flex flex-col justify-between">
               <div className="flex flex-col gap-y-4 min-w-64 lg:mb-8">
@@ -121,7 +121,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
                   </span>
                 </BackgroundGradient>
 
-                <BackgroundGradient className="flex flex-col gap-3 justify-center items-center dark:bg-[#1F1D2280] rounded-3xl text-center sm:h-7 text-white hover:text-white/60">
+                <BackgroundGradient className="flex flex-col gap-3 justify-center items-center  dark:bg-[#1F1D2280] rounded-3xl text-center sm:h-7 text-white hover:text-white/60">
                   {data && (
                     <button
                       className="hover:cursor-pointer"

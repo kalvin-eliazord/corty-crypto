@@ -1,10 +1,3 @@
-export type AllCoinsProps = {
-  allCoins: CoinType[];
-  coin?: CoinType;
-  currency: Currency | null;
-  isLoading: boolean;
-};
-
 export type Currency = {
   symbol: string;
   code: string;

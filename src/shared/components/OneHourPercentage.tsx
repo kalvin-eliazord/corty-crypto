@@ -11,12 +11,7 @@ export const OneHourPercentage: React.FC<OneHourPercentageProps> = ({
   color,
 }) => {
   if (!percentage || isNaN(percentage)) {
-    return (
-      <div className="flex items-center gap-2">
-        <Triangle className="w-5"  />
-        <span className="text-gray-500">0.00%</span>
-      </div>
-    );
+    return null;
   }
 
   return (

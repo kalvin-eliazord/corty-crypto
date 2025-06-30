@@ -43,8 +43,15 @@ export default function Coin() {
       "ethereum"
   );
 
+  const handleArrowsClick = () => {
+    const tempSelectedCoinId = selectedCoinId;
+
+    setSelectedCoinId(randomCoinId);
+    setRandomCoinId(tempSelectedCoinId);
+  };
+
   return (
-    <div className="flex flex-col gap-y-5">
+    <div className="flex flex-col sm:gap-y-5">
       <SegmentedControl
         actions={["Coin", "Convertor"]}
         setSelectedAction={setSelectedAction}
@@ -66,6 +73,7 @@ export default function Coin() {
             setRandomCoinId={setRandomCoinId}
             isError={isError}
             isLoading={isLoading}
+            handleArrowsClick={handleArrowsClick}
           />
 
           <ConvertorChart

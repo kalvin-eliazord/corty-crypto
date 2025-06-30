@@ -1,4 +1,6 @@
 import VerticalHeaderLine from "@/assets/vertical-header-line.svg";
+import VerticalHeaderLineBlack from "@/assets/vertical-header-line-black.svg";
+
 import { Progress } from "@/components/ui/progress";
 
 type MarketItemProps = {
@@ -7,6 +9,7 @@ type MarketItemProps = {
   Icon?: React.ElementType;
   progressBarColor?: string;
   isVerticalHeaderLine: boolean;
+  isThemeDark: boolean;
 };
 
 export const MarketItem = ({
@@ -15,6 +18,7 @@ export const MarketItem = ({
   Icon,
   progressBarColor,
   isVerticalHeaderLine,
+  isThemeDark,
 }: MarketItemProps) => {
   const valueCasted = typeof data === "string" ? parseFloat(data) : data;
 
@@ -28,7 +32,7 @@ export const MarketItem = ({
       )}
 
       <span
-        className={`dark:text-white text-gray-700 ${
+        className={`dark:text-white text-black/50 ${
           progressBarColor ? "value" : "mr-6 value text-nowrap"
         }`}
       >
@@ -41,7 +45,8 @@ export const MarketItem = ({
           )}
         </div>
       )}
-      {isVerticalHeaderLine && <VerticalHeaderLine />}
+      {isVerticalHeaderLine &&
+        (isThemeDark ? <VerticalHeaderLine /> : <VerticalHeaderLineBlack />)}
     </div>
   );
 };

@@ -11,7 +11,7 @@ export type MarketCharts = {
 export type ChartProps = {
   data: MarketCharts | null;
   currency: Currency;
-  coin?: CoinType;
+  selectedCoin?: CoinType | undefined;
 };
 
 export type PricesChart = {

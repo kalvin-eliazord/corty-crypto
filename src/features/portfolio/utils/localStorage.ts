@@ -9,7 +9,7 @@ export const saveToLocalStorage = <T>(key: string, value: T): void => {
 export const loadFromLocalStorage = <T>(key: string): T => {
   try {
     const item = window.localStorage.getItem(key);
-    return item ? JSON.parse(item) as T : {} as T;
+    return item ? (JSON.parse(item) as T) : ({} as T);
   } catch (error) {
     console.warn(`Error loading key "${key}" from localStorage:`, error);
     return {} as T;

@@ -26,6 +26,7 @@
     "@tanstack/react-query-devtools": "^5.80.6",
     "@tanstack/react-query-persist-client": "^5.80.6",
     "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-virtual": "^3.13.12",
     "@types/three": "^0.177.0",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",

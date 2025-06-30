@@ -15,6 +15,7 @@ import { AlertError } from "@/shared/components/AlertError";
 import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
 import { fetchApiClient } from "@/shared/utils/fetchApiClient";
 import { MarketInfo } from "../types/marketInfo";
+import { useTheme } from "next-themes";
 
 const responsiveVisibilityClasses = [
   "hidden sm:flex",
@@ -26,6 +27,7 @@ const responsiveVisibilityClasses = [
 ];
 
 export const MarketCoins = () => {
+  const { resolvedTheme } = useTheme();
   const { code, symbol } = useSelector((state: RootState) => state.currency);
 
   const { data, isLoading, isError, error, refetch } = useSmartQuery({
@@ -94,6 +96,7 @@ export const MarketCoins = () => {
                 name={marketHeader.name}
                 progressBarColor={marketHeader.progressBarColor}
                 isVerticalHeaderLine={i !== marketheaders.length - 1}
+                isThemeDark={resolvedTheme === "dark"}
               />
             </li>
           );

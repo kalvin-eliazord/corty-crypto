@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/shared/store";
 import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -156,10 +157,20 @@ export default function Portfolio() {
     );
   }
 
+  const handleClickTrashBtn = (assetId: string) => {
+    setPortfolio((prev) => {
+      const portfolioFiltered = [...prev].filter(
+        (asset) => asset.id !== assetId
+      );
+      saveToLocalStorage<PortfolioType>("portfolio", portfolioFiltered);
+      return portfolioFiltered;
+    });
+  };
+
   return (
     <>
       <Dialog>
-        <div className="flex justify-between mb-9">
+        <div className="flex justify-between mb-9 sm:mt-0 mt-5">
           <h1 className="text-2xl text-white">Portfolio </h1>
           <DialogTrigger asChild>
             <Button variant="outline" className="z-10 text-white border-white">
@@ -182,9 +193,11 @@ export default function Portfolio() {
               isSearchIcon={false}
               setSelectedCoinId={setSelectedCoinId}
               asLink={false}
+              isNavbar={false}
             />
           </div>
           <Input
+            id="amount"
             type="text"
             inputMode="decimal"
             placeholder="Enter amount"
@@ -238,26 +251,32 @@ export default function Portfolio() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <div>
+      <section>
         <ul>
           {portfolioFiltered &&
-            portfolioFiltered.map((savedCoin) => {
-              const currentValue = savedCoin.amount * savedCoin.current_price;
-              const profit = currentValue - savedCoin.totalCost;
-              const percentage = (profit / savedCoin.totalCost) * 100;
+            portfolioFiltered.map((asset) => {
+              const currentValue = asset.amount * asset.current_price;
+              const profit = currentValue - asset.totalCost;
+              const percentage = (profit / asset.totalCost) * 100;
 
               return (
-                <li key={`${savedCoin.id}-${savedCoin.date}`} className="mb-9">
+                <li key={`${asset.id}-${asset.date}`} className="mb-9 relative">
+                  <div
+                    className="absolute border rounded-full z-20 p-1 bg-white/20 hover:bg-red-500 hover:cursor-pointer right-0 top-0 sm:translate-x-3 -translate-y-2"
+                    onClick={() => handleClickTrashBtn(asset.id)}
+                  >
+                    <Trash2 color="white" />
+                  </div>
                   <BackgroundGradient className=" lg:flex rounded-3xl  dark:bg-[#1E1D23] sm:gap-6 p-5">
                     <div className="w-full flex flex-col gap-y-1 mb-4 lg:mb-0">
                       <div className="flex sm:gap-4 mb-2 sm:mb-7 items-center">
                         <CoinIcon
-                          id={savedCoin.id}
-                          image={savedCoin.image}
+                          id={asset.id}
+                          image={asset.image}
                           tailwindSize={"w-17 h-10"}
                         />
                         <span className="text-white text-xl sm:text-2xl font-medium sm:text-nowrap">
-                          {savedCoin.name} ({savedCoin.symbol.toUpperCase()})
+                          {asset.name} ({asset.symbol.toUpperCase()})
                         </span>
                       </div>
                       <span className="dark:text-white text-gray-200">
@@ -267,10 +286,10 @@ export default function Portfolio() {
                       <div className="flex flex gap-2 ">
                         <span className="text-white text-2xl font-medium text-wrap">
                           {currency.symbol}
-                          {savedCoin.amount &&
-                            savedCoin.current_price &&
+                          {asset.amount &&
+                            asset.current_price &&
                             formatAmountUnit(
-                              savedCoin.amount * savedCoin.current_price
+                              asset.amount * asset.current_price
                             )}
                         </span>
                         {percentage !== 0 && (
@@ -281,30 +300,30 @@ export default function Portfolio() {
                         )}
                       </div>
                       <span className="dark:text-gray-400 text-gray-200 text-sm">
-                        Purchased {savedCoin.date}
+                        Purchased {asset.date}
                       </span>
                     </div>
 
                     <div className="w-full flex flex-col gap-y-4 mb-4 sm:mb-0">
                       <AssetInfo
                         currencySymbol={currency.symbol}
-                        currentPrice={savedCoin.current_price}
+                        currentPrice={asset.current_price}
                         subtitle={"Current price"}
                       />
                       <AssetPercentage
-                        percentage={savedCoin.market_cap_change_percentage_24h}
+                        percentage={asset.market_cap_change_percentage_24h}
                         label={"24h%"}
                       />
                     </div>
                     <div className="w-full flex flex-col gap-y-4">
                       <AssetProgress
-                        dividend={savedCoin.total_volume}
-                        divisor={savedCoin.market_cap}
+                        dividend={asset.total_volume}
+                        divisor={asset.market_cap}
                         label="Market cap vs volume"
                       />
                       <AssetProgress
-                        dividend={savedCoin.circulating_supply}
-                        divisor={savedCoin.total_supply}
+                        dividend={asset.circulating_supply}
+                        divisor={asset.total_supply}
                         label="Circ. vs max supply"
                       />
                     </div>
@@ -328,7 +347,7 @@ export default function Portfolio() {
             refetch={refetchPriceDate}
           />
         )}
-      </div>
+      </section>
     </>
   );
 }

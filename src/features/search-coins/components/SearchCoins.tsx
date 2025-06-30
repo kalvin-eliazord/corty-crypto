@@ -7,18 +7,22 @@ import { CoinsResult } from "./CoinResult";
 import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
 import { fetchApiClient } from "@/shared/utils/fetchApiClient";
 import { SearchResults } from "@/shared/types/coins";
+import { useTheme } from "next-themes";
 
 type SearchCoinsProps = {
   isSearchIcon: boolean;
   asLink: boolean;
   setSelectedCoinId?: (id: string) => void;
+  isNavbar?: boolean;
 };
 
 export const SearchCoins: React.FC<SearchCoinsProps> = ({
   isSearchIcon,
   setSelectedCoinId,
   asLink,
+  isNavbar = true,
 }) => {
+  const { resolvedTheme } = useTheme();
   const [searchCoinInput, setSearchCoinInput] = useState<string>("");
   const [coinSearched, setCoinSearched] = useState<string>("");
   const [isFocused, setIsFocused] = useState(false);
@@ -64,20 +68,30 @@ export const SearchCoins: React.FC<SearchCoinsProps> = ({
 
   const showResults = searchCoinInput.trim() !== "";
 
+  const width = isNavbar ? "sm:w-full" : "w-full";
+
   return (
-    <div className="relative w-10 sm:w-full">
-      <div className="flex items-center w-10 h-9 sm:w-full border border-gray-500 dark:border-white/20 rounded-md dark:bg-input/30 ring-ring/50 focus-within:ring-[3px] ">
+    <div className={`relative w-10 ${width}`}>
+      <div
+        className={`flex items-center w-10 h-9 ${width} border border-gray-500 dark:border-white/20 rounded-md dark:bg-input/30 ring-ring/50 focus-within:ring-[3px] `}
+      >
         {isSearchIcon && (
-          <Search className="pl-2 h-7 w-7 sm:h-7 sm:w-7 text-white flex-shrink-0" />
+          <Search
+            className="pl-2 h-7 w-7 text-white flex-shrink-0"
+            color={resolvedTheme === "light" ? "gray" : "white"}
+          />
         )}
         <Input
+          id="search-coins"
           onBlur={handleOnBlurInput}
           onFocus={handleFocus}
           type="text"
           placeholder="Search coins"
           value={searchCoinInput}
           onChange={handleInputChange}
-          className="border-none absolute top-0 left-0 opacity-0 sm:opacity-100 sm:static sm:w-auto focus-visible:ring-[0px] sm:h-auto"
+          className={`border-none absolute top-0 left-0 opacity-0 ${
+            isNavbar ? "sm:opacity-100" : "opacity-100"
+          }  sm:static sm:w-auto focus-visible:ring-[0px] sm:h-auto`}
         />
       </div>
 

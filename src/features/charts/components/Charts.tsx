@@ -10,10 +10,15 @@ import { AlertError } from "@/shared/components/AlertError";
 type ChartsProps = {
   coinId: string;
   currency: Currency;
-  coin: CoinType | undefined;
+  selectedCoin: CoinType | undefined;
+  setCoinId: (coinId: string) => void;
 };
 
-export const Charts: React.FC<ChartsProps> = ({ coinId, currency, coin }) => {
+export const Charts: React.FC<ChartsProps> = ({
+  coinId,
+  currency,
+  selectedCoin,
+}) => {
   const url =
     currency.code && coinId
       ? `coins/${coinId}/market_chart?vs_currency=${currency.code}&days=180&interval=daily`
@@ -39,21 +44,31 @@ export const Charts: React.FC<ChartsProps> = ({ coinId, currency, coin }) => {
     );
   }
 
-  if (isError) {
+  if (isError || !data) {
     return (
       <AlertError errorName={"Charts"} networkError={error} refetch={refetch} />
     );
   }
 
   return (
-    <div className="flex flex-col flex-1 md:flex-row gap-8  w-full">
-      <div className="flex-1 dark:bg-[#1F1D2280] p-5 rounded-xl border-t border-l border-r border-[#1F1D2280] dark:border-white/10  ">
-        {data && <PriceChart data={data} coin={coin} currency={currency} />}
+    <section
+      className="flex flex-col  md:flex-row gap-8 w-full"
+      aria-labelledby="chart-heading"
+    >
+      <h2 id="chart-heading" className="sr-only">
+        Price and volume charts
+      </h2>
+      <div className=" dark:bg-[#1F1D2280] bg-white/15 p-5 rounded-xl border-t border-l border-r border-white/40 dark:border-white/10  w-full">
+        <PriceChart
+          data={data}
+          selectedCoin={selectedCoin}
+          currency={currency}
+        />
       </div>
 
-      <div className="flex-1 dark:bg-[#1F1D2280] rounded-xl p-5 border-t border-l border-r border-[#1F1D2280] dark:border-white/10 ">
-        {data && <VolumeChart data={data} currency={currency} />}
+      <div className=" dark:bg-[#1F1D2280] bg-white/15 rounded-xl p-5 border-t border-l border-r border-white/40 dark:border-white/10  w-full">
+        <VolumeChart data={data} currency={currency} />
       </div>
-    </div>
+    </section>
   );
 };

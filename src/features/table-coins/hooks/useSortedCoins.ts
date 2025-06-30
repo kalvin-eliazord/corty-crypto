@@ -3,7 +3,7 @@ import { CoinType } from "../../../shared/types/coins";
 import { sortCoins } from "../utils/sortCoins";
 
 export const useSortedCoins = (
-  coins: CoinType[],
+  coins: CoinType[] | undefined,
   sortType: string,
   reverse: boolean
 ) => {

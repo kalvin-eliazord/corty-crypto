@@ -14,6 +14,7 @@ type CoinsConvertorProps = {
   allCoins: CoinType[];
   isError: boolean;
   isLoading: boolean;
+  handleArrowsClick: () => void;
 };
 
 export const CoinsConvertor: React.FC<CoinsConvertorProps> = ({
@@ -25,6 +26,7 @@ export const CoinsConvertor: React.FC<CoinsConvertorProps> = ({
   isLoading,
   setSelectedCoinId,
   setRandomCoinId,
+  handleArrowsClick,
 }) => {
   const { code } = currency;
   const [leftCoinInput, setLeftCoinInput] = useState<string>("1");
@@ -72,7 +74,7 @@ export const CoinsConvertor: React.FC<CoinsConvertorProps> = ({
   };
 
   return (
-    <div className="w-full mb-15">
+    <div className="w-full mb-15 z-20">
       <div className="flex sm:flex-row flex-col items-center justify-between gap-2">
         <CoinConvertorPart
           label={"You sell"}
@@ -86,12 +88,17 @@ export const CoinsConvertor: React.FC<CoinsConvertorProps> = ({
           isLoading={isLoading}
         />
 
-        <ArrowLeftRight
-          width={60}
-          height={60}
-          className="self-center mt-3 transition-transform duration-300 hover:-rotate-36 z-20"
-        />
-
+        <div className="relative">
+          <div className="absolute border bg-white/10 rounded-full p-3 sm:p-2 z-40 left-1/2 -translate-y-1/2 -translate-x-1/2 ">
+            <ArrowLeftRight
+              width={32}
+              height={32}
+              className=" transition-transform duration-300 hover:-rotate-36 z-20 hover:cursor-pointer"
+              onClick={handleArrowsClick}
+              color="white"
+            />
+          </div>
+        </div>
         <CoinConvertorPart
           label={"You buy"}
           currencyCode={code}

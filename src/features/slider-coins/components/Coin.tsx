@@ -24,11 +24,13 @@ export const Coin: React.FC<CoinProps> = ({
     <div className={className} onClick={() => setCoinId(coin.id)}>
       <div className="flex items-center gap-3">
         <CoinIcon id={coin.id} image={coin.image} tailwindSize={"w-8 h-8"} />
-        <div className="flex-1">
-          <span className="text-gray-200 font-medium">
+        <div className="flex-1 hidden sm:block ">
+          <div className="w-40 overflow-hidden">
+          <span className="text-gray-200 font-medium truncate block">
             {coin.name} ({coin.symbol.toUpperCase()})
           </span>
-          <div className="flex gap-2 dark:text-gray-400 text-gray-300">
+          </div>
+          <div className="sm:flex gap-2 dark:text-gray-400 text-gray-300 hidden">
             {formatAmount(coin.current_price)} {currency?.symbol}
             <OneHourPercentage
               percentage={coin.price_change_percentage_1h_in_currency}
@@ -36,8 +38,6 @@ export const Coin: React.FC<CoinProps> = ({
             />
           </div>
         </div>
-
-        <div className="flex items-center gap-1"></div>
       </div>
     </div>
   );

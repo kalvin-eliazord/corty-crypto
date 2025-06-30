@@ -1,10 +1,12 @@
 import { CoinType } from "../../../shared/types/coins";
 
 export const sortCoins = (
-  coins: CoinType[],
+  coins: CoinType[] | undefined,
   sortType: string,
   reverse: boolean
 ): CoinType[] => {
+  if (!coins) return [];
+
   const sorted = coins.toSorted((a, b) => {
     switch (sortType) {
       case "Name":
