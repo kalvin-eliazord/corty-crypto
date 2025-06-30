@@ -260,14 +260,14 @@ export default function Portfolio() {
               const percentage = (profit / asset.totalCost) * 100;
 
               return (
-                <li key={`${asset.id}-${asset.date}`} className="mb-9 relative">
+                <li key={`${asset.id}-${asset.date}`} className="mb-9 relative ">
                   <div
                     className="absolute border rounded-full z-20 p-1 bg-white/20 hover:bg-red-500 hover:cursor-pointer right-0 top-0 sm:translate-x-3 -translate-y-2"
                     onClick={() => handleClickTrashBtn(asset.id)}
                   >
                     <Trash2 color="white" />
                   </div>
-                  <BackgroundGradient className=" lg:flex rounded-3xl  dark:bg-[#1E1D23] sm:gap-6 p-5">
+                  <BackgroundGradient className=" lg:flex rounded-3xl bg-white/30 dark:bg-[#1E1D23] sm:gap-6 p-5 shadow-2xl">
                     <div className="w-full flex flex-col gap-y-1 mb-4 lg:mb-0">
                       <div className="flex sm:gap-4 mb-2 sm:mb-7 items-center">
                         <CoinIcon

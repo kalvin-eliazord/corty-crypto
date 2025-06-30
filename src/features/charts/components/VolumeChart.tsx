@@ -18,7 +18,7 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
           data={total_volumes}
-          barSize={20}
+          maxBarSize={20}
           margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
         >
           <defs>

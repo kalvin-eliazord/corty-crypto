@@ -73,7 +73,7 @@ export default function Home() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full">
+      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full ">
         <SelectedCoinPanel
           coinId={coinId}
           currency={currency}

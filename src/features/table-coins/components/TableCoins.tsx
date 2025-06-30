@@ -67,13 +67,13 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
 
   return (
     <div className="w-full rounded-xl overflow-y-hidden ">
-      <Table className=" w-full">
+      <Table className=" w-full ">
         <TableHeader>
           <TableRow>
             {tableHeaders.map((header, i) => (
               <TableHead
                 key={header}
-                className={`border-b dark:border-white/10 border-white/20 text-gray-300 dark:text-[#B9B8BB] ${responsiveTableStyles[i]} p-5`}
+                className={`border-b dark:border-white/10 border-white/20 text-gray-300 dark:text-[#B9B8BB]  ${responsiveTableStyles[i]} p-5`}
                 onClick={() => handleSort(header)}
               >
                 <span className="hover:cursor-pointer"> {header}</span>
@@ -81,11 +81,11 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
             ))}
           </TableRow>
         </TableHeader>
-        <TableBody className="dark:bg-[#1F1D2280] bg-white/15 dark:border-white/10 border-white/20 border-l border-r">
+        <TableBody className="dark:bg-[#1F1D2280] bg-white/15 dark:border-white/10 border-white/20 border-l border-r ">
           {sortedCoins.map((coin, i) => (
             <TableRow
               key={coin.id}
-              className="dark:border-white/10 border-white/20"
+              className="dark:border-white/10 border-white/20 "
             >
               <TableCell className="text-gray-300 dark:text-[#B9B8BB] p-5">
                 {i + 1}

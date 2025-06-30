@@ -82,7 +82,7 @@ export const MarketCoins = () => {
 
   return (
     <div className="w-full">
-      <ul className="flex sm:gap-8 gap-4 overflow-hidden bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 border-t border-b border--600 ">
+      <ul className="flex sm:gap-8 gap-4 overflow-hidden bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 border-t border-b border--600 shadow-lg">
         {marketheaders.map((marketHeader, i) => {
           const visibilityClass = responsiveVisibilityClasses[i] || "hidden";
           return (
