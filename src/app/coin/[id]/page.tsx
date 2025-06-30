@@ -4,14 +4,13 @@ import { useParams } from "next/navigation";
 import { RootState } from "@/shared/store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { ConvertorChart } from "@/features/charts/components/ConvertorChart";
-import { CoinsConvertor } from "@/features/convertor-coins/components/CoinsConvertor";
 import { SegmentedControl } from "@/features/details-coin/components/SegmentedControl";
 import { CoinDetails } from "@/features/details-coin/components/CoinDetails";
 import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
 import { AlertError } from "@/shared/components/AlertError";
 import { fetchApiClient } from "@/shared/utils/fetchApiClient";
 import { CoinType } from "@/shared/types/coins";
+import CoinsConvertorWithChart from "@/features/convertor-coins/components/CoinsConvertorWithChart";
 
 export default function Coin() {
   const params = useParams();
@@ -40,7 +39,7 @@ export default function Coin() {
   const [randomCoinId, setRandomCoinId] = useState<string>(
     (allCoins &&
       allCoins[Math.floor(Math.random() * allCoins.length - 1)].id) ||
-      "ethereum"
+      "bitcoin"
   );
 
   const handleArrowsClick = () => {
@@ -63,26 +62,17 @@ export default function Coin() {
       )}
 
       {selectedAction === "Convertor" && allCoins && (
-        <>
-          <CoinsConvertor
-            selectedCoinId={selectedCoinId}
-            setSelectedCoinId={setSelectedCoinId}
-            currency={currency}
-            allCoins={allCoins}
-            randomCoinId={randomCoinId}
-            setRandomCoinId={setRandomCoinId}
-            isError={isError}
-            isLoading={isLoading}
-            handleArrowsClick={handleArrowsClick}
-          />
-
-          <ConvertorChart
-            selectedCoinId={selectedCoinId}
-            currency={currency}
-            allCoins={allCoins}
-            randomCoinId={randomCoinId}
-          />
-        </>
+        <CoinsConvertorWithChart
+          selectedCoinId={selectedCoinId}
+          setSelectedCoinId={setSelectedCoinId}
+          currency={currency}
+          allCoins={allCoins}
+          randomCoinId={randomCoinId}
+          setRandomCoinId={setRandomCoinId}
+          isError={isError}
+          isLoading={isLoading}
+          handleArrowsClick={handleArrowsClick}
+        />
       )}
       {isError && (
         <AlertError
