@@ -150,8 +150,10 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
                   color={coin.market_cap_change_24h > 0 ? "#1CB385" : "#FF5252"}
                 />
                 <Progress
-                  indicatorColor={
-                    coin.market_cap_change_24h > 0 ? "green" : "red"
+                  color={
+                    coin.market_cap_change_24h > 0
+                      ? "bg-[#1CB385]"
+                      : "bg-[#FF5252]"
                   }
                   value={(coin.total_volume / coin.market_cap) * 100}
                   className="sm:max-w-[200px]"
@@ -167,7 +169,7 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
                   color={"#43FFC7"}
                 />
                 <Progress
-                  indicatorColor="green2"
+                  color="bg-[#43FFC7]"
                   value={(coin.circulating_supply / coin.total_supply) * 100}
                   className="sm:max-w-[200px]"
                 />

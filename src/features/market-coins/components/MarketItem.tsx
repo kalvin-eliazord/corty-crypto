@@ -40,9 +40,7 @@ export const MarketItem = ({
       </span>
       {progressBarColor && (
         <div className="mr-5 h-2 w-24 bg-gray-600 rounded-full overflow-hidden">
-          {progressBarColor && (
-            <Progress indicatorColor={progressBarColor} value={valueCasted} />
-          )}
+          <Progress color={progressBarColor} value={valueCasted} />
         </div>
       )}
       {isVerticalHeaderLine &&

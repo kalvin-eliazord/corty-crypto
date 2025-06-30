@@ -57,12 +57,12 @@ export const MarketCoins = () => {
     {
       Icon: Btc,
       data: `${Math.floor(btcMarketCapPercentage)}%`,
-      progressBarColor: "orange",
+      progressBarColor: "bg-orange-400",
     },
     {
       Icon: Eth,
       data: `${Math.floor(ethMarketCapPercentage)}%`,
-      progressBarColor: "blue",
+      progressBarColor: "bg-blue-400",
     },
   ];
 
