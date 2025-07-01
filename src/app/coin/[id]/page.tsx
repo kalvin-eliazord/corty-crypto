@@ -69,7 +69,7 @@ export default function Coin() {
           allCoins={allCoins}
           randomCoinId={randomCoinId}
           setRandomCoinId={setRandomCoinId}
-          isError={isError}
+          errorResponse={{ isError, refetch, error }}
           isLoading={isLoading}
           handleArrowsClick={handleArrowsClick}
         />
