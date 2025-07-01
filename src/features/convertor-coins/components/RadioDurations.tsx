@@ -21,8 +21,8 @@ export const RadioDurations: React.FC<RadioDurationsProps> = ({
   return (
     <RadioGroup
       value={days}
-      onValueChange={setDays}
       className="flex sm:gap-7 gap-6.5 mb-5 "
+      onValueChange={setDays}
     >
       {Object.entries(durations).map(([key, value]) => (
         <div

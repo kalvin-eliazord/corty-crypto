@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/shared/store";
@@ -260,7 +261,10 @@ export default function Portfolio() {
               const percentage = (profit / asset.totalCost) * 100;
 
               return (
-                <li key={`${asset.id}-${asset.date}`} className="mb-9 relative ">
+                <li
+                  key={`${asset.id}-${asset.date}`}
+                  className="mb-9 relative "
+                >
                   <div
                     className="absolute border rounded-full z-20 p-1 bg-white/20 hover:bg-red-500 hover:cursor-pointer right-0 top-0 sm:translate-x-3 -translate-y-2"
                     onClick={() => handleClickTrashBtn(asset.id)}
@@ -275,9 +279,13 @@ export default function Portfolio() {
                           image={asset.image}
                           tailwindSize={"w-17 h-10"}
                         />
-                        <span className="text-white text-xl sm:text-2xl font-medium sm:text-nowrap">
+
+                        <Link
+                          className="text-white text-xl sm:text-2xl font-medium sm:text-nowrap hover:text-white/50"
+                          href={`/coin/${asset.id}`}
+                        >
                           {asset.name} ({asset.symbol.toUpperCase()})
-                        </span>
+                        </Link>
                       </div>
                       <span className="dark:text-white text-gray-200">
                         Amount
