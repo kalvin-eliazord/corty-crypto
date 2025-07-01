@@ -1,7 +1,8 @@
-
 import { CoinType, Currency } from "@/shared/types/coins";
 import { CoinsConvertor } from "./CoinsConvertor";
 import { ConvertorChart } from "@/features/charts/components/ConvertorChart";
+import { AlertError } from "@/shared/components/AlertError";
+import { ErrorResponse } from "@/shared/types/error";
 
 interface CoinsConvertorWithChartProps {
   selectedCoinId: string;
@@ -10,7 +11,7 @@ interface CoinsConvertorWithChartProps {
   allCoins: CoinType[];
   randomCoinId: string;
   setRandomCoinId: (id: string) => void;
-  isError: boolean;
+  errorResponse: ErrorResponse;
   isLoading: boolean;
   handleArrowsClick: () => void;
 }
@@ -22,12 +23,24 @@ const CoinsConvertorWithChart: React.FC<CoinsConvertorWithChartProps> = ({
   allCoins,
   randomCoinId,
   setRandomCoinId,
-  isError,
+  errorResponse,
   isLoading,
   handleArrowsClick,
 }) => {
+  const { isError, refetch, error } = errorResponse;
+
+  if (isError || !allCoins || allCoins.length === 0) {
+    return (
+      <AlertError
+        errorName={"Coins Convert and Chart"}
+        networkError={error}
+        refetch={refetch}
+      />
+    );
+  }
+
   return (
-    <section >
+    <section>
       <CoinsConvertor
         selectedCoinId={selectedCoinId}
         setSelectedCoinId={setSelectedCoinId}
