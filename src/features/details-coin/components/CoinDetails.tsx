@@ -13,7 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { ResponsiveContainer, XAxis, Area, AreaChart } from "recharts";
+import { ResponsiveContainer, XAxis, Area, AreaChart, YAxis } from "recharts";
 import { formatHourlyPrices } from "../utils/formatHourlyPrices";
 import { useEffect, useRef, useState } from "react";
 import { AssetProgress } from "@/features/portfolio/components/AssetProgress";
@@ -68,8 +68,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
     toast.success(`${blockchainSite} saved into clipboard!`);
   }
 
-  const weeklyPrices =
-    data && formatHourlyPrices(data.market_data.sparkline_7d.price);
+  const weeklyPrices = formatHourlyPrices(data?.market_data.sparkline_7d.price);
 
   const chartConfig = {
     coinAmount: {
@@ -227,6 +226,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
                                 />
                               </linearGradient>
                             </defs>
+                            <YAxis domain={["dataMin", "dataMax"]} hide />
 
                             <XAxis
                               interval={0}

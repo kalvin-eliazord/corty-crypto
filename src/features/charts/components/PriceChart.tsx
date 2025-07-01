@@ -1,5 +1,12 @@
 import React from "react";
-import { XAxis, AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  XAxis,
+  AreaChart,
+  Area,
+  Tooltip,
+  ResponsiveContainer,
+  YAxis,
+} from "recharts";
 import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 import { ChartProps } from "../types/charts";
@@ -39,6 +46,8 @@ export const PriceChart: React.FC<ChartProps> = ({
             axisLine={false}
             tickLine={false}
           />
+          <YAxis domain={["dataMin", "dataMax"]} hide />
+
           <Tooltip
             cursor={{ fill: "transparent" }}
             contentStyle={{

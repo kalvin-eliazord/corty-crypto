@@ -109,7 +109,7 @@ export const ConvertorChart: React.FC<ConvertorChartProps> = ({
   }
 
   return (
-    <div className="w-full z-20">
+    <div className="w-full z-40">
       <RadioDurations setDays={setDays} days={days} />
 
       <BackgroundGradient className=" rounded-3xl dark:bg-zinc-900 gap-6  ">

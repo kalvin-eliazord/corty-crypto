@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Area, AreaChart, ResponsiveContainer } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, YAxis } from "recharts";
 import { Progress } from "@/components/ui/progress";
 import { formatAmount, formatAmountUnit } from "@/shared/utils/formatAmount";
 import { CoinType, Currency } from "@/shared/types/coins";
@@ -169,56 +169,51 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
                 />
               </TableCell>
 
-              <TableCell
-                className={responsiveTableStyles[8] + " w-40  max-h-[25px]"}
-              >
-                <ResponsiveContainer
-                  width="100%"
-                  height={50}
-                  className=" max-h-[70px]"
-                >
-                  <AreaChart
-                    data={coin.sparkline_in_7d.price.map((price) => ({
-                      price,
-                    }))}
-                  >
-                    <defs>
-                      <linearGradient
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                        id={`pricesGradient${coin.id}`}
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor={getColorPriceChange(
-                            coin.price_change_percentage_7d_in_currency
-                          )}
-                          stopOpacity={0.5}
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor={getColorPriceChange(
-                            coin.price_change_percentage_7d_in_currency
-                          )}
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
-
-                    <Area
-                      type="monotone"
-                      dataKey="price"
-                      stroke={getColorPriceChange(
-                        coin.price_change_percentage_7d_in_currency
-                      )}
-                      fillOpacity={1}
-                      fill={`url(#pricesGradient${coin.id})`}
-                      strokeWidth={3}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+              <TableCell className={responsiveTableStyles[8] + " w-40"}>
+                <div className="h-15">
+                  <ResponsiveContainer width="100%" height={"100%"}>
+                    <AreaChart
+                      data={coin.sparkline_in_7d.price.map((price) => ({
+                        price,
+                      }))}
+                    >
+                      <defs>
+                        <linearGradient
+                          id={`pricesGradient${coin.id}`}
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="50%"
+                            stopColor={getColorPriceChange(
+                              coin.price_change_percentage_7d_in_currency
+                            )}
+                            stopOpacity={0.5}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor={getColorPriceChange(
+                              coin.price_change_percentage_7d_in_currency
+                            )}
+                            stopOpacity={0}
+                          />
+                        </linearGradient>
+                      </defs>
+                      <Area
+                        type="monotone"
+                        dataKey="price"
+                        stroke={getColorPriceChange(
+                          coin.price_change_percentage_7d_in_currency
+                        )}
+                        fill={`url(#pricesGradient${coin.id})`}
+                        strokeWidth={0.5}
+                      />
+                      <YAxis domain={["dataMin", "dataMax"]} hide />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
               </TableCell>
             </TableRow>
           ))}

@@ -20,21 +20,16 @@ export const RadioDurations: React.FC<RadioDurationsProps> = ({
 }) => {
   return (
     <RadioGroup
-      defaultValue={durations["7d"]}
-      className="flex sm:gap-7 gap-6.5 mb-5 z-20"
-      onValueChange={(value) => setDays(value)}
+      value={days}
+      onValueChange={setDays}
+      className="flex sm:gap-7 gap-6.5 mb-5 "
     >
       {Object.entries(durations).map(([key, value]) => (
         <div
           key={key}
           className="flex items-center space-x-2 flex-wrap sm:gap-y-0 gap-y-4 text-white"
         >
-          <RadioGroupItem
-            value={value}
-            id={key}
-            className="bg-gray-300"
-            checked={days === value}
-          />
+          <RadioGroupItem value={value} id={key} className="bg-gray-300" />
           <Label htmlFor={key}>{key}</Label>
         </div>
       ))}
