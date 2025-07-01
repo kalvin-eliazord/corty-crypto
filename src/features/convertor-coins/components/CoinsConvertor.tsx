@@ -74,7 +74,7 @@ export const CoinsConvertor: React.FC<CoinsConvertorProps> = ({
   };
 
   return (
-    <div className="w-full mb-15 z-20">
+    <div className="w-full z-20">
       <div className="flex sm:flex-row flex-col items-center justify-between gap-2">
         <CoinConvertorPart
           label={"You sell"}

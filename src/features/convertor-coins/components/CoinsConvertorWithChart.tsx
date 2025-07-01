@@ -40,7 +40,7 @@ const CoinsConvertorWithChart: React.FC<CoinsConvertorWithChartProps> = ({
   }
 
   return (
-    <section className="z-20">
+    <section className="flex flex-col gap-40 z-20">
       <CoinsConvertor
         selectedCoinId={selectedCoinId}
         setSelectedCoinId={setSelectedCoinId}

@@ -149,7 +149,7 @@ export default function Portfolio() {
         {Array.from({ length: 3 }, (_, i) => (
           <div
             key={i}
-            className="flex flex-col flex-1 md:flex-row gap-8 w-full dark:bg-[#1F1D2280] p-5 rounded-3xl border-t border-l border-r mb-8"
+            className="flex flex-col flex-1 md:flex-row gap-8 w-full dark:bg-[#1F1D2280] p-5 rounded-3xl mb-8"
           >
             <Skeleton className="h-50 w-full rounded-3xl" />
           </div>
