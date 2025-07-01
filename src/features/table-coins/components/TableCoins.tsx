@@ -90,17 +90,17 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
               <TableCell className="text-gray-300 dark:text-[#B9B8BB] p-5">
                 {i + 1}
               </TableCell>
-              <TableCell>
+              <TableCell >
                 <Link
                   href={`/coin/${coin.id}`}
-                  className="flex gap-2 font-medium  items-center"
+                  className="flex gap-2 font-medium  items-center w-45"
                 >
                   <CoinIcon
                     id={coin.id}
                     image={coin.image}
                     tailwindSize={"w-8 h-8"}
                   />
-                  <span className="text-xs text-wrap sm:text-nowrap sm:text-base text-white">
+                  <span className="text-xs text-wrap sm:text-nowrap sm:text-base text-white truncate">
                     {coin.name}
                   </span>
                   <span className="hidden 2xl:block text-white">
