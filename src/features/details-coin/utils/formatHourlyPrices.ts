@@ -27,22 +27,3 @@ export const formatHourlyPrices = (
 
   return dailyAverages;
 };
-
-export const formatWeeklyPrices = (hourlyPrices: number[] | undefined) => {
-  if (!hourlyPrices || hourlyPrices.length !== 168) return [];
-
-  const dailyAverages = [];
-
-  for (let day = 0; day < 7; day++) {
-    const start = day * 24;
-    const end = start + 24;
-
-    const daySlice = hourlyPrices.slice(start, end);
-    const sum = daySlice.reduce((acc, curr) => acc + curr, 0);
-    const average = sum / 24;
-
-    dailyAverages.push({ price: average });
-  }
-
-  return dailyAverages;
-};
