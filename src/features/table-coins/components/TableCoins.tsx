@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
-import { getSparklineStrokeColor } from "../utils/getSparklineStrokeColor";
 import { Progress } from "@/components/ui/progress";
 import { formatAmount, formatAmountUnit } from "@/shared/utils/formatAmount";
 import { CoinType, Currency } from "@/shared/types/coins";
@@ -17,6 +16,7 @@ import { OneHourPercentage } from "@/shared/components/OneHourPercentage";
 import { ValuesWithEllipses } from "@/shared/components/ValuesWithEllipses";
 import { CoinIcon } from "@/shared/components/CoinIcon";
 import { useState } from "react";
+import { getColorPriceChange } from "../utils/getColorPriceChange";
 
 export const tableHeaders = [
   "#",
@@ -114,31 +114,25 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
               <TableCell className={responsiveTableStyles[3]}>
                 <OneHourPercentage
                   percentage={coin.price_change_percentage_1h_in_currency}
-                  color={
-                    coin.price_change_percentage_1h_in_currency > 0
-                      ? "#43FFC7"
-                      : "#FF5252"
-                  }
+                  color={getColorPriceChange(
+                    coin.price_change_percentage_1h_in_currency
+                  )}
                 />
               </TableCell>
               <TableCell className={responsiveTableStyles[4]}>
                 <OneHourPercentage
                   percentage={coin.price_change_percentage_24h_in_currency}
-                  color={
-                    coin.price_change_percentage_24h_in_currency > 0
-                      ? "#43FFC7"
-                      : "#FF5252"
-                  }
+                  color={getColorPriceChange(
+                    coin.price_change_percentage_24h_in_currency
+                  )}
                 />
               </TableCell>
               <TableCell className={responsiveTableStyles[5]}>
                 <OneHourPercentage
                   percentage={coin.price_change_percentage_7d_in_currency}
-                  color={
-                    coin.price_change_percentage_7d_in_currency > 0
-                      ? "#43FFC7"
-                      : "#FF5252"
-                  }
+                  color={getColorPriceChange(
+                    coin.price_change_percentage_7d_in_currency
+                  )}
                 />
               </TableCell>
               <TableCell className={responsiveTableStyles[6]}>
@@ -198,15 +192,15 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
                       >
                         <stop
                           offset="0%"
-                          stopColor={getSparklineStrokeColor(
-                            coin.sparkline_in_7d.price
+                          stopColor={getColorPriceChange(
+                            coin.price_change_percentage_7d_in_currency
                           )}
                           stopOpacity={0.5}
                         />
                         <stop
                           offset="100%"
-                          stopColor={getSparklineStrokeColor(
-                            coin.sparkline_in_7d.price
+                          stopColor={getColorPriceChange(
+                            coin.price_change_percentage_7d_in_currency
                           )}
                           stopOpacity={0}
                         />
@@ -216,8 +210,8 @@ export const TableCoins: React.FC<TableCoinsProps> = ({
                     <Area
                       type="monotone"
                       dataKey="price"
-                      stroke={getSparklineStrokeColor(
-                        coin.sparkline_in_7d.price
+                      stroke={getColorPriceChange(
+                        coin.price_change_percentage_7d_in_currency
                       )}
                       fillOpacity={1}
                       fill={`url(#pricesGradient${coin.id})`}
