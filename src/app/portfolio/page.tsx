@@ -1,5 +1,16 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -265,12 +276,34 @@ export default function Portfolio() {
                   key={`${asset.id}-${asset.date}`}
                   className="mb-9 relative "
                 >
-                  <div
-                    className="absolute border rounded-full z-20 p-1 bg-white/20 hover:bg-red-500 hover:cursor-pointer right-0 top-0 sm:translate-x-3 -translate-y-2"
-                    onClick={() => handleClickTrashBtn(asset.id)}
-                  >
-                    <Trash2 color="white" />
-                  </div>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <div className="absolute border rounded-full z-20 p-1 bg-white/20 hover:bg-red-500 hover:cursor-pointer right-0 top-0 sm:translate-x-2 translate-y-2">
+                        <Trash2 color="white" />
+                      </div>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Do you really want to delete this asset ?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="dark:text-gray-400 text-white/80">
+                          This action cannot be undone. This will permanently
+                          delete your <span className="font-bold text-white">{asset.name}</span> asset.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="text-white border-white">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleClickTrashBtn(asset.id)}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                   <BackgroundGradient className=" lg:flex rounded-3xl bg-white/30 dark:bg-[#1E1D23] sm:gap-6 p-5 shadow-2xl">
                     <div className="w-full flex flex-col gap-y-1 mb-4 lg:mb-0">
                       <div className="flex sm:gap-4 mb-2 sm:mb-7 items-center">

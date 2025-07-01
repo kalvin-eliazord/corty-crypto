@@ -45,24 +45,45 @@ export const MarketCoins = () => {
   } = selectMarketData(data, code);
 
   const marketheaders = [
-    { Icon: FlashCircle, data: activeCryptos.toString(), name: "Coins" },
-    { Icon: Exchange, data: exchanges.toString(), name: "Exchange" },
+    {
+      Icon: FlashCircle,
+      data: activeCryptos.toString(),
+      name: "Coins",
+      toolTipContent:
+        "Number of cryptocurrencies currently active on the market.",
+    },
+    {
+      Icon: Exchange,
+      data: exchanges.toString(),
+      name: "Exchange",
+      toolTipContent: "Number of cryptocurrency exchanges currently tracked.",
+    },
     {
       Icon: totalMarketCap > 0 ? GreenTriangle : RedTriangle,
       data: formatTrillionAmount(totalMarketCap),
+      toolTipContent:
+        "Combined market capitalization of all cryptocurrencies, in " +
+        code.toUpperCase(),
     },
     {
       data: `${symbol} ${formatNumberWithUnits(totalVolume)}`,
+      toolTipContent:
+        "Total trading volume across all cryptocurrencies in the last 24 hours, in " +
+        code.toUpperCase(),
     },
     {
       Icon: Btc,
       data: `${Math.floor(btcMarketCapPercentage)}%`,
       progressBarColor: "bg-orange-400",
+      toolTipContent:
+        "Bitcoin's share of the total cryptocurrency market capitalization.",
     },
     {
       Icon: Eth,
       data: `${Math.floor(ethMarketCapPercentage)}%`,
       progressBarColor: "bg-blue-400",
+      toolTipContent:
+        "Ethereum's share of the total cryptocurrency market capitalization.",
     },
   ];
 
@@ -97,6 +118,7 @@ export const MarketCoins = () => {
                 progressBarColor={marketHeader.progressBarColor}
                 isVerticalHeaderLine={i !== marketheaders.length - 1}
                 isThemeDark={resolvedTheme === "dark"}
+                toolTipContent={marketHeader.toolTipContent}
               />
             </li>
           );
