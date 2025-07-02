@@ -9,9 +9,11 @@ export type MarketCharts = {
 };
 
 export type ChartProps = {
-  data: MarketCharts | null;
+  selectedCoinData: MarketCharts | null;
+  comparedCoinData?: MarketCharts | null;
   currency: Currency;
   selectedCoin?: CoinType | undefined;
+  comparedCoin?: CoinType | null;
 };
 
 export type PricesChart = {

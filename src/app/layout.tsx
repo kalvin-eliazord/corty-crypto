@@ -32,7 +32,7 @@ export default function RootLayout({
               <ThemeProvider>
                 <Navbar />
                 <ReactQueryDevtools initialIsOpen={false} />
-                <AuroraBackground className="p-2 sm:p-12 sm:px-46 flex-1 ">
+                <AuroraBackground className="p-2 sm:p-12 lg:px-46 flex-1 ">
                   {children}
                 </AuroraBackground>
               </ThemeProvider>

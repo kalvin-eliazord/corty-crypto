@@ -14,7 +14,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
-  const [coinId, setCoinId] = useState<string>("bitcoin");
   const [allCoinsStacked, setAllCoinsStacked] = useState<CoinType[]>([]);
   const [page, setPage] = useState<number>(1);
   const tempPage = useRef<number>(page);
@@ -74,12 +73,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full ">
-        <SelectedCoinPanel
-          coinId={coinId}
-          currency={currency}
-          allCoins={allCoinsStacked}
-          setCoinId={setCoinId}
-        />
+        <SelectedCoinPanel currency={currency} allCoins={allCoins} />
 
         <div className="w-full">
           <InfiniteScroll

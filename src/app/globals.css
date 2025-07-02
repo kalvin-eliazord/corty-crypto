@@ -23,12 +23,6 @@ html {
 
 @custom-variant dark (&:is(.dark *));
 
-@media (max-width: 375px) {
-  .coin-mobile-hide {
-    display: none;
-  }
-}
-
 @theme inline {
   --animate-aurora: aurora 60s linear infinite;
   @keyframes aurora {

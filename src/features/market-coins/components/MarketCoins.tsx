@@ -90,7 +90,7 @@ export const MarketCoins = () => {
   if (isLoading) {
     return (
       <div className="w-full  ">
-        <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 border-t border-b border-black-600 sm:px-55">
+        <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 border-t border-b border-black-600 sm:px-35">
           {Array.from({ length: 6 }, (_, i) => (
             <li className="sm:first:ml-10" key={i}>
               <Skeleton className="h-7 w-20 rounded" />
@@ -103,7 +103,7 @@ export const MarketCoins = () => {
 
   return (
     <div className="w-full">
-      <ul className="flex sm:gap-8 gap-4 overflow-hidden bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 border-t border-b border--600 shadow-lg sm:px-38">
+      <ul className="flex sm:gap-8 gap-4 overflow-hidden bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400  border-t border-b border--600 shadow-lg py-4 p-3 lg:px-35">
         {marketheaders.map((marketHeader, i) => {
           const visibilityClass = responsiveVisibilityClasses[i] || "hidden";
           return (

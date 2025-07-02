@@ -3,30 +3,39 @@ import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 import { ChartProps } from "../types/charts";
 import { formatAmountUnit } from "@/shared/utils/formatAmount";
+import { getLastPrice } from "../utils/getLastPrice";
+import { useMemo } from "react";
 
-export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
-  const total_volumes = formatMarketChart(data?.total_volumes);
-  const lastVolume = data?.total_volumes[data.total_volumes.length - 1][1];
+export const VolumeChart: React.FC<ChartProps> = ({
+  selectedCoinData,
+  comparedCoinData,
+  currency,
+}) => {
+  const coinsVolumes = useMemo(() => {
+    return formatMarketChart(
+      selectedCoinData?.total_volumes,
+      comparedCoinData?.total_volumes
+    );
+  }, [selectedCoinData?.total_volumes, comparedCoinData?.total_volumes]);
 
   return (
-    <div className=" dark:bg-[#1F1D2280] bg-white/15 rounded-xl p-5 border-t border-l border-r border-white/40 dark:border-white/10 shadow-xl w-full h-full">
-      {total_volumes && (
-        <HeaderChart
-          name={"Volume 24h"}
-          marketChart={lastVolume}
-          currency={currency}
-        />
-      )}
-      <div className="h-60">
+    <div className=" dark:bg-[#1F1D2280] bg-white/15 rounded-xl p-5 border-t border-l border-r border-white/40 dark:border-white/10 shadow-xl w-full h-full ">
+      <HeaderChart
+        name={"Volume 24h"}
+        selectedCoinMainValueChart={getLastPrice(
+          selectedCoinData?.total_volumes
+        )}
+        comparedCoinDataMainValueChart={getLastPrice(
+          comparedCoinData?.total_volumes
+        )}
+        currency={currency}
+      />
+      <div className="h-60 mt-1">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={total_volumes}
-            maxBarSize={35}
-            margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
-          >
+          <BarChart data={coinsVolumes} maxBarSize={35}>
             <defs>
               <linearGradient
-                id="amountVolumeGradient"
+                id="firstAmountVolGradient"
                 x1="0"
                 y1="0"
                 x2="0"
@@ -35,6 +44,19 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
                 <stop offset="0%" stopColor="#71DDD8" stopOpacity={1} />
                 <stop offset="100%" stopColor="#568AC7" stopOpacity={1} />
               </linearGradient>
+
+              {comparedCoinData && (
+                <linearGradient
+                  id="comparedAmountVolGradient"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop offset="0%" stopColor="#FF6B6B" stopOpacity={0.5} />
+                  <stop offset="100%" stopColor="#1F1F38" stopOpacity={0.2} />
+                </linearGradient>
+              )}
             </defs>
 
             <XAxis
@@ -61,10 +83,18 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
               }}
             />
             <Bar
-              dataKey="amount"
-              fill="url(#amountVolumeGradient)"
+              dataKey="firstAmount"
+              fill="url(#firstAmountVolGradient)"
               radius={3}
             />
+
+            {comparedCoinData && (
+              <Bar
+                dataKey="comparedAmount"
+                fill="url(#comparedAmountVolGradient)"
+                radius={3}
+              />
+            )}
           </BarChart>
         </ResponsiveContainer>
       </div>

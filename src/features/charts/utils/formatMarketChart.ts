@@ -1,11 +1,23 @@
 import { format } from "date-fns";
 import { TimeAndAmount } from "../types/charts";
 
-export const formatMarketChart = (allTimeAndAmounts: TimeAndAmount[] = []) => {
-  if (allTimeAndAmounts.length === 0) return [];
+export const formatMarketChart = (
+  firstCoinSet: TimeAndAmount[] = [],
+  comparedCoinSet?: TimeAndAmount[]
+) => {
+  if (!firstCoinSet || firstCoinSet.length === 0) return [];
 
-  return allTimeAndAmounts.slice(-30).map(([timestamp, amount]) => ({
-    day: format(new Date(timestamp), "dd"),
-    amount: parseFloat(amount.toFixed(2)),
-  }));
+  return firstCoinSet.slice(-30).map(([timestamp, amount], i) => {
+    const day = format(new Date(timestamp), "dd");
+    const firstAmount = parseFloat(amount.toFixed(2));
+    const comparedAmount = comparedCoinSet?.[i]?.[1];
+
+    return {
+      day,
+      firstAmount,
+      comparedAmount: comparedAmount
+        ? parseFloat(comparedAmount.toFixed(2))
+        : 0,
+    };
+  });
 };

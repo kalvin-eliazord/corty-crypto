@@ -13,8 +13,8 @@ const pages = [
 export const Navbar = () => {
   return (
     <>
-      <div className="bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 sm:px-38">
-        <div className="mx-auto flex justify-between md:px-10 ">
+      <div className="bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 py-4 lg:px-42 sm:px-12 px-2">
+        <div className="mx-auto flex justify-between  ">
           <div className="flex items-center gap-3 sm:gap-6 ">
             <div className="hidden sm:block sm:w-13 sm:h-13">
               <Logo className="w-full h-full" />

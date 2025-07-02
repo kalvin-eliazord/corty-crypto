@@ -65,7 +65,7 @@ export const CurrencySelector = () => {
           aria-expanded="false"
           className="flex items-center gap-2 bg-gray-800/50 text-white hover:bg-gray-700/50 justify-between"
         >
-          <div className="coin-mobile-hide">
+          <div className="hidden sm:block">
             <Coin />
           </div>
           <span>{code.toUpperCase()}</span>

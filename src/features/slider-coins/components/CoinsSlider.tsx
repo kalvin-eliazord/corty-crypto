@@ -16,13 +16,19 @@ import { AlertError } from "@/shared/components/AlertError";
 type CoinsSliderProps = {
   coinId: string;
   setCoinId(coinId: string): void;
+  comparedCoinId?: string;
+  setComparedCoinId?(coinId: string): void;
   currency: Currency;
+  isToggled: boolean;
 };
 
 export const CoinsSlider: React.FC<CoinsSliderProps> = ({
   coinId,
   setCoinId,
   currency,
+  comparedCoinId,
+  setComparedCoinId,
+  isToggled,
 }: CoinsSliderProps) => {
   const url = currency.code
     ? `coins/markets?vs_currency=${currency.code}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
@@ -50,46 +56,54 @@ export const CoinsSlider: React.FC<CoinsSliderProps> = ({
     );
   }
 
-  if (isError) {
-    <AlertError
-      errorName={"Coins Slider"}
-      networkError={error}
-      refetch={refetch}
-    />;
+  if (isError || !allCoins) {
+    return (
+      <AlertError
+        errorName={"Coins Slider"}
+        networkError={error}
+        refetch={refetch}
+      />
+    );
   }
+  const currentCoinId =
+    isToggled && comparedCoinId !== undefined ? comparedCoinId : coinId;
+
+  const currentSetCoinId =
+    isToggled && setComparedCoinId !== undefined
+      ? setComparedCoinId
+      : setCoinId;
 
   return (
-    <div className="w-full sm:mt-0 mt-5 ">
+    <div className="w-full">
       <Carousel
         opts={{
           align: "start",
         }}
       >
         <CarouselContent>
-          {allCoins &&
-            allCoins.map((coin: CoinType) => (
-              <CarouselItem key={coin.id} className="basis-auto">
-                {coinId === coin.id ? (
-                  <BackgroundGradient rounded="lg" isBlurred={false}>
-                    <Coin
-                      coinId={coinId}
-                      setCoinId={setCoinId}
-                      coin={coin}
-                      className="py-[7px] dark:border-t"
-                      currency={currency}
-                    />
-                  </BackgroundGradient>
-                ) : (
+          {allCoins.map((coin: CoinType) => (
+            <CarouselItem key={coin.id} className="basis-auto">
+              {coinId === coin.id || comparedCoinId === coin.id ? (
+                <BackgroundGradient rounded="lg" isBlurred={false}>
                   <Coin
-                    coinId={coinId}
+                    coinId={currentCoinId}
+                    setCoinId={currentSetCoinId}
                     coin={coin}
-                    setCoinId={setCoinId}
-                    className="py-2 opacity-80 dark:opacity-80 dark:hover:opacity-100 hover:opacity-100 bg-gray-700"
+                    className="py-[7px] dark:border-t"
                     currency={currency}
                   />
-                )}
-              </CarouselItem>
-            ))}
+                </BackgroundGradient>
+              ) : (
+                <Coin
+                  coinId={currentCoinId}
+                  setCoinId={currentSetCoinId}
+                  coin={coin}
+                  className="py-2 dark:bg-white/10 hover:bg-gray-500 dark:hover:bg-white/30 bg-gray-700"
+                  currency={currency}
+                />
+              )}
+            </CarouselItem>
+          ))}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
