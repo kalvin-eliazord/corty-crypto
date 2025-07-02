@@ -84,7 +84,7 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
   const headersData = data && formatHeadersData(data, currency);
 
   const formattedCurrentPrice = formatAmount(
-    data?.market_data.current_price[currency.code]
+    data?.market_data.current_price[currency.code] || 0
   );
 
   const priceChangePercentage =

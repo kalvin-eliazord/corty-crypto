@@ -1,5 +1,5 @@
-export const formatAmountUnit = (amount: number | null | undefined): string  => {
-  if (!amount || isNaN(amount)) {
+export const formatAmountUnit = (amount: number): string => {
+  if (amount === null || isNaN(amount)) {
     console.warn("Invalid input: amount must be a valid number.");
     return "";
   }
@@ -28,10 +28,8 @@ export const formatAmountUnit = (amount: number | null | undefined): string  => 
   );
 };
 
-export const formatAmount = (
-  amount: number | null | undefined
-): string => {
-  if (!amount || isNaN(amount)) {
+export const formatAmount = (amount: number): string => {
+  if (amount === null || isNaN(amount)) {
     console.warn("Invalid input: amount must be a valid number.");
     return "";
   }

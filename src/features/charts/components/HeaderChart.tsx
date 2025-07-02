@@ -1,12 +1,11 @@
 import { format } from "date-fns";
 import { formatAmountUnit } from "@/shared/utils/formatAmount";
 import { CoinType, Currency } from "@/shared/types/coins";
-import { PricesChart } from "../types/charts";
 import { CoinIcon } from "@/shared/components/CoinIcon";
 
 type HeaderProps = {
   name: string | undefined;
-  marketChart: PricesChart;
+  marketChart: number | undefined;
   currency: Currency;
   selectedCoin?: CoinType | undefined;
 };
@@ -18,13 +17,17 @@ export const HeaderChart: React.FC<HeaderProps> = ({
   selectedCoin,
 }) => {
   const todayDate = format(new Date(), "MMMM d, yyyy");
-  const formattedMarketChart = formatAmountUnit(marketChart.amount);
+  const formattedMarketChart = formatAmountUnit(marketChart || 0);
 
   return (
     <div>
       {selectedCoin ? (
         <div className="flex gap-4 mb-6">
-          <CoinIcon id={selectedCoin.id} image={selectedCoin.image} tailwindSize={"w-8 h-8"} />
+          <CoinIcon
+            id={selectedCoin.id}
+            image={selectedCoin.image}
+            tailwindSize={"w-8 h-8"}
+          />
           <h1 className="text-white/70 dark:text-[#B9B8BB] text-xl ">{name}</h1>
         </div>
       ) : (

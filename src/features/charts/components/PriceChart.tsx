@@ -17,13 +17,14 @@ export const PriceChart: React.FC<ChartProps> = ({
   selectedCoin,
 }) => {
   const prices = formatMarketChart(data?.prices);
+  const lastPrice = data?.prices[data.prices.length - 1][1];
 
   return (
     <div className=" dark:bg-[#1F1D2280] bg-white/15 p-5 rounded-xl border-t border-l border-r border-white/40 dark:border-white/10  w-full shadow-xl h-full">
       {prices && (
         <HeaderChart
           name={selectedCoin?.symbol.toUpperCase()}
-          marketChart={prices[prices.length - 1]}
+          marketChart={lastPrice}
           currency={currency}
           selectedCoin={selectedCoin}
         />

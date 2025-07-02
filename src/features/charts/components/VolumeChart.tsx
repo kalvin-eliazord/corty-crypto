@@ -5,13 +5,14 @@ import { ChartProps } from "../types/charts";
 
 export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
   const total_volumes = formatMarketChart(data?.total_volumes);
-  console.log("totalvolumes: ", total_volumes);
+  const lastVolume = data?.total_volumes[data.total_volumes.length-1][1]
+
   return (
     <div className=" dark:bg-[#1F1D2280] bg-white/15 rounded-xl p-5 border-t border-l border-r border-white/40 dark:border-white/10 shadow-xl w-full h-full">
       {total_volumes && (
         <HeaderChart
           name={"Volume 24h"}
-          marketChart={total_volumes[total_volumes.length - 1]}
+          marketChart={lastVolume}
           currency={currency}
         />
       )}

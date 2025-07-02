@@ -16,7 +16,7 @@ export type ChartProps = {
 
 export type PricesChart = {
   day: string;
-  amount: number;
+  amount: number | null;
 };
 
 export type PricesCharts = {
