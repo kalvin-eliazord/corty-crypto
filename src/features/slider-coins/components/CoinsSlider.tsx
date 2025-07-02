@@ -31,7 +31,7 @@ export const CoinsSlider: React.FC<CoinsSliderProps> = ({
   isToggled,
 }: CoinsSliderProps) => {
   const url = currency.code
-    ? `coins/markets?vs_currency=${currency.code}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+    ? `coins/markets?vs_currency=${currency.code}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     : "";
 
   const {
@@ -46,25 +46,25 @@ export const CoinsSlider: React.FC<CoinsSliderProps> = ({
     enabled: !!url,
   });
 
-  if (isLoading) {
+  if (isLoading || isError || !allCoins) {
     return (
-      <div className="w-full flex gap-x-8 p-3">
-        {Array.from({ length: 10 }, (_, i) => (
-          <Skeleton className="h-12 w-full rounded mr-8" key={i} />
-        ))}
-      </div>
+      <>
+        <div className="w-full flex gap-x-8 p-3">
+          {Array.from({ length: 10 }, (_, i) => (
+            <Skeleton className="h-12 w-full rounded mr-8" key={i} />
+          ))}
+        </div>
+        {isError && (
+          <AlertError
+            errorName={"Coins Slider"}
+            networkError={error}
+            refetch={refetch}
+          />
+        )}
+      </>
     );
   }
 
-  if (isError || !allCoins) {
-    return (
-      <AlertError
-        errorName={"Coins Slider"}
-        networkError={error}
-        refetch={refetch}
-      />
-    );
-  }
   const currentCoinId =
     isToggled && comparedCoinId !== undefined ? comparedCoinId : coinId;
 

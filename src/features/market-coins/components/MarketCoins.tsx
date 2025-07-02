@@ -87,17 +87,26 @@ export const MarketCoins = () => {
     },
   ];
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return (
-      <div className="w-full  ">
-        <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 border-t border-b border-black-600 sm:px-35">
-          {Array.from({ length: 6 }, (_, i) => (
-            <li className="sm:first:ml-10" key={i}>
-              <Skeleton className="h-7 w-20 rounded" />
-            </li>
-          ))}
-        </ul>
-      </div>
+      <>
+        <div className="w-full  ">
+          <ul className="flex gap-x-8 p-2 dark:bg-slate-800 bg-gradient-to-r dark:from-orange-900 dark:via-purple-900 dark:via-blue-900 dark:to-indigo-900 from-gray-400 to-gray-300 via-blue-100 to-gray-400 p-4 border-t border-b border-black-600 sm:px-35">
+            {Array.from({ length: 6 }, (_, i) => (
+              <li className="sm:first:ml-10" key={i}>
+                <Skeleton className="h-7 w-20 rounded" />
+              </li>
+            ))}
+          </ul>
+        </div>
+        {isError && (
+          <AlertError
+            errorName={"Market coins"}
+            networkError={error}
+            refetch={refetch}
+          />
+        )}
+      </>
     );
   }
 
@@ -124,14 +133,6 @@ export const MarketCoins = () => {
           );
         })}
       </ul>
-
-      {isError && (
-        <AlertError
-          errorName={"Market coins"}
-          networkError={error}
-          refetch={refetch}
-        />
-      )}
     </div>
   );
 };
