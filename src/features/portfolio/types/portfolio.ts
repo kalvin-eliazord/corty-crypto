@@ -24,6 +24,6 @@ export type UniqueAsset = {
   [key: string]: {
     amount: number;
     date: string;
-    totalCost: number;
+    totalCost?: number;
   };
 };
