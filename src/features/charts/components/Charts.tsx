@@ -58,17 +58,8 @@ export const Charts: React.FC<ChartsProps> = ({
       <h2 id="chart-heading" className="sr-only">
         Price and volume charts
       </h2>
-      <div className=" dark:bg-[#1F1D2280] bg-white/15 p-5 rounded-xl border-t border-l border-r border-white/40 dark:border-white/10  w-full shadow-xl" >
-        <PriceChart
-          data={data}
-          selectedCoin={selectedCoin}
-          currency={currency}
-        />
-      </div>
-
-      <div className=" dark:bg-[#1F1D2280] bg-white/15 rounded-xl p-5 border-t border-l border-r border-white/40 dark:border-white/10 shadow-xl w-full">
-        <VolumeChart data={data} currency={currency} />
-      </div>
+      <PriceChart data={data} selectedCoin={selectedCoin} currency={currency} />
+      <VolumeChart data={data} currency={currency} />
     </section>
   );
 };

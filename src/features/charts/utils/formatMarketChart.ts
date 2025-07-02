@@ -1,5 +1,6 @@
 import { format } from "date-fns";
-import { PricesChart, PricesCharts, TimeAndAmount } from "../types/charts";
+import { PricesChart, TimeAndAmount } from "../types/charts";
+import { formatAmountUnit } from "@/shared/utils/formatAmount";
 
 export const formatMarketChart = (
   allTimeAndAmounts: TimeAndAmount[] = []
@@ -15,7 +16,7 @@ export const formatMarketChart = (
 export const formatMarketCharts = (
   coinTimeAmounts: TimeAndAmount[] | undefined,
   currencyTimeAmounts: TimeAndAmount[] | undefined
-): PricesCharts[] => {
+) => {
   if (
     !coinTimeAmounts ||
     coinTimeAmounts.length === 0 ||
@@ -26,7 +27,7 @@ export const formatMarketCharts = (
 
   return coinTimeAmounts.map(([timestamp, coinAmount], i) => ({
     day: format(new Date(timestamp), "dd"),
-    coinAmount,
+    coinAmount: formatAmountUnit(coinAmount),
     currencyAmount: currencyTimeAmounts[i][1],
   }));
 };

@@ -5,9 +5,9 @@ import { ChartProps } from "../types/charts";
 
 export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
   const total_volumes = formatMarketChart(data?.total_volumes);
-
+  console.log("totalvolumes: ", total_volumes);
   return (
-    <>
+    <div className=" dark:bg-[#1F1D2280] bg-white/15 rounded-xl p-5 border-t border-l border-r border-white/40 dark:border-white/10 shadow-xl w-full h-full">
       {total_volumes && (
         <HeaderChart
           name={"Volume 24h"}
@@ -15,42 +15,48 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
           currency={currency}
         />
       )}
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart
-          data={total_volumes}
-          maxBarSize={35}
-          margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
-        >
-          <defs>
-            <linearGradient
-              id="amountVolumeGradient"
-              x1="0"
-              y1="0"
-              x2="0"
-              y2="1"
-            >
-              <stop offset="0%" stopColor="#71DDD8" stopOpacity={1} />
-              <stop offset="100%" stopColor="#568AC7" stopOpacity={1} />
-            </linearGradient>
-          </defs>
+      <div className="h-60">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={total_volumes}
+            maxBarSize={35}
+            margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient
+                id="amountVolumeGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#71DDD8" stopOpacity={1} />
+                <stop offset="100%" stopColor="#568AC7" stopOpacity={1} />
+              </linearGradient>
+            </defs>
 
-          <XAxis
-            dataKey="day"
-            axisLine={false}
-            stroke="#D0D0D1"
-            tickLine={false}
-          />
-          <Tooltip
-            cursor={{ fill: "transparent" }}
-            contentStyle={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "#fff",
-            }}
-          />
-          <Bar dataKey="amount" fill="url(#amountVolumeGradient)" radius={3} />
-        </BarChart>
-      </ResponsiveContainer>
-    </>
+            <XAxis
+              dataKey="day"
+              axisLine={false}
+              stroke="#D0D0D1"
+              tickLine={false}
+            />
+            <Tooltip
+              cursor={{ fill: "transparent" }}
+              contentStyle={{
+                backgroundColor: "transparent",
+                border: "none",
+                color: "#fff",
+              }}
+            />
+            <Bar
+              dataKey="amount"
+              fill="url(#amountVolumeGradient)"
+              radius={3}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   );
 };
