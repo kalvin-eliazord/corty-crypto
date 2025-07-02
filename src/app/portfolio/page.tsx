@@ -44,7 +44,6 @@ import {
   Asset,
   PortfolioType,
   FinalizedAsset,
-  AllCoinsFinalized,
 } from "@/features/portfolio/types/portfolio";
 import { fetchPricePerDate } from "@/features/portfolio/utils/fetchPricePerDate";
 import { formatAsset } from "@/features/portfolio/utils/formatAsset";
@@ -56,6 +55,8 @@ import { useSmartQuery } from "@/shared/hooks/useSmartQuery";
 import { AlertError } from "@/shared/components/AlertError";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchApiClient } from "@/shared/utils/fetchApiClient";
+import { removeDuplicates } from "@/features/portfolio/utils/removeDuplicates";
+import { isValidCoin } from "@/features/portfolio/utils/isValidCoin";
 
 export default function Portfolio() {
   const [selectedCoinId, setSelectedCoinId] = useState<string>("");
@@ -66,18 +67,23 @@ export default function Portfolio() {
   const [portfolio, setPortfolio] = useLocalStorage<PortfolioType>("portfolio");
   const [finalizedAsset, setFinalizedAsset] = useState<FinalizedAsset>({});
 
-  const url = currency.code
-    ? `coins/markets?vs_currency=${currency.code}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
-    : "";
+  const uniqueAssets = removeDuplicates(portfolio);
+
+  const url =
+    currency.code && uniqueAssets
+      ? `coins/markets?vs_currency=${currency.code}&ids=${Object.keys(
+          uniqueAssets
+        ).join(",")}`
+      : "";
 
   const {
-    data: allCoins,
+    data: coinsData,
     isLoading: isLoadingAllCoins,
     isError: isErrorAllCoins,
     error: errorAllCoins,
     refetch: refetchAllCoins,
   } = useSmartQuery({
-    queryKey: ["allCoinsMarket", url],
+    queryKey: ["coinsData", url],
     queryFn: () => fetchApiClient<CoinType[]>(url),
     enabled: !!url,
   });
@@ -89,9 +95,9 @@ export default function Portfolio() {
     error: errorPriceDate,
     refetch: refetchPriceDate,
   } = useSmartQuery({
-    queryKey: ["pricesPerDate", portfolio, currency.code, allCoins],
-    queryFn: () => fetchPricePerDate(portfolio, currency.code, allCoins),
-    enabled: !!currency.code && !!portfolio && !!allCoins,
+    queryKey: ["pricesPerDate", portfolio, currency.code, coinsData],
+    queryFn: () => fetchPricePerDate(portfolio, currency.code, coinsData),
+    enabled: !!currency.code && !!portfolio && !!coinsData,
   });
 
   useEffect(() => {
@@ -100,15 +106,6 @@ export default function Portfolio() {
     const finalizedAsset = formatAsset(pricesPerDate);
     setFinalizedAsset(finalizedAsset);
   }, [pricesPerDate]);
-
-  const portfolioFiltered: AllCoinsFinalized[] | undefined =
-    allCoins &&
-    finalizedAsset &&
-    allCoins
-      .filter((coin: CoinType) => coin.id in finalizedAsset)
-      .map((coin: CoinType) => {
-        return { ...coin, ...finalizedAsset[coin.id] };
-      });
 
   const handleSaveBtnClick = () => {
     if (!date || !selectedCoinId || !parseFloat(amountInput)) return;
@@ -265,117 +262,120 @@ export default function Portfolio() {
       </Dialog>
       <section>
         <ul>
-          {portfolioFiltered &&
-            portfolioFiltered.map((asset) => {
-              const currentValue = asset.amount * asset.current_price;
-              const profit = currentValue - asset.totalCost;
-              const percentage = (profit / asset.totalCost) * 100;
+          {Object.keys(finalizedAsset).map((assetId) => {
+            const asset = finalizedAsset[assetId];
+            if (!isValidCoin(asset)) {
+              return null;
+            }
 
-              return (
-                <li
-                  key={`${asset.id}-${asset.date}`}
-                  className="mb-9 relative "
-                >
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <div className="absolute border rounded-full z-20 p-1 bg-white/20 hover:bg-red-500 hover:cursor-pointer right-0 top-0 sm:translate-x-2 translate-y-2">
-                        <Trash2 color="white" />
-                      </div>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Do you really want to delete this asset ?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription className="dark:text-gray-400 text-white/80">
-                          This action cannot be undone. This will permanently
-                          delete your <span className="font-bold text-white">{asset.name}</span> asset.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel className="text-white border-white">
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleClickTrashBtn(asset.id)}
-                        >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                  <BackgroundGradient className=" lg:flex rounded-3xl bg-white/30 dark:bg-[#1E1D23] sm:gap-6 p-5 shadow-2xl">
-                    <div className="w-full flex flex-col gap-y-1 mb-4 lg:mb-0">
-                      <div className="flex sm:gap-4 mb-2 sm:mb-7 items-center">
-                        <CoinIcon
-                          id={asset.id}
-                          image={asset.image}
-                          tailwindSize={"w-17 h-10"}
+            const currentValue = asset.amount * asset.current_price;
+            const profit = currentValue - asset.totalCost;
+            const percentage = (profit / asset.totalCost) * 100;
+
+            return (
+              <li key={`${assetId}-${asset.date}`} className="mb-9 relative ">
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <div className="absolute border rounded-full z-20 p-1 bg-white/20 hover:bg-red-500 hover:cursor-pointer right-0 top-0 sm:translate-x-2 translate-y-2">
+                      <Trash2 color="white" />
+                    </div>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Do you really want to delete this asset ?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription className="dark:text-gray-400 text-white/80">
+                        This action cannot be undone. This will permanently
+                        delete your{" "}
+                        <span className="font-bold text-white">
+                          {asset.name}
+                        </span>{" "}
+                        asset.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="text-white border-white">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleClickTrashBtn(assetId)}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                <BackgroundGradient className=" lg:flex rounded-3xl bg-white/30 dark:bg-[#1E1D23] sm:gap-6 p-5 shadow-2xl">
+                  <div className="w-full flex flex-col gap-y-1 mb-4 lg:mb-0">
+                    <div className="flex sm:gap-4 mb-2 sm:mb-7 items-center">
+                      <CoinIcon
+                        id={assetId}
+                        image={asset.image}
+                        tailwindSize={"w-17 h-10"}
+                      />
+
+                      <Link
+                        className="text-white text-xl sm:text-2xl font-medium sm:text-nowrap hover:text-white/50"
+                        href={`/coin/${assetId}`}
+                      >
+                        {asset.name} ({asset.symbol.toUpperCase()})
+                      </Link>
+                    </div>
+                    <span className="dark:text-white text-gray-200">
+                      Amount
+                    </span>
+
+                    <div className="flex flex gap-2 ">
+                      <span className="text-white text-2xl font-medium text-wrap">
+                        {currency.symbol}
+                        {asset.amount &&
+                          asset.current_price &&
+                          formatAmountUnit(asset.amount * asset.current_price)}
+                      </span>
+                      {percentage !== 0 && (
+                        <OneHourPercentage
+                          percentage={percentage}
+                          color={percentage > 0 ? "#43FFC7" : "#FF5252"}
                         />
-
-                        <Link
-                          className="text-white text-xl sm:text-2xl font-medium sm:text-nowrap hover:text-white/50"
-                          href={`/coin/${asset.id}`}
-                        >
-                          {asset.name} ({asset.symbol.toUpperCase()})
-                        </Link>
-                      </div>
-                      <span className="dark:text-white text-gray-200">
-                        Amount
-                      </span>
-
-                      <div className="flex flex gap-2 ">
-                        <span className="text-white text-2xl font-medium text-wrap">
-                          {currency.symbol}
-                          {asset.amount &&
-                            asset.current_price &&
-                            formatAmountUnit(
-                              asset.amount * asset.current_price
-                            )}
-                        </span>
-                        {percentage !== 0 && (
-                          <OneHourPercentage
-                            percentage={percentage}
-                            color={percentage > 0 ? "#43FFC7" : "#FF5252"}
-                          />
-                        )}
-                      </div>
-                      <span className="dark:text-gray-400 text-gray-200 text-sm">
-                        Purchased {asset.date}
-                      </span>
+                      )}
                     </div>
+                    <span className="dark:text-gray-400 text-gray-200 text-sm">
+                      Purchased {asset.date}
+                    </span>
+                  </div>
 
-                    <div className="w-full flex flex-col gap-y-4 mb-4 sm:mb-0">
-                      <AssetInfo
-                        currencySymbol={currency.symbol}
-                        currentPrice={asset.current_price}
-                        subtitle={"Current price"}
-                      />
-                      <AssetPercentage
-                        percentage={asset.market_cap_change_percentage_24h}
-                        label={"24h%"}
-                      />
-                    </div>
-                    <div className="w-full flex flex-col gap-y-4">
-                      <AssetProgress
-                        dividend={asset.total_volume}
-                        divisor={asset.market_cap}
-                        label="Market cap vs volume"
-                      />
-                      <AssetProgress
-                        dividend={asset.circulating_supply}
-                        divisor={asset.total_supply}
-                        label="Circ. vs max supply"
-                      />
-                    </div>
-                  </BackgroundGradient>
-                </li>
-              );
-            })}
+                  <div className="w-full flex flex-col gap-y-4 mb-4 sm:mb-0">
+                    <AssetInfo
+                      currencySymbol={currency.symbol}
+                      currentPrice={asset.current_price}
+                      subtitle={"Current price"}
+                    />
+                    <AssetPercentage
+                      percentage={asset.market_cap_change_percentage_24h}
+                      label={"24h%"}
+                    />
+                  </div>
+                  <div className="w-full flex flex-col gap-y-4">
+                    <AssetProgress
+                      dividend={asset.total_volume}
+                      divisor={asset.market_cap}
+                      label="Market cap vs volume"
+                    />
+                    <AssetProgress
+                      dividend={asset.circulating_supply}
+                      divisor={asset.total_supply}
+                      label="Circ. vs max supply"
+                    />
+                  </div>
+                </BackgroundGradient>
+              </li>
+            );
+          })}
         </ul>
         {isErrorAllCoins && (
           <AlertError
-            errorName={"All coins market"}
+            errorName={"Coins data"}
             networkError={errorAllCoins}
             refetch={refetchAllCoins}
           />

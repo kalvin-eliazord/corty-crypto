@@ -1,11 +1,10 @@
-import { Asset, FinalizedAsset } from "../types/portfolio";
+import { PricePerDateAsset, FinalizedAsset } from "../types/portfolio";
 
-export const formatAsset = (pricesPerDate: Asset[]): FinalizedAsset => {
+export const formatAsset = (pricesPerDate: PricePerDateAsset[]) => {
   return pricesPerDate.reduce((acc, asset) => {
     if (!acc[asset.id]) {
       acc[asset.id] = {
-        amount: asset.amount,
-        date: asset.date,
+        ...asset,
         totalCost: asset.totalCost ?? asset.amount,
       };
     } else {
