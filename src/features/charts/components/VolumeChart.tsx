@@ -2,10 +2,11 @@ import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 import { ChartProps } from "../types/charts";
+import { formatAmountUnit } from "@/shared/utils/formatAmount";
 
 export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
   const total_volumes = formatMarketChart(data?.total_volumes);
-  const lastVolume = data?.total_volumes[data.total_volumes.length-1][1]
+  const lastVolume = data?.total_volumes[data.total_volumes.length - 1][1];
 
   return (
     <div className=" dark:bg-[#1F1D2280] bg-white/15 rounded-xl p-5 border-t border-l border-r border-white/40 dark:border-white/10 shadow-xl w-full h-full">
@@ -45,9 +46,18 @@ export const VolumeChart: React.FC<ChartProps> = ({ data, currency }) => {
             <Tooltip
               cursor={{ fill: "transparent" }}
               contentStyle={{
-                backgroundColor: "transparent",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
                 border: "none",
-                color: "#fff",
+                color: "white",
+                borderRadius: "5px",
+                backdropFilter: "blur(3px)",
+              }}
+              formatter={(value: number) => {
+                return [
+                  `${currency.symbol}${formatAmountUnit(value)}
+                  `,
+                  "Volume",
+                ];
               }}
             />
             <Bar

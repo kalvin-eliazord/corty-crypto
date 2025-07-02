@@ -10,6 +10,7 @@ import {
 import { HeaderChart } from "./HeaderChart";
 import { formatMarketChart } from "../utils/formatMarketChart";
 import { ChartProps } from "../types/charts";
+import { formatAmountUnit } from "@/shared/utils/formatAmount";
 
 export const PriceChart: React.FC<ChartProps> = ({
   data,
@@ -20,7 +21,7 @@ export const PriceChart: React.FC<ChartProps> = ({
   const lastPrice = data?.prices[data.prices.length - 1][1];
 
   return (
-    <div className=" dark:bg-[#1F1D2280] bg-white/15 p-5 rounded-xl border-t border-l border-r border-white/40 dark:border-white/10  w-full shadow-xl h-full">
+    <div className=" dark:bg-[#1F1D2280] bg-white/15 p-5 rounded-xl border-t border-l border-r border-white/40 dark:border-white/10 w-full shadow-xl h-full">
       {prices && (
         <HeaderChart
           name={selectedCoin?.symbol.toUpperCase()}
@@ -49,9 +50,18 @@ export const PriceChart: React.FC<ChartProps> = ({
             <Tooltip
               cursor={{ fill: "transparent" }}
               contentStyle={{
-                backgroundColor: "transparent",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
                 border: "none",
-                color: "#fff",
+                color: "white",
+                borderRadius: "5px",
+                backdropFilter: "blur(3px)",
+              }}
+              formatter={(value: number) => {
+                return [
+                  `${currency.symbol}${formatAmountUnit(value)}
+    `,
+                  "Price",
+                ];
               }}
             />
             <Area

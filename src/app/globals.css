@@ -9,6 +9,18 @@ html {
   scroll-behavior: smooth;
 }
 
+.recharts-tooltip-item-separator {
+  color: white !important;
+}
+
+.recharts-tooltip-item-name {
+  color: white !important;
+}
+
+.recharts-tooltip-item-value {
+  color: white !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @media (max-width: 375px) {
@@ -18,20 +30,16 @@ html {
 }
 
 @theme inline {
-    --animate-aurora: aurora 60s linear infinite;
+  --animate-aurora: aurora 60s linear infinite;
   @keyframes aurora {
     from {
-      background-position:
-        50% 50%,
-        50% 50%;
+      background-position: 50% 50%, 50% 50%;
     }
     to {
-      background-position:
-        350% 50%,
-        350% 50%;
+      background-position: 350% 50%, 350% 50%;
     }
   }
-  
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -78,8 +86,8 @@ html {
 }
 
 :root {
-  --background: 0 0% 100%;   
-  --foreground: 0 0% 0%;  
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
   --radius: 0.625rem;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -142,8 +150,8 @@ html {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --background: 0 0% 10%;     
-  --foreground: 0 0% 90%; 
+  --background: 0 0% 10%;
+  --foreground: 0 0% 90%;
 }
 
 @layer base {
