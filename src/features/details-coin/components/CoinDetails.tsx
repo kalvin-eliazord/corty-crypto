@@ -51,8 +51,19 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
     }
   }, [data?.description.en, isReadMore]);
 
-  if (isLoading) {
-    return <CoinDetailsSkeleton />;
+  if (isLoading || isError || !data) {
+    return (
+      <>
+        <CoinDetailsSkeleton />
+        {isError && (
+          <AlertError
+            errorName={"Coin details"}
+            networkError={error}
+            refetch={refetch}
+          />
+        )}
+      </>
+    );
   }
 
   const toggleReadMore = () => {
@@ -91,16 +102,6 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
     data?.market_data.price_change_percentage_1h_in_currency[currency.code];
   const color =
     priceChangePercentage && priceChangePercentage > 0 ? "#43FFC7" : "#FF5252";
-
-  if (isError || !data) {
-    return (
-      <AlertError
-        errorName={"Coin details"}
-        networkError={error}
-        refetch={refetch}
-      />
-    );
-  }
 
   return (
     <div className=" w-full h-full flex sm:flex-col">

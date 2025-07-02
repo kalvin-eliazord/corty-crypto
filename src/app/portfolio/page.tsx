@@ -151,17 +151,38 @@ export default function Portfolio() {
     }, 250);
   };
 
-  if (isLoadingAllCoins || isLoadingPriceData) {
+  if (
+    isLoadingAllCoins ||
+    isLoadingPriceData ||
+    isErrorAllCoins ||
+    isErrorPriceDate
+  ) {
     return (
       <>
         {Array.from({ length: 3 }, (_, i) => (
           <div
             key={i}
-            className="flex flex-col flex-1 md:flex-row gap-8 w-full dark:bg-[#1F1D2280] p-5 rounded-3xl mb-8"
+            className="flex flex-col flex-1 md:flex-row gap-8 w-full dark:bg-[#1F1D2280] p-5 rounded-3xl mb-8 border-white/20"
           >
             <Skeleton className="h-50 w-full rounded-3xl" />
           </div>
         ))}
+
+        {isErrorAllCoins && (
+          <AlertError
+            errorName={"Coins data"}
+            networkError={errorAllCoins}
+            refetch={refetchAllCoins}
+          />
+        )}
+
+        {isErrorPriceDate && (
+          <AlertError
+            errorName={"Price per date"}
+            networkError={errorPriceDate}
+            refetch={refetchPriceDate}
+          />
+        )}
       </>
     );
   }
@@ -373,21 +394,6 @@ export default function Portfolio() {
             );
           })}
         </ul>
-        {isErrorAllCoins && (
-          <AlertError
-            errorName={"Coins data"}
-            networkError={errorAllCoins}
-            refetch={refetchAllCoins}
-          />
-        )}
-
-        {isErrorPriceDate && (
-          <AlertError
-            errorName={"Price per date"}
-            networkError={errorPriceDate}
-            refetch={refetchPriceDate}
-          />
-        )}
       </section>
     </>
   );

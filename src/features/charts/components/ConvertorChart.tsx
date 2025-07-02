@@ -100,11 +100,33 @@ export const ConvertorChart: React.FC<ConvertorChartProps> = ({
     },
   };
 
-  if (isLoadingSelectCoin || isLoadingRandomCoin) {
+  if (
+    isLoadingSelectCoin ||
+    isLoadingRandomCoin ||
+    !isErrorSelectCoin ||
+    !isErrorRandomCoin
+  ) {
     return (
-      <div className="  dark:bg-[#1F1D2280] w-full rounded-3xl">
-        <Skeleton className="h-80 w-full rounded-3xl" />
-      </div>
+      <>
+        <div className="  dark:bg-[#1F1D2280] w-full rounded-3xl">
+          <Skeleton className="h-80 w-full rounded-3xl" />
+        </div>
+        {isErrorSelectCoin && (
+          <AlertError
+            errorName={"Selected coin chart"}
+            networkError={errorSelectCoin}
+            refetch={refetchSelectCoin}
+          />
+        )}
+
+        {isErrorRandomCoin && (
+          <AlertError
+            errorName={"Random coin chart"}
+            networkError={errorRandomCoin}
+            refetch={refetchRandomCoin}
+          />
+        )}
+      </>
     );
   }
 
@@ -173,20 +195,6 @@ export const ConvertorChart: React.FC<ConvertorChartProps> = ({
           </CardContent>
         </Card>
       </BackgroundGradient>
-      {isErrorRandomCoin && (
-        <AlertError
-          errorName={"Random coin chart"}
-          networkError={errorRandomCoin}
-          refetch={refetchRandomCoin}
-        />
-      )}
-      {isErrorSelectCoin && (
-        <AlertError
-          errorName={"Selected coin chart"}
-          networkError={errorSelectCoin}
-          refetch={refetchSelectCoin}
-        />
-      )}
     </div>
   );
 };

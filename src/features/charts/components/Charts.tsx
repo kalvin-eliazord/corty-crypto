@@ -56,7 +56,8 @@ export const Charts: React.FC<ChartsProps> = ({
     isLoadingSelected ||
     (comparedCoin && isLoadingCompared) ||
     isErrorSelected ||
-    !selectedCoinData
+    !selectedCoinData ||
+    isErrorCompared
   ) {
     return (
       <>
@@ -79,16 +80,6 @@ export const Charts: React.FC<ChartsProps> = ({
               />
             )))}
       </>
-    );
-  }
-
-  if (comparedCoin && (isErrorCompared || !comparedCoinData)) {
-    return (
-      <AlertError
-        errorName={"Charts (compared coin)"}
-        networkError={errorCompared}
-        refetch={refetchCompared}
-      />
     );
   }
 
