@@ -240,6 +240,12 @@ export const CoinDetails = ({ selectedCoinId }: { selectedCoinId: string }) => {
                             <ChartTooltip
                               cursor={false}
                               content={<ChartTooltipContent indicator="dot" />}
+                              formatter={(value: number) => {
+                                return [
+                                  `${currency.symbol}${formatAmountUnit(value)}
+                                  `,
+                                ];
+                              }}
                             />
                             <Area
                               type="monotone"
