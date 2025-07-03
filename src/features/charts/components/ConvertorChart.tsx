@@ -103,8 +103,8 @@ export const ConvertorChart: React.FC<ConvertorChartProps> = ({
   if (
     isLoadingSelectCoin ||
     isLoadingRandomCoin ||
-    !isErrorSelectCoin ||
-    !isErrorRandomCoin
+    isErrorSelectCoin ||
+    isErrorRandomCoin
   ) {
     return (
       <>
