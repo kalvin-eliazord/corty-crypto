@@ -88,8 +88,8 @@ export const SelectedCoinPanel = ({
         {isToggled && selectedCoin && (
           <CoinBadge
             coin={selectedCoin}
-            hover={!!comparedCoinId && !!comparedCoin}
-            onClick={handleMainCoinClick}
+            hover={!!selectedCoin && !!comparedCoin}
+            onClick={comparedCoin && handleMainCoinClick}
           />
         )}
 
