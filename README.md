@@ -1,33 +1,34 @@
-# Crypto Portfolio Tracker
+# 📊 Crypto Portfolio Tracker
 
-A full-stack cryptocurrency portfolio tracker built with Next.js, React 18, Redux Toolkit, and React Query.  
-Track your crypto holdings with historical purchase dates, live prices from CoinGecko, and performance metrics.
-
----
-
-## Features
-
-- Add assets with specific purchase date and amount  
-- Fetch real-time coin prices and market data via CoinGecko API  
-- Track portfolio value, profit/loss, and percentage changes  
-- Persist portfolio data and React Query cache using localStorage  
-- Responsive UI with dark mode support via TailwindCSS  
-- Modular, reusable components with Radix UI primitives  
-- Input validation and UX enhancements for amounts and date picking  
-- Robust error handling with retry and countdown alerts
+A full-stack cryptocurrency portfolio tracker built with **Next.js**, **React 18**, **Redux Toolkit**, and **React Query**.  
+Track your crypto holdings with historical purchase dates, live prices from CoinGecko, and performance metrics — with full offline persistence and a responsive dark-mode UI.
 
 ---
 
-## Tech Stack
+## 🚀 Features
 
-- **Frontend:** Next.js 15.3.1, React 18  
-- **State Management:** Redux Toolkit for global currency, React state for portfolio + `useLocalStorage`  
-- **Data Fetching:** React Query v5 with persistence and hydration  
-- **Styling:** TailwindCSS (dark mode enabled)  
-- **API:** CoinGecko public API via Axios client  
-- **UI Components:** Radix UI, Lucide Icons, custom components  
-- **Utilities:** date-fns for date formatting, Intl.NumberFormat for number localization  
+- 💰 Add assets with specific **purchase date** and **amount**
+- 📈 Fetch **real-time prices** and **market data** from the **CoinGecko API**
+- 📊 Track **portfolio value**, **cost basis**, **profit/loss**, and **percentage changes**
+- 💾 Persist data and cache with **localStorage**
+- 🌗 Responsive UI with **dark mode** via TailwindCSS
+- 🧩 Modular, reusable components with Radix UI primitives
+- ✅ Input validation for amount/date + decimal support
+- ⚠️ Retry logic and countdown alerts for API/network errors
+- 🌍 Multi-currency support (USD, EUR, etc.) with dynamic switching
 
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15.3.1, React 18
+- **State Management**: Redux Toolkit (currency), useState + localStorage (portfolio)
+- **Data Fetching**: React Query v5 (with cache persistence)
+- **Styling**: TailwindCSS 4 (darkMode: `"class"`)
+- **API**: CoinGecko via Axios
+- **Components**: Radix UI, Lucide Icons, SVG assets
+- **Utilities**: `date-fns`, `Intl.NumberFormat`, React hooks
+  
 ---
 
 ## Installation
@@ -51,63 +52,99 @@ Track your crypto holdings with historical purchase dates, live prices from Coin
 
 4. Open http://localhost:3000 in your browser.
       
-## Core Concepts
+## 🧠 Core Concepts
 
-### Portfolio Management
+### 📂 Portfolio Management
 
-- User assets are stored as objects containing `{ id, amount, date }` in React state, with seamless persistence via `localStorage`.
-- The portfolio supports **multiple assets per coin**, each distinguished by its own purchase date.
-- The app aggregates these assets to calculate the **total amount held per coin** and the **current portfolio value**.
+- Assets are stored as objects with `id`, `amount`, and `date`.
+- Multiple purchases per coin are supported, each with a distinct date.
+- Aggregation logic computes:
+  - Total amount per coin
+  - Historical total cost (based on price at time of purchase)
+  - Real-time market value (based on current price)
 
-### Data Fetching & Caching
+---
 
-- Asynchronous data fetching is handled by **React Query**, which provides caching, background updates, and state management.
-- Queries are configured with **infinite stale time** and disabled automatic retries for stability.
-- React Query’s cache is **persisted to localStorage** and **hydrated** on app startup to avoid redundant network calls.
-- Queries utilize **TypeScript generics** for type safety and are **conditionally enabled** based on required dependencies.
+### 🔄 Data Fetching & Caching
 
-### Currency State
+- All data is fetched using **React Query v5**
+- Queries use `staleTime: Infinity` to disable background refetching for stability
+- Cache is persisted using `@tanstack/query-persist-client` + `localStorage`
+- On app load, React Query state is automatically rehydrated from `window.__REACT_QUERY_STATE__`
+- Queries are fully typed with TypeScript generics
+- Conditionally enabled based on data availability to avoid errors
 
-- Global currency state (symbol and code) is managed through a dedicated **Redux slice (`currencySlice`)**.
-- This state is used throughout the app for API requests and for consistently formatting displayed currency values.
+---
 
-### Key Components
+### 💱 Currency State (Global)
 
-- **`Portfolio.tsx`**: The main portfolio interface, displaying assets, and including dialogs for adding new assets with calendar and coin search functionalities.
-- **`OneHourPercentage.tsx`**: Shows price change indicators with arrows and color-coded percentages.
-- **`AssetInfo.tsx`** & **`AssetPercentage.tsx`**: Components that format and display numeric asset information alongside currency symbols and descriptive labels.
-- **`AlertError.tsx`**: Displays network error alerts with a countdown timer for automatic retries.
-- **`SearchCoins.tsx`**: Provides autocomplete functionality for selecting cryptocurrencies by name or symbol.
+- Currency state is globally managed via Redux (`currencySlice`)
+- Stores the symbol (e.g. `$`) and code (e.g. `usd`)
+- Used for:
+  - Dynamic API requests (e.g. `/coins/bitcoin?vs_currency=eur`)
+  - All formatted values (price, change %, cost basis)
 
-### Utilities
+---
 
-- `formatAmountUnit(amount: number)`  
-  Formats large numeric values with suffixes such as `k` (thousands), `mln` (millions), and `bln` (billions).
-  
-- `handleKeyDown(e)`  
-  Restricts keyboard input to digits, navigation keys, decimal points, and minus signs, improving input validation.
-  
-- `isDotAtTheEnd(amountInput, e)`  
-  Prevents multiple decimal points from being entered consecutively in input fields.
+## 🧩 Key Components
 
-### Error Handling
+| Component              | Description                                               |
+|------------------------|-----------------------------------------------------------|
+| `Portfolio.tsx`        | Main dashboard with asset list, charts, and dialogs       |
+| `CurrencySelector.tsx` | Dropdown to choose base currency (USD, EUR, etc.)         |
+| `SearchCoins.tsx`      | Autocomplete coin search input                            |
+| `OneHourPercentage.tsx`| Shows 1h price change with color and directional arrow    |
+| `AssetInfo.tsx`        | Displays current price and subtitle                       |
+| `AssetPercentage.tsx`  | Shows percentage change (24h/7d) with colored text        |
+| `AlertError.tsx`       | Displays retry-able network error with countdown timer    |
 
-- Network errors trigger a visible alert with a **countdown timer**, automatically refetching data when the timer expires.
-- Errors originating from React Query or Axios requests are properly surfaced and managed via the `AlertError` component.
+---
 
-### Styling
+## 🧮 Utilities
 
-- The UI uses **TailwindCSS** with dark mode enabled via the `"class"` strategy.
-- A custom color palette extends the default theme with muted and accent colors.
-- Components are styled responsively and accessibly using Tailwind’s utility-first classes.
+- `formatAmountUnit(amount)`
+  - Formats large numbers with suffixes (`k`, `mln`, `bln`)
 
-### Future Improvements
+- `handleKeyDown(e)`
+  - Prevents non-numeric input except for navigation, minus, dot
 
-- Add portfolio export/import feature.
-- Enhance charting with historical price graphs using recharts.
-- Support multi-currency portfolios and conversion.
-- Add user authentication for server-side portfolio syncing.
+- `isDotAtTheEnd(amountInput, e)`
+  - Handles edge case where decimal point is trailing
 
-### License
+- `formatAsset(pricesPerDate)`
+  - Aggregates all portfolio entries by coin ID
+  - Returns normalized per-coin data including total cost and amount
+
+---
+
+## ❗ Error Handling
+
+- All network or API errors are routed through `AlertError.tsx`
+- Displayed as toast-style alerts (bottom right corner)
+- Errors include a 60-second retry countdown
+- Retry re-triggers the failed query automatically
+
+---
+
+## 🎨 Styling
+
+- Uses TailwindCSS 4.1 with `"darkMode": "class"` strategy
+- Custom theme extension:
+  - `muted` color: `#e5e7eb`
+- Responsive utility-first components (mobile/tablet/desktop)
+
+---
+
+## 🌍 Future Improvements
+
+- 📤 Portfolio export/import (CSV/JSON)
+- 📉 Add Recharts for historical performance graphs
+- 💱 Multi-currency portfolios (e.g. track in BTC, view in USD)
+- 👤 Add authentication for syncing portfolios across devices
+- 📊 Support staking/yield-bearing assets (APY, rewards, etc.)
+
+---
+
+## License
 
 MIT © Corty
